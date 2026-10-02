@@ -226,6 +226,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .acc-leitura .defs{margin:24px 0 32px}
 .acc-leitura .cit{margin:28px 0}
 
+/* Promessas: a promessa à vista, a explicação ao abrir */
+.topicos-barra-topo{margin-top:0}
+.topicos-promessas{max-width:none}
+.promessa summary{align-items:flex-start;padding:28px 0;min-height:0}
+.promessa .chev{margin-top:30px}
+.pr{display:flex;flex-direction:column;gap:8px}
+.pr-ref{font-size:16px;font-style:italic;font-weight:400;color:var(--text-3)}
+.pr-ref em{font-style:normal}
+.pr-cit{margin:0;font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.35;letter-spacing:-.008em;text-indent:-.42em;text-wrap:pretty;max-width:26em;transition:color .28s var(--ease-io)}
+.promessa summary:hover .pr-cit{color:var(--water)}
+.promessa[open] .pr-cit{color:var(--text)}
+.promessa .acc-corpo{padding:0 48px 36px 0}
+.promessa .acc-corpo p{margin:0;max-width:34em;color:var(--text-2)}
+.lateral-curta{gap:20px}
+.coluna>.cit{margin:0}
+
 /* ---------- Rezar conta por conta ---------- */
 .rezador{display:flex;flex-direction:column;gap:32px;padding:clamp(28px,4vw,48px);background:var(--ground);border:1px solid var(--line)}
 .rezador:focus{outline:none}
@@ -293,12 +309,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .foot-nav{display:flex;flex-direction:column;align-items:flex-start}
 .foot-copy{margin:0;font-size:16px;color:var(--text-3);align-self:end}
 
-/* ---------- Celular ---------- */
-@media (max-width:760px){
-  .split{grid-template-columns:minmax(0,1fr)}
+/* ---------- Navegação em telas médias e no celular ---------- */
+@media (max-width:1100px){
   .nav-d{display:none !important}
   .menu-m{display:block}
   .tg-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
+
+/* ---------- Celular ---------- */
+@media (max-width:760px){
+  .split{grid-template-columns:minmax(0,1fr)}
   .topo-acoes{gap:24px}
   .brand{font-size:18px}
   .rosacea{width:150vw;height:150vw;top:-30%;right:-56%}
@@ -311,6 +331,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
   .retrato{max-width:360px}
   .foot-grid{grid-template-columns:minmax(0,1fr);gap:32px}
   .prose .h3{margin-top:56px}
+  .promessa .acc-corpo{padding-right:0}
   .tit{grid-template-columns:minmax(0,1fr)}
   .prose .h2{margin-top:56px}
   .retrato-alto{max-width:300px}
