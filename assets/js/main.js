@@ -47,9 +47,11 @@
     var lista = bt.parentNode.nextElementSibling;
     if (!lista) return;
     var itens = lista.querySelectorAll('details');
+    var tAbrir = bt.textContent;
+    var tFechar = bt.getAttribute('data-fechar') || 'Fechar todos';
     function atualizar() {
       var todos = Array.prototype.every.call(itens, function (d) { return d.open; });
-      bt.textContent = todos ? 'Fechar todos' : 'Abrir todos';
+      bt.textContent = todos ? tFechar : tAbrir;
       bt.setAttribute('aria-expanded', String(todos));
     }
     bt.addEventListener('click', function () {

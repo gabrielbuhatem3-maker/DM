@@ -1,7 +1,7 @@
 /* =========================================================
    Divina Misericórdia · estilos do site
-   Tokens, componentes e movimento seguem o design system
-   (quadros Cor, Tipografia, Componentes e Luz e vidro).
+   Base do design system: cores, Lora, grade de 12 colunas,
+   filetes de 1px e cantos retos. Sem vidro, brilhos ou efeitos.
    ========================================================= */
 
 @font-face{font-family:'Lora';font-style:normal;font-weight:400 700;font-display:swap;src:url("../fonts/lora.woff") format('woff')}
@@ -12,16 +12,9 @@
   --ground:#FAFAF8;--surface:#EDF2F2;--surface-2:#E1EAEB;
   --line:#D8DFE0;--line-strong:#A9B6B9;
   --text:#111B21;--text-2:#3C4A52;--text-3:#5A6870;
-  --accent:#B3242A;--on-accent:#FFFFFF;--water:#1F5C6B;
-  --ray-red:#B3242A;--ray-pale:#6FA3B2;
-  --glow-red:rgba(179,36,42,.16);--glow-pale:rgba(47,110,128,.13);
-  --glass-1:rgba(255,255,255,.58);--glass-2:rgba(255,255,255,.66);--glass-3:rgba(255,255,255,.72);
-  --glass-edge:rgba(255,255,255,.92);--glass-line:rgba(17,27,33,.14);
-  --glass-ruby:rgba(142,23,29,.88);--glass-ruby-hi:rgba(142,23,29,.96);
-  --lead:rgba(17,27,33,.30);
-  --glass-r:rgba(179,36,42,.30);--glass-p:rgba(47,110,128,.22);
-  --ease-out:cubic-bezier(.22,1,.36,1);--ease-io:cubic-bezier(.65,0,.35,1);
-  --topo:80px;
+  --accent:#B3242A;--accent-fill:#B3242A;--accent-fill-hover:#9A1D23;--on-accent:#FFFFFF;
+  --water:#1F5C6B;
+  --ease:cubic-bezier(.65,0,.35,1);
   color-scheme:light;
 }
 /* ---------- Tokens · modo escuro ---------- */
@@ -29,51 +22,43 @@ html.escuro{
   --ground:#0D151A;--surface:#131D23;--surface-2:#1A262D;
   --line:#25333A;--line-strong:#3C4D55;
   --text:#ECEEE8;--text-2:#AEB8BB;--text-3:#8D999D;
-  --accent:#E8756D;--on-accent:#FFFFFF;--water:#9CC9D6;
-  --ray-red:#E8756D;--ray-pale:#7FA9B6;
-  --glow-red:rgba(232,117,109,.17);--glow-pale:rgba(156,201,214,.13);
-  --glass-1:rgba(13,21,26,.55);--glass-2:rgba(13,21,26,.62);--glass-3:rgba(13,21,26,.68);
-  --glass-edge:rgba(236,238,232,.16);--glass-line:rgba(236,238,232,.14);
-  --glass-ruby:rgba(142,23,29,.86);--glass-ruby-hi:rgba(165,32,39,.94);
-  --lead:rgba(236,238,232,.22);
-  --glass-r:rgba(232,117,109,.26);--glass-p:rgba(156,201,214,.20);
+  --accent:#E8756D;--accent-fill:#B3242A;--accent-fill-hover:#C7313A;--on-accent:#FFFFFF;
+  --water:#9CC9D6;
   color-scheme:dark;
 }
 
 /* ---------- Base ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:var(--topo);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ground);color:var(--text);font-family:'Lora',Georgia,'Times New Roman',serif;font-size:19px;line-height:1.7;font-feature-settings:"kern","liga";-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s var(--ease-io),color .4s var(--ease-io)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--text);font-family:'Lora',Georgia,'Times New Roman',serif;font-size:19px;line-height:1.7;font-feature-settings:"kern","liga";-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;height:auto;display:block}
-em{font-style:italic}
 a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--water);outline-offset:3px}
 .pular{position:absolute;left:16px;top:-80px;z-index:20;padding:12px 20px;background:var(--ground);color:var(--text);border:1px solid var(--line-strong);font-size:16px;font-weight:600;text-decoration:none}
 .pular:focus{top:16px}
 
 .wrap{max-width:1200px;margin:0 auto;padding-left:clamp(20px,5.5vw,80px);padding-right:clamp(20px,5.5vw,80px)}
-.sec{padding-top:clamp(72px,10vw,144px);padding-bottom:clamp(72px,10vw,144px)}
+.sec{padding-top:clamp(72px,9vw,128px);padding-bottom:clamp(72px,9vw,128px)}
 .sec-filete{border-top:1px solid var(--line)}
+.sec-seguida{padding-top:0}
 .faixa{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.faixa + .sec{border-top:0}
 .split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px clamp(32px,4vw,64px)}
-.coluna{display:flex;flex-direction:column;gap:32px}
-.coluna-curta{display:flex;flex-direction:column;gap:24px;align-items:flex-start}
 
 /* ---------- Tipografia ---------- */
-.h-display{margin:0;font-weight:400;font-size:clamp(46px,7.4vw,100px);line-height:1.02;letter-spacing:-.022em}
+.h-display{margin:0;font-weight:400;font-size:clamp(46px,6.6vw,96px);line-height:1.03;letter-spacing:-.022em;text-wrap:balance}
+.h1{margin:0;font-weight:400;font-size:clamp(40px,5.6vw,76px);line-height:1.06;letter-spacing:-.016em;text-wrap:balance}
 .h2{margin:0;font-weight:400;font-size:clamp(30px,3.6vw,46px);line-height:1.14;letter-spacing:-.012em;text-wrap:balance}
 .h3{margin:0;font-weight:500;font-size:clamp(22px,2vw,26px);line-height:1.3;letter-spacing:-.004em;text-wrap:balance}
 .lead{margin:0;font-size:clamp(20px,1.7vw,23px);line-height:1.6;color:var(--text-2);text-wrap:pretty;max-width:32em}
 .texto-2{margin:0;color:var(--text-2);max-width:34em;text-wrap:pretty}
 .prose p{margin:0 0 1.2em;max-width:34em;text-wrap:pretty}
 .prose p:last-child{margin-bottom:0}
-.prose .h3{margin:72px 0 24px;max-width:24em}
-.prose .h3-primeiro{margin-top:0}
-.prose .nota{margin-top:2.4em;padding-top:20px;border-top:1px solid var(--line);font-size:16px;line-height:1.55;font-style:italic;color:var(--text-3)}
+.prose .h2{margin:72px 0 28px}
+.prose .h2:first-child{margin-top:0}
+.prose .h3{margin:0 0 24px;max-width:24em}
 .cap::first-letter{float:left;font-size:4.3em;line-height:.8;padding:.07em .1em 0 0;font-weight:500;color:var(--accent)}
 
-/* ---------- Links e marca ---------- */
-.lnk{color:var(--text);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.28em;text-decoration-color:var(--line-strong);transition:text-decoration-color .28s var(--ease-io),color .28s var(--ease-io)}
+/* ---------- Links, marca e botão ---------- */
+.lnk{color:var(--text);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.28em;text-decoration-color:var(--line-strong);transition:text-decoration-color .2s var(--ease),color .2s var(--ease)}
 .lnk:hover{color:var(--water);text-decoration-color:var(--water)}
 .lnk-btn{background:none;border:0;padding:0;font:inherit;font-size:17px;font-weight:500;cursor:pointer;min-height:48px}
 .lnk-btn[disabled]{color:var(--text-3);text-decoration-color:transparent;cursor:default}
@@ -81,169 +66,90 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);font-size:20px;font-weight:600;letter-spacing:-.005em;min-height:48px}
 .mk-r{stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round}
 .mk-p{stroke:var(--water);fill:none;stroke-width:1.5;stroke-linecap:round}
-.nl{display:inline-flex;align-items:center;min-height:48px;color:var(--text-2);font-size:16px;font-weight:500;text-decoration:none;border-bottom:1px solid transparent;transition:color .28s var(--ease-io),border-color .28s var(--ease-io)}
-.nl:hover,.nl[aria-current]{color:var(--text);border-bottom-color:var(--accent)}
-.tg{display:inline-flex;align-items:center;gap:10px;min-height:48px;background:transparent;border:0;padding:0;color:var(--text-2);font:inherit;font-size:15px;font-weight:500;cursor:pointer;transition:color .28s var(--ease-io)}
-.tg:hover{color:var(--text)}
 
-/* ---------- Vidro ---------- */
-.vidro{background:var(--glass-2);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-edge)}
-.vidro-fino{background:var(--glass-1);-webkit-backdrop-filter:blur(14px) saturate(1.35);backdrop-filter:blur(14px) saturate(1.35);border-bottom:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-edge)}
+/* Único botão cheio: Sangue sólido, sem efeitos */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border:0;border-radius:0;font:inherit;font-size:16px;font-weight:600;letter-spacing:.012em;line-height:1.3;text-align:center;text-decoration:none;cursor:pointer;color:var(--on-accent);background:var(--accent-fill);transition:background .2s var(--ease)}
+.btn:hover{background:var(--accent-fill-hover)}
 
-/* ---------- Botão de vidro rubi (único botão cheio) ---------- */
-.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 30px;border:1px solid rgba(255,255,255,.16);border-radius:0;font:inherit;font-size:16px;font-weight:600;letter-spacing:.012em;line-height:1.3;text-align:center;text-decoration:none;cursor:pointer;
-  color:var(--on-accent);background:var(--glass-ruby);
-  -webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
-  transition:background .32s var(--ease-io),transform .32s var(--ease-out)}
-.btn:hover{background:var(--glass-ruby-hi);transform:translateY(-1px)}
-.btn::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 36%,rgba(255,255,255,.26) 50%,transparent 64%);transform:translateX(-120%);transition:transform 0s}
-.btn:hover::after{transform:translateX(120%);transition:transform 900ms var(--ease-io)}
-
-/* ---------- Barra de navegação (vidro fino, fixa) ---------- */
-.topo{position:fixed;top:0;left:0;right:0;z-index:10}
-.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--topo)}
+/* ---------- Cabeçalho ---------- */
+.topo{border-bottom:1px solid var(--line)}
+.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:80px}
 .topo-acoes{display:flex;align-items:center;gap:36px}
 .nav-d{display:flex;gap:32px}
+.nl{display:inline-flex;align-items:center;min-height:48px;color:var(--text-2);font-size:16px;font-weight:500;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s var(--ease),border-color .2s var(--ease)}
+.nl:hover,.nl[aria-current]{color:var(--text);border-bottom-color:var(--accent)}
+.tg{display:inline-flex;align-items:center;gap:10px;min-height:48px;background:transparent;border:0;padding:0;color:var(--text-2);font:inherit;font-size:15px;font-weight:500;cursor:pointer;transition:color .2s var(--ease)}
+.tg:hover{color:var(--text)}
 .menu-m{display:none;position:relative}
 .menu-m summary{list-style:none}
 .menu-m summary::-webkit-details-marker{display:none}
-.menu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 40px));padding:4px 24px;display:flex;flex-direction:column;z-index:5;
-  background:var(--glass-3);-webkit-backdrop-filter:blur(34px) saturate(1.4);backdrop-filter:blur(34px) saturate(1.4);border:1px solid var(--glass-line);box-shadow:inset 0 1px 0 var(--glass-edge)}
+.menu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 40px));padding:4px 24px;display:flex;flex-direction:column;z-index:5;background:var(--ground);border:1px solid var(--line-strong)}
 .menu-panel a{display:flex;align-items:center;min-height:52px;border-top:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:500}
 .menu-panel a:first-child{border-top:0}
-
-/* ---------- Palco de luz ---------- */
-.palco{position:relative;isolation:isolate;overflow:hidden}
-.palco>*{position:relative;z-index:1}
-.palco>.brilho,.palco>.rosacea,.palco>.raios{position:absolute;z-index:0}
-.brilho{inset:-12% -8%;pointer-events:none;
-  background:radial-gradient(42% 52% at 78% 6%,var(--glow-red) 0%,transparent 68%),radial-gradient(46% 56% at 92% 22%,var(--glow-pale) 0%,transparent 70%);
-  animation:deriva 26s var(--ease-io) infinite}
-@keyframes deriva{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-2.2%,1.4%,0) scale(1.05)}100%{transform:translate3d(0,0,0) scale(1)}}
-.brilho-hora{background:radial-gradient(40% 60% at 8% 50%,var(--glow-red) 0%,transparent 68%),radial-gradient(44% 64% at 26% 30%,var(--glow-pale) 0%,transparent 70%)}
-.brilho-rezar{background:radial-gradient(40% 60% at 92% 40%,var(--glow-red) 0%,transparent 68%),radial-gradient(44% 64% at 74% 70%,var(--glow-pale) 0%,transparent 70%)}
-.brilho-rodape{inset:-30% -10% auto -10%;height:140%;background:radial-gradient(40% 70% at 86% 0%,var(--glow-red) 0%,transparent 70%),radial-gradient(44% 74% at 96% 14%,var(--glow-pale) 0%,transparent 72%)}
-
-/* ---------- Rosácea e raios ---------- */
-.rosacea{pointer-events:none;width:min(74vw,860px);height:min(74vw,860px);top:-19%;right:-15%;opacity:0;animation:rosa-entra 2200ms var(--ease-out) 160ms both}
-@keyframes rosa-entra{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:scale(1)}}
-.rose-fr{fill:none;stroke:var(--lead);stroke-width:2.5;vector-effect:non-scaling-stroke}
-.tr{fill:none;stroke:var(--lead);stroke-width:1.6;vector-effect:non-scaling-stroke}
-.pt,.pi,.oc{stroke:var(--lead);stroke-width:1.6;vector-effect:non-scaling-stroke}
-.qf{stroke:var(--lead);stroke-width:1.6;vector-effect:non-scaling-stroke;fill:var(--glass-p)}
-.r{fill:var(--glass-r)}
-.p{fill:var(--glass-p)}
-.vidro-anima{animation:vitral 26s var(--ease-io) infinite}
-@keyframes vitral{0%{opacity:1}50%{opacity:.76}100%{opacity:1}}
-
-.raios{left:0;top:0;width:100%;height:100%;pointer-events:none}
-.ray{fill:none;stroke-width:1;vector-effect:non-scaling-stroke;opacity:0;animation:acende 2400ms var(--ease-out) both}
-.ray-r{stroke:var(--ray-red)}
-.ray-p{stroke:var(--ray-pale)}
-.ra{--o:.62;animation-delay:700ms}
-.rb{--o:.4;animation-delay:1150ms}
-.rc{--o:.24;animation-delay:1600ms}
-@keyframes acende{from{opacity:0}to{opacity:var(--o)}}
+.menu-panel a[aria-current]{color:var(--accent)}
 
 /* ---------- Abertura ---------- */
-.abertura{border-bottom:1px solid var(--line)}
-.heroi{min-height:calc(620px + var(--topo));display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:34px;padding-top:calc(88px + var(--topo));padding-bottom:clamp(72px,9vw,128px)}
-.heroi .h-display{max-width:11em}
-.heroi .lead{max-width:27em}
+.heroi{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px clamp(32px,5vw,80px);align-items:end;padding-top:clamp(56px,8vw,104px);padding-bottom:clamp(64px,8vw,112px)}
+.heroi-texto{display:flex;flex-direction:column;align-items:flex-start;gap:32px}
+.heroi-texto .lead{max-width:24em}
 .heroi-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px}
+.heroi-obra{margin:0;justify-self:end;width:clamp(220px,22vw,300px)}
+.heroi-obra img{width:100%;background:#050505}
 
-/* Revelação editorial do título */
-.linha{display:block;overflow:hidden}
-.linha>span{display:block;transform:translateY(112%);animation:sobe 1100ms var(--ease-out) both}
-.l1>span{animation-delay:180ms}
-.l2>span{animation-delay:270ms}
-.l3>span{animation-delay:360ms}
-@keyframes sobe{to{transform:translateY(0)}}
-.surge{opacity:0;animation:surge 900ms var(--ease-out) both}
-.s1{animation-delay:620ms}
-.s2{animation-delay:740ms}
-@keyframes surge{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+/* ---------- Figuras e legendas ---------- */
+.retrato{margin:0}
+.retrato img{width:100%;height:auto;background:var(--surface-2)}
+.legenda{display:flex;flex-direction:column;gap:2px;padding-top:14px;font-size:16px;line-height:1.5;font-style:italic;color:var(--text-3)}
+.legenda em{font-style:normal}
 
 /* ---------- Santa Faustina ---------- */
 .lateral-fixa{display:flex;flex-direction:column;gap:40px}
-.retrato{margin:0}
-.retrato img{width:100%;height:auto;background:var(--surface-2);border:1px solid var(--line)}
-.retrato figcaption{display:flex;flex-direction:column;gap:2px;padding-top:14px;font-size:16px;line-height:1.5;font-style:italic;color:var(--text-3)}
-.foto-terco{max-width:420px}
 .dados{margin:0;border-bottom:1px solid var(--line)}
 .dados div{display:grid;gap:2px;padding:14px 0;border-top:1px solid var(--line)}
 .dados dt{font-size:16px;color:var(--text-3)}
 .dados dd{margin:0;font-size:17px;line-height:1.45;font-variant-numeric:lining-nums}
-@media (min-width:761px) and (min-height:860px){
-  .lateral-fixa{position:sticky;top:calc(var(--topo) + 40px)}
-}
-/* Pintura alta: cabe inteira na janela junto com a legenda */
-@media (min-width:761px){
-  .retrato-alto img{width:auto;max-width:100%;max-height:calc(100vh - var(--topo) - 190px);min-height:420px;object-fit:contain}
+@media (min-width:761px) and (min-height:760px){
+  .lateral-fixa{position:sticky;top:40px}
 }
 
-/* ---------- Hora da Misericórdia ---------- */
-.hora{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:56px;align-items:center}
-.hora-texto{display:flex;flex-direction:column;align-items:flex-start;gap:24px;max-width:32em}
-.hora-lado{display:flex;flex-direction:column;gap:28px}
-.hora-num{font-size:clamp(120px,17vw,236px);line-height:.82;letter-spacing:-.035em;text-align:right;font-variant-numeric:lining-nums}
-.hora-num span{color:var(--accent)}
-.painel{padding:36px 40px;display:flex;flex-direction:column;gap:18px}
-.painel-l{margin:0;font-size:16px;font-style:italic;color:var(--text-2)}
-.painel-t{margin:0;font-size:clamp(20px,2vw,25px);line-height:1.4;text-wrap:pretty}
+/* ---------- Como rezar o Terço ---------- */
+.terco{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px clamp(32px,5vw,80px);align-items:start}
+.terco-texto{display:flex;flex-direction:column;gap:24px;max-width:34em}
+.terco-texto .h3{margin-top:24px}
+.foto-terco{justify-self:end;width:100%;max-width:380px}
 
-/* ---------- Passo a passo ---------- */
+.passos-col{max-width:40em}
+.passos-col>.h2{margin-bottom:40px}
 .etapas{display:flex;flex-direction:column;border-bottom:1px solid var(--line)}
 .etapa{padding:40px 0;border-top:1px solid var(--line)}
-.etapa:first-child{padding-top:0;border-top:0}
 .etapa .h3{margin-bottom:8px}
 .etapa-nota{margin:0;font-size:17px;line-height:1.55;color:var(--text-2)}
-.etapa-fim{margin-top:24px}
-.passo{display:flex;flex-direction:column;gap:6px;padding-top:24px;max-width:34em}
+.passo{display:flex;flex-direction:column;gap:6px;padding-top:24px}
 .instr{margin:0;font-size:16px;line-height:1.5;font-style:italic;color:var(--text-3)}
 .oracao{margin:0;font-size:clamp(20px,1.6vw,21px);line-height:1.6;text-wrap:pretty}
 
-/* Acordeão (nativo) */
-.acc-lista{margin-top:16px;border-bottom:1px solid var(--line)}
+/* ---------- Acordeões ---------- */
 .acc{border-top:1px solid var(--line)}
-.acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;font-size:clamp(19px,1.6vw,21px);font-weight:500;transition:color .28s var(--ease-io)}
+.acc summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:64px;font-size:clamp(19px,1.6vw,21px);font-weight:500;transition:color .2s var(--ease)}
 .acc summary::-webkit-details-marker{display:none}
 .acc summary:hover{color:var(--water)}
-.acc .chev{flex:none;transition:transform .28s var(--ease-io)}
+.acc .chev{flex:none;transition:transform .2s var(--ease)}
 .acc[open] .chev{transform:rotate(180deg)}
-.acc .oracao{margin:0 0 28px;max-width:34em}
+.acc-lista{margin-top:16px;border-bottom:1px solid var(--line)}
+.acc-lista .oracao{margin:0 0 28px}
 
-/* Leitura em tópicos: as partes longas abrem uma de cada vez */
-.topicos-barra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin:56px 0 8px;max-width:34em}
-.topicos-l{margin:0 !important;font-size:16px;font-style:italic;color:var(--text-3)}
+/* Leitura em partes: um título por parte, o texto abre ao clicar */
+.topicos-barra{display:flex;justify-content:flex-end;margin:48px 0 0;max-width:34em}
 .topicos{border-bottom:1px solid var(--line);max-width:34em}
 .acc-leitura summary{min-height:76px;padding:12px 0}
 .acc-t{margin:0;font-weight:500;font-size:clamp(21px,2vw,25px);line-height:1.3;letter-spacing:-.004em;text-wrap:balance}
 .acc-leitura summary:hover .acc-t{color:var(--water)}
-.acc-leitura .acc-corpo{padding:4px 0 32px}
-.acc-leitura .acc-corpo>p{margin:0 0 1.2em}
-.acc-leitura .acc-corpo>:last-child{margin-bottom:0}
-.acc-leitura .defs{margin:24px 0 32px}
-.acc-leitura .cit{margin:28px 0}
+.acc-corpo{padding:4px 0 32px}
+.acc-corpo>p{margin:0 0 1.2em}
+.acc-corpo>:last-child{margin-bottom:0}
 
-/* Promessas: a promessa à vista, a explicação ao abrir */
-.topicos-barra-topo{margin-top:0}
-.topicos-promessas{max-width:none}
-.promessa summary{align-items:flex-start;padding:28px 0;min-height:0}
-.promessa .chev{margin-top:30px}
-.pr{display:flex;flex-direction:column;gap:8px}
-.pr-ref{font-size:16px;font-style:italic;font-weight:400;color:var(--text-3)}
-.pr-ref em{font-style:normal}
-.pr-cit{margin:0;font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.35;letter-spacing:-.008em;text-indent:-.42em;text-wrap:pretty;max-width:26em;transition:color .28s var(--ease-io)}
-.promessa summary:hover .pr-cit{color:var(--water)}
-.promessa[open] .pr-cit{color:var(--text)}
-.promessa .acc-corpo{padding:0 48px 36px 0}
-.promessa .acc-corpo p{margin:0;max-width:34em;color:var(--text-2)}
-.lateral-curta{gap:20px}
-.coluna>.cit{margin:0}
-
-/* ---------- Rezar conta por conta ---------- */
+/* ---------- Rezar agora ---------- */
+.rezar-col{max-width:46rem;display:flex;flex-direction:column;gap:32px}
 .rezador{display:flex;flex-direction:column;gap:32px;padding:clamp(28px,4vw,48px);background:var(--ground);border:1px solid var(--line)}
 .rezador:focus{outline:none}
 .contas{display:block;width:100%;height:44px;overflow:visible}
@@ -254,107 +160,97 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .b-anel{fill:none;stroke:var(--accent);stroke-width:1}
 .rz-texto{display:flex;flex-direction:column;gap:16px;min-height:8.5em}
 .rz-label{margin:0;font-size:16px;font-style:italic;color:var(--text-3)}
-.rz-oracao{margin:0;font-size:clamp(26px,3vw,38px);line-height:1.3;letter-spacing:-.01em;max-width:20em;text-wrap:balance}
-.rz-oracao.longa{font-size:clamp(20px,1.8vw,23px);line-height:1.6;letter-spacing:0;max-width:34em;text-wrap:pretty}
+.rz-oracao{margin:0;font-size:clamp(26px,3vw,36px);line-height:1.3;letter-spacing:-.01em;max-width:20em;text-wrap:balance}
+.rz-oracao.longa{font-size:clamp(20px,1.8vw,22px);line-height:1.6;letter-spacing:0;max-width:34em;text-wrap:pretty}
 .rz-acoes{display:flex;flex-wrap:wrap;align-items:center;gap:16px 32px}
 
-/* ---------- Citação ---------- */
-.citacao{margin:24px 0 0;display:flex;flex-direction:column;gap:24px;max-width:26em}
-.citacao-fio{width:48px;height:2px;background:var(--accent)}
-.quote{margin:0;font-size:clamp(28px,3.4vw,42px);line-height:1.25;letter-spacing:-.01em;text-wrap:balance;text-indent:-.42em;padding-left:.42em}
+/* ---------- Sobre o site ---------- */
+.sobre-col{max-width:36em;display:flex;flex-direction:column;gap:32px}
+
+/* ---------- Citações ---------- */
+.citacao{margin:16px 0 0;display:flex;flex-direction:column;gap:20px;max-width:26em}
+.citacao::before{content:"";display:block;width:48px;height:2px;background:var(--accent)}
+.quote{margin:0;font-size:clamp(26px,3vw,38px);line-height:1.25;letter-spacing:-.01em;text-wrap:balance;text-indent:-.42em}
 .citacao figcaption{font-size:16px;font-style:italic;color:var(--text-3)}
 .citacao figcaption em{font-style:normal}
 
-/* ---------- Páginas internas (leitura longa) ---------- */
-.h1{margin:0;font-weight:400;font-size:clamp(40px,5.6vw,76px);line-height:1.06;letter-spacing:-.016em;text-wrap:balance}
-.tit{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:48px clamp(32px,4vw,64px);align-items:end;padding-top:calc(var(--topo) + clamp(56px,8vw,112px));padding-bottom:clamp(48px,6vw,80px)}
-.tit-texto{display:flex;flex-direction:column;gap:28px}
-.tit .lead{max-width:26em}
-.leitura{padding-bottom:clamp(72px,10vw,144px)}
-.prose .h2{margin:72px 0 28px}
-.prose .h2:first-child{margin-top:0}
-.prose .h3{scroll-margin-top:calc(var(--topo) + 24px)}
-
-/* Citação dentro da leitura: filete curto em Sangue, texto em romano */
 .cit{margin:40px 0;display:flex;flex-direction:column;gap:16px;max-width:34em}
 .cit::before{content:"";display:block;width:48px;height:2px;background:var(--accent)}
 .cit blockquote{margin:0;font-size:clamp(20px,1.7vw,22px);line-height:1.6;text-indent:-.42em;text-wrap:pretty}
 .cit figcaption{font-size:16px;font-style:italic;color:var(--text-3)}
 .cit figcaption em{font-style:normal}
-.cit-grande blockquote{font-size:clamp(26px,3vw,38px);line-height:1.25;letter-spacing:-.01em;text-wrap:balance}
+.cit-grande blockquote{font-size:clamp(26px,3vw,36px);line-height:1.25;letter-spacing:-.01em;text-wrap:balance}
+.acc-corpo .cit{margin:28px 0}
+
+/* ---------- Páginas internas ---------- */
+.tit{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:48px clamp(32px,4vw,64px);align-items:end;padding-top:clamp(56px,8vw,104px);padding-bottom:clamp(48px,6vw,80px)}
+.tit-texto{display:flex;flex-direction:column;gap:28px}
+.tit .lead{max-width:26em}
+.leitura{padding-bottom:clamp(72px,10vw,144px)}
+@media (min-width:761px){
+  .retrato-alto img{width:auto;max-width:100%;max-height:calc(100vh - 140px);min-height:420px;object-fit:contain;background:#050505}
+}
 
 /* Definição dos raios */
-.defs{margin:32px 0 40px;border-bottom:1px solid var(--line);max-width:34em}
+.defs{margin:24px 0 32px;border-bottom:1px solid var(--line)}
 .def{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:24px;row-gap:2px;padding:28px 0;border-top:1px solid var(--line)}
 .def svg{grid-row:1 / span 2;align-self:start}
 .def dt{font-size:17px;font-weight:600;line-height:1.4;color:var(--text-2)}
 .def dd{margin:0;font-size:clamp(20px,2vw,24px);line-height:1.4;letter-spacing:-.006em}
 
-/* Faixa final com a inscrição */
-.inscricao{display:flex;flex-direction:column;align-items:flex-start;gap:36px}
-.inscricao .h-display{font-size:clamp(40px,6vw,84px)}
+/* Promessas: a promessa à vista, a explicação ao abrir */
+.lista-promessas{max-width:52rem}
+.lista-promessas .topicos-barra{max-width:none;margin-top:0}
+.lista-promessas .topicos{max-width:none}
+.promessa summary{align-items:flex-start;padding:28px 0;min-height:0}
+.promessa .chev{margin-top:30px}
+.pr{display:flex;flex-direction:column;gap:8px}
+.pr-ref{font-size:16px;font-style:italic;font-weight:400;color:var(--text-3)}
+.pr-ref em{font-style:normal}
+.pr-cit{margin:0;font-weight:400;font-size:clamp(22px,2.2vw,28px);line-height:1.35;letter-spacing:-.008em;text-indent:-.42em;text-wrap:pretty;max-width:26em;transition:color .2s var(--ease)}
+.promessa summary:hover .pr-cit{color:var(--water)}
+.promessa[open] .pr-cit{color:var(--text)}
+.promessa .acc-corpo{padding:0 48px 36px 0}
+.promessa .acc-corpo p{max-width:34em;color:var(--text-2)}
+.conclusao{max-width:40em;display:flex;flex-direction:column;gap:28px}
+.conclusao .cit{margin:0}
 
 /* Continuar a leitura */
 .pn-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 48px}
-.pn{display:flex;flex-direction:column;gap:4px;padding:40px 0;text-decoration:none;color:var(--text);transition:background .28s var(--ease-io)}
-.pn:hover{background:var(--surface)}
+.pn{display:flex;flex-direction:column;gap:4px;padding:40px 0;text-decoration:none;color:var(--text)}
+.pn:hover .pn-t{color:var(--water)}
 .pn-dir{text-align:right}
 .pn-l{font-size:16px;font-style:italic;color:var(--text-3)}
-.pn-t{font-size:clamp(26px,3vw,36px);line-height:1.15;letter-spacing:-.01em}
+.pn-t{font-size:clamp(26px,3vw,36px);line-height:1.15;letter-spacing:-.01em;transition:color .2s var(--ease)}
 
 /* ---------- Rodapé ---------- */
 .rodape{border-top:1px solid var(--line)}
-.foot-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr);gap:48px;padding-top:80px;padding-bottom:56px}
-.foot-marca{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
-.foot-frase{margin:0;font-size:clamp(24px,2.6vw,32px);line-height:1.25;max-width:12em}
-.foot-nav{display:flex;flex-direction:column;align-items:flex-start}
-.foot-copy{margin:0;font-size:16px;color:var(--text-3);align-self:end}
+.foot-grid{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 48px;padding-top:40px;padding-bottom:48px}
+.foot-nav{display:flex;flex-wrap:wrap;gap:0 28px}
+.foot-copy{margin:0;font-size:16px;color:var(--text-3)}
 
-/* ---------- Navegação no celular ---------- */
+/* ---------- Celular ---------- */
 @media (max-width:760px){
   .nav-d{display:none !important}
   .menu-m{display:block}
   .tg-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-}
-
-/* ---------- Celular ---------- */
-@media (max-width:760px){
-  .split{grid-template-columns:minmax(0,1fr)}
   .topo-acoes{gap:24px}
   .brand{font-size:18px}
-  .rosacea{width:150vw;height:150vw;top:-30%;right:-56%}
-  .raios{display:none}
-  .heroi{min-height:calc(560px + var(--topo))}
-  .hora{grid-template-columns:minmax(0,1fr);gap:32px}
-  .hora-num{text-align:left;order:2}
-  .painel{padding:28px 24px}
-  .lateral-fixa{gap:32px}
-  .retrato{max-width:360px}
-  .foot-grid{grid-template-columns:minmax(0,1fr);gap:32px}
-  .prose .h3{margin-top:56px}
-  .promessa .acc-corpo{padding-right:0}
-  .tit{grid-template-columns:minmax(0,1fr)}
-  .prose .h2{margin-top:56px}
+  .split,.heroi,.terco,.tit{grid-template-columns:minmax(0,1fr)}
+  .heroi-obra{justify-self:stretch;width:100%}
+  .heroi-obra img{height:min(62vh,420px);object-fit:cover;object-position:center 22%}
+  .foto-terco{justify-self:start;max-width:340px}
   .retrato-alto{max-width:300px}
+  .lateral-fixa{gap:32px}
+  .retrato-faustina{max-width:360px}
   .def{grid-template-columns:44px minmax(0,1fr);column-gap:16px}
+  .promessa .acc-corpo{padding-right:0}
   .pn-grid{grid-template-columns:minmax(0,1fr)}
   .pn-dir{text-align:left;border-top:1px solid var(--line)}
+  .prose .h2{margin-top:56px}
 }
 
-/* ---------- Preferências do visitante ---------- */
-@media (prefers-reduced-transparency: reduce){
-  .vidro,.vidro-fino,.menu-panel{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}
-  .btn{-webkit-backdrop-filter:none;backdrop-filter:none;background:#9A1D23}
-  .btn:hover{background:#8E171D}
-}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
-  .ray{animation:none;opacity:var(--o)}
-  .brilho,.vidro-anima{animation:none}
-  .rosacea{animation:none;opacity:1}
-  .linha>span{animation:none;transform:none}
-  .surge{animation:none;opacity:1}
-  .btn::after{display:none}
-  .btn:hover{transform:none}
-  body{transition:none}
+  *,*::before,*::after{transition:none !important}
 }
