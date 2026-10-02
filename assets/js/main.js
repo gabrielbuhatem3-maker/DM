@@ -13,6 +13,7 @@
     if (tg) tg.setAttribute('aria-pressed', String(escuro));
     // O alternador mostra o nome do modo para o qual leva.
     if (tgLabel) tgLabel.textContent = escuro ? 'Modo claro' : 'Modo escuro';
+    if (tg) tg.title = escuro ? 'Modo claro' : 'Modo escuro';
     if (themeMeta) themeMeta.setAttribute('content', escuro ? '#0D151A' : '#FAFAF8');
   }
 
@@ -74,21 +75,57 @@
     alvos.forEach(function (el) { observador.observe(el); });
   }
 
-  /* ---------- Menu do celular ---------- */
+  /* ---------- Menu do celular, em tela cheia ---------- */
   var menu = document.querySelector('.menu-m');
   if (menu) {
-    menu.addEventListener('click', function (e) {
-      if (e.target.closest('.menu-panel a')) menu.removeAttribute('open');
-    });
-    document.addEventListener('click', function (e) {
-      if (menu.hasAttribute('open') && !menu.contains(e.target)) menu.removeAttribute('open');
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && menu.hasAttribute('open')) {
-        menu.removeAttribute('open');
-        menu.querySelector('summary').focus();
+    var abreMenu = menu.querySelector('summary');
+    var fechaMenu = function () {
+      menu.removeAttribute('open');
+      abreMenu.focus();
+    };
+    menu.addEventListener('toggle', function () {
+      // Trava a rolagem da página por trás do menu aberto.
+      raiz.classList.toggle('menu-aberto', menu.open);
+      if (menu.open) {
+        var primeiro = menu.querySelector('.menu-links a');
+        if (primeiro) primeiro.focus();
       }
     });
+    menu.querySelector('.menu-fecha').addEventListener('click', fechaMenu);
+    menu.addEventListener('click', function (e) {
+      if (e.target.closest('.menu-links a')) menu.removeAttribute('open');
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.open) fechaMenu();
+    });
+  }
+
+  /* ---------- Cabeçalho: some ao descer, volta ao subir ---------- */
+  var topo = document.querySelector('.topo');
+  if (topo) {
+    var ultimoY = window.scrollY;
+    var agendado = false;
+    var atualizarTopo = function () {
+      agendado = false;
+      var y = window.scrollY;
+      var delta = y - ultimoY;
+      topo.classList.toggle('rolado', y > 8);
+      if (raiz.classList.contains('menu-aberto') || y < 160) {
+        topo.classList.remove('oculto');
+      } else if (delta > 6) {
+        topo.classList.add('oculto');
+      } else if (delta < -6) {
+        topo.classList.remove('oculto');
+      }
+      if (Math.abs(delta) > 6) ultimoY = y;
+      raiz.classList.toggle('topo-visivel', !topo.classList.contains('oculto'));
+    };
+    window.addEventListener('scroll', function () {
+      if (!agendado) { agendado = true; requestAnimationFrame(atualizarTopo); }
+    }, { passive: true });
+    // Quem navega pelo teclado sempre vê o cabeçalho ao entrar nele.
+    topo.addEventListener('focusin', function () { topo.classList.remove('oculto'); });
+    atualizarTopo();
   }
 
   /* ---------- Leitura em tópicos: abrir ou fechar todos ---------- */

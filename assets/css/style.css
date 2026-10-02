@@ -80,22 +80,39 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border:0;border-radius:0;font:inherit;font-size:18px;font-weight:600;letter-spacing:.01em;line-height:1.3;text-align:center;text-decoration:none;cursor:pointer;color:var(--on-accent);background:var(--accent-fill);transition:background .2s var(--ease)}
 .btn:hover{background:var(--accent-fill-hover)}
 
-/* ---------- Cabeçalho ---------- */
-.topo{border-bottom:1px solid var(--line)}
-.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:80px}
-.topo-acoes{display:flex;align-items:center;gap:36px}
-.nav-d{display:flex;gap:32px}
-.nl{display:inline-flex;align-items:center;min-height:48px;color:var(--text-2);font-size:18px;font-weight:500;text-decoration:none;border-bottom:1px solid transparent;transition:color .2s var(--ease),border-color .2s var(--ease)}
-.nl:hover,.nl[aria-current]{color:var(--text);border-bottom-color:var(--accent)}
-.tg{display:inline-flex;align-items:center;gap:10px;min-height:48px;background:transparent;border:0;padding:0;color:var(--text-2);font:inherit;font-size:17px;font-weight:500;cursor:pointer;transition:color .2s var(--ease)}
+/* ---------- Cabeçalho ----------
+   Marca à esquerda; as páginas em maiúsculas pequenas e espaçadas, com um
+   filete vermelho curto sob a atual; o tema só com o ícone. Fica no topo,
+   some ao descer a página e volta ao subir. */
+.topo{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid transparent;transition:transform .45s var(--ease),border-color .3s var(--ease),background-color .3s var(--ease)}
+.topo.rolado{border-bottom-color:var(--line)}
+.topo.oculto{transform:translateY(-100%)}
+.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:88px}
+.topo-acoes{display:flex;align-items:center;gap:28px}
+.nav-d{display:flex;gap:36px}
+.nl{position:relative;display:inline-flex;align-items:center;min-height:48px;color:var(--text-2);font-size:14.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;transition:color .2s var(--ease)}
+.nl::after{content:"";position:absolute;left:calc(50% - .07em);bottom:8px;width:18px;height:1.5px;background:var(--accent);transform:translateX(-50%) scaleX(0);transition:transform .3s var(--ease)}
+.nl:hover,.nl[aria-current]{color:var(--text)}
+.nl:hover::after,.nl[aria-current]::after{transform:translateX(-50%) scaleX(1)}
+.tg{display:inline-flex;align-items:center;gap:10px;min-height:48px;background:transparent;border:0;padding:0;color:var(--text-2);font:inherit;font-size:14.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .2s var(--ease)}
 .tg:hover{color:var(--text)}
-.menu-m{display:none;position:relative}
+.tg-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Botão de tema: só o ícone, separado das páginas por um filete vertical */
+.tg-icone{position:relative;width:48px;justify-content:center;margin-right:-14px}
+.nav-d + .tg-icone::before{content:"";position:absolute;left:-14px;top:15px;bottom:15px;width:1px;background:var(--line)}
+
+/* Menu do celular: tela cheia, com as páginas em letra grande */
+.menu-m{display:none}
 .menu-m summary{list-style:none}
 .menu-m summary::-webkit-details-marker{display:none}
-.menu-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 40px));padding:4px 24px;display:flex;flex-direction:column;z-index:5;background:var(--ground);border:1px solid var(--line-strong)}
-.menu-panel a{display:flex;align-items:center;min-height:52px;border-top:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:500}
-.menu-panel a:first-child{border-top:0}
-.menu-panel a[aria-current]{color:var(--accent)}
+.menu-abre{color:var(--text)}
+.menu-panel{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:var(--ground);padding-top:env(safe-area-inset-top,0px);overflow-y:auto}
+.menu-topo{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:72px;width:100%;border-bottom:1px solid var(--line)}
+.menu-fecha{color:var(--text)}
+.menu-links{display:flex;flex-direction:column;width:100%;padding-top:16px;padding-bottom:48px}
+.menu-links a{display:flex;align-items:center;min-height:80px;border-bottom:1px solid var(--line);color:var(--text);font-size:clamp(34px,10vw,44px);line-height:1.1;letter-spacing:-.01em;text-decoration:none}
+.menu-links a[aria-current]{color:var(--accent)}
+html.menu-aberto{overflow:hidden}
 
 /* ---------- Abertura ---------- */
 .heroi{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px clamp(32px,5vw,80px);align-items:end;padding-top:clamp(56px,8vw,104px);padding-bottom:clamp(64px,8vw,112px)}
@@ -119,7 +136,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .dados dt{font-size:17px;color:var(--text-3)}
 .dados dd{margin:0;font-size:19px;line-height:1.45}
 @media (min-width:761px) and (min-height:760px){
-  .lateral-fixa{position:sticky;top:40px}
+  .lateral-fixa{position:sticky;top:40px;transition:top .45s var(--ease)}
+  .topo-visivel .lateral-fixa{top:128px}
 }
 /* Coluna de Santa Faustina (título, retrato e datas): só fica fixa se couber
    inteira na tela; senão as datas ficariam cortadas embaixo. */
@@ -249,8 +267,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 @media (max-width:760px){
   .nav-d{display:none !important}
   .menu-m{display:block}
-  .tg-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .topo-acoes{gap:24px}
+  .topo-in{min-height:72px}
+  .topo-acoes{gap:12px}
+  .nav-d + .tg-icone::before{display:none}
+  .tg-icone{margin-right:0}
   .brand{font-size:21px}
   .split,.heroi,.terco,.tit{grid-template-columns:minmax(0,1fr)}
   .heroi-obra{justify-self:stretch;width:100%}
@@ -330,6 +350,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
   .b-anel{animation:anel .6s cubic-bezier(.22,1,.36,1)}
   @keyframes conta{from{transform:scale(.5)}to{transform:none}}
   @keyframes anel{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+  /* Menu do celular: o painel aparece e as páginas sobem em sequência */
+  .menu-m[open] .menu-panel{animation:painel .3s var(--ease)}
+  .menu-m[open] .menu-links a{animation:sobe .6s cubic-bezier(.22,1,.36,1) both}
+  .menu-m[open] .menu-links a:nth-child(2){animation-delay:.06s}
+  .menu-m[open] .menu-links a:nth-child(3){animation-delay:.12s}
+  @keyframes painel{from{opacity:0}}
 
   /* Rezar agora: a oração de cada conta entra devagar */
   .rz-oracao.entra{animation:aparece-de .45s var(--ease)}

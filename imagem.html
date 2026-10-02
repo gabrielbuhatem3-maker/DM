@@ -55,16 +55,22 @@
         <a href="imagem.html" class="nl" aria-current="page">A Imagem</a>
         <a href="promessas.html" class="nl">Promessas</a>
       </nav>
-      <button type="button" class="tg" id="tema-tg" aria-pressed="false">
+      <button type="button" class="tg tg-icone" id="tema-tg" aria-pressed="false" title="Modo escuro">
         <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
         <span class="tg-l">Modo escuro</span>
       </button>
       <details class="menu-m">
-        <summary class="tg">Menu</summary>
+        <summary class="tg menu-abre">Menu</summary>
         <div class="menu-panel">
-          <a href="index.html">Início</a>
-          <a href="imagem.html" aria-current="page">A Imagem</a>
-          <a href="promessas.html">Promessas</a>
+          <div class="menu-topo wrap">
+            <span class="brand" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg><span>Divina Misericórdia</span></span>
+            <button type="button" class="tg menu-fecha">Fechar</button>
+          </div>
+          <nav class="menu-links wrap" aria-label="Menu">
+            <a href="index.html">Início</a>
+            <a href="imagem.html" aria-current="page">A Imagem</a>
+            <a href="promessas.html">Promessas</a>
+          </nav>
         </div>
       </details>
     </div>
