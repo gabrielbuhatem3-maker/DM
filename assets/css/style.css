@@ -170,6 +170,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .retrato{margin:0}
 .retrato img{width:100%;height:auto;background:var(--surface-2);border:1px solid var(--line)}
 .retrato figcaption{display:flex;flex-direction:column;gap:2px;padding-top:14px;font-size:16px;line-height:1.5;font-style:italic;color:var(--text-3)}
+.foto-terco{max-width:420px}
 .dados{margin:0;border-bottom:1px solid var(--line)}
 .dados div{display:grid;gap:2px;padding:14px 0;border-top:1px solid var(--line)}
 .dados dt{font-size:16px;color:var(--text-3)}
