@@ -8,21 +8,38 @@
   var themeMeta = document.querySelector('meta[name="theme-color"]');
 
   function aplicarTema(escuro) {
-    raiz.className = escuro ? 'escuro' : 'claro';
+    raiz.classList.toggle('escuro', escuro);
+    raiz.classList.toggle('claro', !escuro);
     if (tg) tg.setAttribute('aria-pressed', String(escuro));
     // O alternador mostra o nome do modo para o qual leva.
     if (tgLabel) tgLabel.textContent = escuro ? 'Modo claro' : 'Modo escuro';
     if (themeMeta) themeMeta.setAttribute('content', escuro ? '#0D151A' : '#FAFAF8');
   }
 
-  aplicarTema(raiz.className === 'escuro');
+  aplicarTema(raiz.classList.contains('escuro'));
 
   if (tg) {
     tg.addEventListener('click', function () {
-      var escuro = raiz.className !== 'escuro';
+      var escuro = !raiz.classList.contains('escuro');
       aplicarTema(escuro);
       try { localStorage.setItem('tema', escuro ? 'escuro' : 'claro'); } catch (e) {}
     });
+  }
+
+  /* ---------- Abertura: uma vez por visita, pode ser pulada ---------- */
+  var abertura = document.querySelector('.abertura');
+  if (abertura) {
+    if (raiz.classList.contains('sem-abertura')) {
+      abertura.remove();
+    } else {
+      try { sessionStorage.setItem('abertura', '1'); } catch (e) {}
+      var pular = function () { abertura.classList.add('sai'); };
+      abertura.addEventListener('click', pular);
+      document.addEventListener('keydown', pular, { once: true });
+      abertura.addEventListener('animationend', function (e) {
+        if (e.target === abertura) abertura.remove();
+      });
+    }
   }
 
   /* ---------- Menu do celular ---------- */
@@ -151,6 +168,10 @@
     var p = passos[i];
     label.textContent = p.l;
     oracao.textContent = p.t;
+    // Reinicia a entrada suave do texto a cada conta.
+    oracao.classList.remove('entra');
+    void oracao.offsetWidth;
+    oracao.classList.add('entra');
     oracao.classList.toggle('longa', p.t.length > 200);
     desenharContas(p);
     volta.disabled = i === 0;

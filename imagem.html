@@ -10,11 +10,24 @@
 <link rel="preload" href="assets/fonts/eb-garamond-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
-  // Aplica o tema salvo antes da primeira pintura, para não piscar.
-  try { if (localStorage.getItem('tema') === 'escuro') document.documentElement.className = 'escuro'; } catch (e) {}
+  // Antes da primeira pintura: aplica o tema salvo e pula a abertura
+  // se ela já foi vista nesta visita.
+  (function (h) {
+    try { if (localStorage.getItem('tema') === 'escuro') h.classList.replace('claro', 'escuro'); } catch (e) {}
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('sem-abertura'); } catch (e) { h.classList.add('sem-abertura'); }
+  })(document.documentElement);
 </script>
 </head>
 <body>
+<div class="abertura" aria-hidden="true">
+  <div class="abertura-in">
+    <svg width="96" height="96" viewBox="0 0 28 28">
+      <path class="ab-r ab1" pathLength="1" d="M14 3L4 25"/><path class="ab-r ab2" pathLength="1" d="M14 3L8 26"/><path class="ab-r ab3" pathLength="1" d="M14 3L12 26"/>
+      <path class="ab-p ab4" pathLength="1" d="M14 3L16 26"/><path class="ab-p ab5" pathLength="1" d="M14 3L20 26"/><path class="ab-p ab6" pathLength="1" d="M14 3L24 25"/>
+    </svg>
+    <p>Jesus, eu confio em Vós.</p>
+  </div>
+</div>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
 <header class="topo">
@@ -66,7 +79,8 @@
         <img src="assets/img/jesus-misericordioso.jpg" width="726" height="1414" alt="Pintura de Jesus vestido de branco sobre fundo escuro, com a mão direita erguida em bênção e a esquerda sobre o peito, de onde saem um raio vermelho e um raio pálido.">
         <!-- PENDENTE: confirmar a fonte do arquivo e a licença com o responsável pelo site. -->
         <figcaption class="legenda">
-          <span>Eugênio Kazimirowski, <em>Jesus Misericordioso</em>, 1934</span>
+          <span><em>Jesus Misericordioso</em>, 1934</span>
+          <span>Eugênio Kazimirowski</span>
           <span>Santuário da Divina Misericórdia, Vilnius</span>
         </figcaption>
       </figure>

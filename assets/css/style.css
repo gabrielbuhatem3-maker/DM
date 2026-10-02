@@ -38,7 +38,8 @@ html.escuro{
 /* ---------- Base ---------- */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--ground);color:var(--text);font-family:'EB Garamond',Garamond,Georgia,serif;font-size:21px;line-height:1.6;font-feature-settings:"kern","liga";font-variant-numeric:oldstyle-nums proportional-nums;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+body{margin:0;background:var(--ground);color:var(--text);font-family:'EB Garamond',Garamond,Georgia,serif;font-size:21px;line-height:1.6;font-feature-settings:"kern","liga";font-variant-numeric:oldstyle-nums proportional-nums;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .3s var(--ease),color .3s var(--ease)}
 img{max-width:100%;height:auto;display:block}
 a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--water);outline-offset:3px}
 .pular{position:absolute;left:16px;top:-80px;z-index:20;padding:12px 20px;background:var(--ground);color:var(--text);border:1px solid var(--line-strong);font-size:17px;font-weight:600;text-decoration:none}
@@ -107,8 +108,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 /* ---------- Figuras e legendas ---------- */
 .retrato{margin:0}
 .retrato img{width:100%;height:auto;background:var(--surface-2)}
-.legenda{display:flex;flex-direction:column;gap:2px;padding-top:14px;font-size:17px;line-height:1.5;font-style:italic;color:var(--text-3)}
-.legenda em{font-style:normal}
+/* Legenda como etiqueta de museu: título da obra em itálico */
+.legenda{display:flex;flex-direction:column;gap:2px;padding-top:14px;font-size:17px;line-height:1.45;color:var(--text-3)}
+.legenda em{font-style:italic;color:var(--text-2)}
 
 /* ---------- Santa Faustina ---------- */
 .lateral-fixa{display:flex;flex-direction:column;gap:40px}
@@ -158,7 +160,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .acc-corpo>:last-child{margin-bottom:0}
 
 /* ---------- Rezar agora ---------- */
-.rezar-col{max-width:46rem;display:flex;flex-direction:column;gap:32px}
+.rezar-col{max-width:52rem;display:flex;flex-direction:column;gap:32px}
 .rezador{display:flex;flex-direction:column;gap:32px;padding:clamp(28px,4vw,48px);background:var(--ground);border:1px solid var(--line)}
 .rezador:focus{outline:none}
 .contas{display:block;width:100%;height:44px;overflow:visible}
@@ -257,6 +259,50 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
   .pn-grid{grid-template-columns:minmax(0,1fr)}
   .pn-dir{text-align:left;border-top:1px solid var(--line)}
   .prose .h2{margin-top:56px}
+  .prose p,.acc-corpo p,.texto-2,.lead{hyphens:auto;-webkit-hyphens:auto}
+}
+
+/* =========================================================
+   Movimento
+   Lento, curto e sempre opcional: quem pede menos movimento
+   no sistema não vê nenhuma destas animações.
+   ========================================================= */
+
+/* Abertura: os dois raios se desenham e a inscrição aparece.
+   Só na primeira página da visita; um clique ou tecla pula. */
+.abertura{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:var(--ground);cursor:pointer;animation:abertura-sai .5s var(--ease) 1.35s forwards}
+.abertura.sai{animation:abertura-sai .25s var(--ease) forwards}
+.abertura-in{display:flex;flex-direction:column;align-items:center;gap:22px}
+.abertura svg{overflow:visible}
+.abertura path{fill:none;stroke-width:.55;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:traca .55s cubic-bezier(.22,1,.36,1) forwards}
+.ab-r{stroke:var(--accent)}
+.ab-p{stroke:var(--water)}
+.ab1{animation-delay:.05s}.ab2{animation-delay:.12s}.ab3{animation-delay:.19s}
+.ab4{animation-delay:.26s}.ab5{animation-delay:.33s}.ab6{animation-delay:.4s}
+.abertura p{margin:0;font-size:clamp(22px,2.4vw,28px);color:var(--text-2);opacity:0;animation:aparece .6s var(--ease) .55s forwards}
+@keyframes traca{to{stroke-dashoffset:0}}
+@keyframes aparece{to{opacity:1}}
+@keyframes abertura-sai{to{opacity:0;visibility:hidden}}
+.sem-abertura .abertura{display:none}
+
+@media (prefers-reduced-motion: no-preference){
+  /* Transição entre páginas: o conteúdo se funde, o cabeçalho fica parado */
+  @view-transition{navigation:auto}
+  .topo{view-transition-name:topo}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:var(--ease)}
+
+  /* Tópicos que abrem deslizando, onde o navegador permite */
+  :root{interpolate-size:allow-keywords}
+  .acc::details-content{block-size:0;overflow:clip;opacity:0;transition:block-size .4s var(--ease),opacity .4s var(--ease),content-visibility .4s allow-discrete}
+  .acc[open]::details-content{block-size:auto;opacity:1}
+
+  /* Rezar agora: a oração de cada conta entra devagar */
+  .rz-oracao.entra{animation:aparece-de .45s var(--ease)}
+  @keyframes aparece-de{from{opacity:0}to{opacity:1}}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .abertura{display:none}
 }
 
 @media (prefers-reduced-motion: reduce){
