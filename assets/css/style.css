@@ -213,6 +213,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visi
 .acc[open] .chev{transform:rotate(180deg)}
 .acc .oracao{margin:0 0 28px;max-width:34em}
 
+/* Leitura em tópicos: as partes longas abrem uma de cada vez */
+.topicos-barra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;margin:56px 0 8px;max-width:34em}
+.topicos-l{margin:0 !important;font-size:16px;font-style:italic;color:var(--text-3)}
+.topicos{border-bottom:1px solid var(--line);max-width:34em}
+.acc-leitura summary{min-height:76px;padding:12px 0}
+.acc-t{margin:0;font-weight:500;font-size:clamp(21px,2vw,25px);line-height:1.3;letter-spacing:-.004em;text-wrap:balance}
+.acc-leitura summary:hover .acc-t{color:var(--water)}
+.acc-leitura .acc-corpo{padding:4px 0 32px}
+.acc-leitura .acc-corpo>p{margin:0 0 1.2em}
+.acc-leitura .acc-corpo>:last-child{margin-bottom:0}
+.acc-leitura .defs{margin:24px 0 32px}
+.acc-leitura .cit{margin:28px 0}
+
 /* ---------- Rezar conta por conta ---------- */
 .rezador{display:flex;flex-direction:column;gap:32px;padding:clamp(28px,4vw,48px);background:var(--ground);border:1px solid var(--line)}
 .rezador:focus{outline:none}

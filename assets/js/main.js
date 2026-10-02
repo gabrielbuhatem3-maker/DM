@@ -42,6 +42,24 @@
     });
   }
 
+  /* ---------- Leitura em tópicos: abrir ou fechar todos ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll('.abrir-todos'), function (bt) {
+    var lista = bt.parentNode.nextElementSibling;
+    if (!lista) return;
+    var itens = lista.querySelectorAll('details');
+    function atualizar() {
+      var todos = Array.prototype.every.call(itens, function (d) { return d.open; });
+      bt.textContent = todos ? 'Fechar todos' : 'Abrir todos';
+      bt.setAttribute('aria-expanded', String(todos));
+    }
+    bt.addEventListener('click', function () {
+      var abrir = bt.getAttribute('aria-expanded') !== 'true';
+      Array.prototype.forEach.call(itens, function (d) { d.open = abrir; });
+      atualizar();
+    });
+    Array.prototype.forEach.call(itens, function (d) { d.addEventListener('toggle', atualizar); });
+  });
+
   /* ---------- Rezar o Terço, conta por conta ---------- */
   var rezador = document.getElementById('rezador');
   if (!rezador) return;
