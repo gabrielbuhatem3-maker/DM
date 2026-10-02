@@ -21,3 +21,10 @@ python3 -m http.server 8000
 ```
 
 e abra http://localhost:8000.
+
+## Publicar no GitHub Pages
+
+1. Em **Settings → Pages**, em *Build and deployment*, escolha **Deploy from a branch**, a branch `main` e a pasta `/ (root)`.
+2. Em alguns minutos o site fica em https://gabrielbuhatem3-maker.github.io/DM/.
+
+As tags de compartilhamento (`og:url`, `og:image` e `canonical`) apontam para esse endereço. Se o site for para um domínio próprio, troque-o nas três páginas.
