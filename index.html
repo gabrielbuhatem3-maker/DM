@@ -13,6 +13,7 @@
   // Antes da primeira pintura: aplica o tema salvo e pula a abertura
   // se ela já foi vista nesta visita.
   (function (h) {
+    h.classList.add('js');
     try { if (localStorage.getItem('tema') === 'escuro') h.classList.replace('claro', 'escuro'); } catch (e) {}
     try { if (sessionStorage.getItem('abertura')) h.classList.add('sem-abertura'); } catch (e) { h.classList.add('sem-abertura'); }
   })(document.documentElement);
@@ -85,7 +86,7 @@
 <section id="faustina" class="sec sec-filete" aria-labelledby="h-faustina">
   <div class="wrap split">
     <div class="lateral">
-      <div class="lateral-fixa">
+      <div class="lateral-fixa lateral-alta">
         <h2 id="h-faustina" class="h2">Santa Faustina</h2>
         <figure class="retrato retrato-faustina">
           <img src="assets/img/santa-faustina.jpg" width="452" height="600" alt="Retrato pintado de Santa Faustina com o hábito preto e o véu branco das Irmãs de Nossa Senhora da Misericórdia, com um crucifixo no peito." loading="lazy">
