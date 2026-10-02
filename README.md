@@ -10,7 +10,7 @@ imagem.html           A Imagem de Jesus Misericordioso
 promessas.html        As promessas da Divina Misericórdia
 assets/css/style.css  Tokens e componentes do design system
 assets/js/main.js     Modo claro/escuro, menu do celular e o Terço conta por conta
-assets/fonts/         Lora (licença OFL), romano e itálico
+assets/fonts/         EB Garamond (licença OFL, ver OFL-EB-Garamond.txt)
 assets/img/           Retrato de Santa Faustina e marca
 ```
 
