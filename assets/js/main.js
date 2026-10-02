@@ -103,16 +103,23 @@
     return el;
   }
 
-  // Conta grande em x=24; dez contas pequenas a partir de x=96, a cada 60.
+  // As contas são desenhadas na largura real do quadro, para não encolherem
+  // no celular: conta grande à esquerda e dez pequenas igualmente espaçadas.
+  var fio = document.getElementById('contas-fio');
   function desenharContas(p) {
+    var w = Math.max(Math.round(contasSvg.getBoundingClientRect().width), 240);
+    var pad = 18;
+    var passo = (w - pad * 2) / 10;
+    contasSvg.setAttribute('viewBox', '0 0 ' + w + ' 44');
+    fio.setAttribute('x2', w - pad);
     while (contasG.firstChild) contasG.removeChild(contasG.firstChild);
     var atual = p.f === 'dezena' ? p.c : (p.f === 'inicio' ? -1 : 11);
     for (var k = 0; k <= 10; k++) {
-      var cx = k === 0 ? 24 : 96 + (k - 1) * 60;
+      var cx = pad + k * passo;
       var r = k === 0 ? 11 : 7;
       var cls = k < atual ? 'b-past' : (k === atual ? 'b-now' : 'b-next');
       contasG.appendChild(circulo(cx, r, cls));
-      if (k === atual) contasG.appendChild(circulo(cx, k === 0 ? 17 : 13, 'b-anel'));
+      if (k === atual) contasG.appendChild(circulo(cx, k === 0 ? 16 : 12, 'b-anel'));
     }
     var desc;
     if (p.f === 'dezena') desc = p.c === 0 ? 'Conta grande da dezena' : 'Conta pequena ' + p.c + ' de 10';
@@ -145,6 +152,12 @@
     if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
     if (e.key === 'ArrowRight') { e.preventDefault(); avancar(); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); voltar(); }
+  });
+
+  var redesenho;
+  window.addEventListener('resize', function () {
+    clearTimeout(redesenho);
+    redesenho = setTimeout(function () { desenharContas(passos[i]); }, 120);
   });
 
   mostrar();
