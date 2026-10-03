@@ -17,60 +17,62 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="“Jesus, eu confio em Vós.” ao lado da pintura de Jesus Misericordioso.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#FAFAF8">
+<meta name="theme-color" content="#F5F6F3">
 <link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/eb-garamond-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
 <link rel="stylesheet" href="assets/css/style.css">
 <script>
-  // Antes da primeira pintura: aplica o tema salvo e pula a abertura
-  // se ela já foi vista nesta visita.
+  // Antes da primeira pintura: aplica o tema salvo.
   (function (h) {
     h.classList.add('js');
     try { if (localStorage.getItem('tema') === 'escuro') h.classList.replace('claro', 'escuro'); } catch (e) {}
-    try { if (sessionStorage.getItem('abertura')) h.classList.add('sem-abertura'); } catch (e) { h.classList.add('sem-abertura'); }
+    // Primeira visita: baixa e guarda o site inteiro (tela com progresso real).
+    // Depois: a tela só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando'); setTimeout(function () { h.classList.remove('carregando'); }, 26000);
+    try { var c = navigator.connection; if (localStorage.getItem('site-guardado') !== 'dm-347979b59c' && !(c && c.saveData)) h.classList.add('baixando-site'); } catch (e) {}
   })(document.documentElement);
 </script>
 </head>
 <body>
-<div class="abertura" aria-hidden="true">
-  <div class="abertura-in">
-    <svg width="96" height="96" viewBox="0 0 28 28">
-      <path class="ab-r ab1" pathLength="1" d="M14 3L4 25"/><path class="ab-r ab2" pathLength="1" d="M14 3L8 26"/><path class="ab-r ab3" pathLength="1" d="M14 3L12 26"/>
-      <path class="ab-p ab4" pathLength="1" d="M14 3L16 26"/><path class="ab-p ab5" pathLength="1" d="M14 3L20 26"/><path class="ab-p ab6" pathLength="1" d="M14 3L24 25"/>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"></div>
+<div class="carregador" aria-hidden="true">
+  <div class="cg-in">
+    <svg class="cg-marca" width="84" height="105" viewBox="0 0 32 40">
+      <g fill="none" stroke-linecap="round">
+        <circle class="cg-argola" cx="16" cy="2.2" r="1.7" stroke-width="1.1"/>
+        <ellipse class="cg-aro" pathLength="1" cx="16" cy="21" rx="12.6" ry="16.6" stroke-width="1.1"/>
+        <path class="cg-raio cg-r" pathLength="1" d="M16 14.5L5.6 29.2"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L9.2 33.8"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L13.2 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L18.8 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L22.8 33.8"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L26.4 29.2"/>
+        <circle class="cg-ponto" cx="16" cy="14.5" r="1.15"/>
+      </g>
     </svg>
-    <p>Jesus, eu confio em Vós.</p>
+    <p class="cg-nome">Divina Misericórdia</p>
+    <p class="cg-estado">Preparando o site: <span class="cg-pct">0%</span></p>
+    <p class="cg-nota">Só na primeira visita. Depois ele abre na hora, até sem internet.</p>
+    <button type="button" class="cg-entrar" hidden>Entrar agora</button>
+    <p class="cg-oracao">Ó Sangue e Água, que jorraste do Coração de Jesus como Fonte de Misericórdia para nós, eu confio em Vós.</p>
   </div>
 </div>
-<a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
 <header class="topo">
   <div class="wrap topo-in">
-    <a href="index.html" class="brand">
-      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg>
-      <span>Divina Misericórdia</span>
-    </a>
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
     <div class="topo-acoes">
-      <nav class="nav-d" aria-label="Principal">
-        <a href="index.html" class="nl">Início</a>
-        <a href="imagem.html" class="nl" aria-current="page">A Imagem</a>
-        <a href="promessas.html" class="nl">Promessas</a>
-      </nav>
-      <button type="button" class="tg tg-icone" id="tema-tg" aria-pressed="false" title="Modo escuro">
-        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
-        <span class="tg-l">Modo escuro</span>
+      <nav class="nav" aria-label="Principal"><a href="index.html">Início</a><a href="imagem.html" aria-current="page">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+      <button type="button" class="tema" id="tema-tg" aria-pressed="false" title="Modo escuro">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
+        <span class="sr">Modo escuro</span>
       </button>
       <details class="menu-m">
-        <summary class="tg menu-abre">Menu</summary>
-        <div class="menu-panel">
-          <div class="menu-topo wrap">
-            <span class="brand" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg><span>Divina Misericórdia</span></span>
-            <button type="button" class="tg menu-fecha">Fechar</button>
+        <summary>Menu</summary>
+        <div class="menu-painel">
+          <div class="wrap topo-in">
+            <span class="marca" aria-hidden="true"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></span>
+            <button type="button" class="menu-fecha">Fechar</button>
           </div>
-          <nav class="menu-links wrap" aria-label="Menu">
-            <a href="index.html">Início</a>
-            <a href="imagem.html" aria-current="page">A Imagem</a>
-            <a href="promessas.html">Promessas</a>
-          </nav>
+          <nav class="wrap menu-links" aria-label="Menu"><a href="index.html">Início</a><a href="imagem.html" aria-current="page">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
         </div>
       </details>
     </div>
@@ -79,36 +81,20 @@
 
 <main id="conteudo">
 
-<section class="wrap tit" aria-labelledby="h-imagem">
-  <div class="tit-texto">
-    <h1 id="h-imagem" class="h1">A Imagem de Jesus Misericordioso</h1>
-    <p class="lead">Jesus pediu a Santa Faustina que esta imagem fosse pintada, com a inscrição “Jesus, eu confio em Vós”.</p>
-  </div>
-  <dl class="dados">
+<section class="wrap titulo" aria-labelledby="h-imagem">
+  <h1 id="h-imagem" class="h1">A Imagem de Jesus Misericordioso</h1>
+  <p class="lead">Jesus pediu a Santa Faustina que esta imagem fosse pintada, com a inscrição “Jesus, eu confio em Vós”.</p>
+  <dl class="dados-linha">
     <div><dt>A visão</dt><dd>22 de fevereiro de 1931, Płock, Polônia</dd></div>
     <div><dt>Primeira pintura</dt><dd>1934, Eugênio Kazimirowski</dd></div>
     <div><dt>Onde está</dt><dd>Santuário da Divina Misericórdia, Vilnius</dd></div>
   </dl>
 </section>
 
-<div class="wrap split leitura">
-  <div class="lateral">
-    <div class="lateral-fixa">
-      <figure class="retrato retrato-alto">
-        <img src="assets/img/jesus-misericordioso.jpg" width="726" height="1414" alt="Pintura de Jesus vestido de branco sobre fundo escuro, com a mão direita erguida em bênção e a esquerda sobre o peito, de onde saem um raio vermelho e um raio pálido.">
-        <!-- PENDENTE: confirmar a fonte do arquivo e a licença com o responsável pelo site. -->
-        <figcaption class="legenda">
-          <span><em>Jesus Misericordioso</em>, 1934</span>
-          <span>Eugênio Kazimirowski</span>
-          <span>Santuário da Divina Misericórdia, Vilnius</span>
-        </figcaption>
-      </figure>
-    </div>
-  </div>
-
-  <article class="prose">
-    <h2 class="h2">A visão de Płock</h2>
-    <p class="cap">Em 22 de fevereiro de 1931, em sua cela no convento de Płock, na Polônia, Santa Faustina teve a visão que descreveu assim no <em>Diário</em>:</p>
+<section class="wrap leitura" aria-labelledby="h-visao">
+  <h2 id="h-visao" class="h2">A visão de Płock</h2>
+  <div class="texto" data-continua="2">
+    <p>Em 22 de fevereiro de 1931, em sua cela no convento de Płock, na Polônia, Santa Faustina teve a visão que descreveu assim no <em>Diário</em>:</p>
     <figure class="cit">
       <blockquote>“À noite, quando me encontrava na minha cela, vi Nosso Senhor vestido de branco. Uma das mãos erguida para a bênção, e a outra tocava-Lhe a túnica, sobre o peito. Da túnica entreaberta sobre o peito saíam dois grandes raios, um vermelho e o outro pálido. Em silêncio, eu contemplava o Senhor. A minha alma estava cheia de temor, mas também de grande alegria.”</blockquote>
       <figcaption><em>Diário</em>, 47</figcaption>
@@ -124,78 +110,100 @@
       <blockquote>“O valor desta imagem não está na beleza da tinta nem na habilidade do pintor, mas na Minha graça.”</blockquote>
       <figcaption><em>Diário</em>, 313</figcaption>
     </figure>
+  </div>
+</section>
 
-    <h2 class="h2">O que cada elemento significa</h2>
-    <p>No <em>Diário</em>, Jesus explica a Faustina o sentido dos raios. Os outros elementos seguem a leitura tradicional da Imagem.</p>
+<section class="anotada" aria-labelledby="h-elementos">
+  <div class="wrap">
+    <div class="anotada-cab">
+      <h2 id="h-elementos" class="h2">O que cada elemento significa</h2>
+      <p>No <em>Diário</em>, Jesus explica a Faustina o sentido dos raios. Os outros elementos seguem a leitura tradicional da Imagem.</p>
+    </div>
 
-    <div class="topicos-barra"><button type="button" class="lnk lnk-btn abrir-todos" aria-expanded="false" data-fechar="Fechar todos">Abrir todos</button></div>
-    <div class="topicos">
-      <details class="acc acc-leitura">
-        <summary><h3 class="acc-t">A túnica branca</h3><svg class="chev" width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-        <div class="acc-corpo">
+    <div class="anotada-grade">
+      <figure class="painel" id="painel">
+        <div class="painel-quadro">
+          <picture><source srcset="assets/img/jesus-misericordioso.webp" type="image/webp"><img src="assets/img/jesus-misericordioso.jpg" width="726" height="1414" loading="lazy" alt="Pintura de Jesus Misericordioso, de Eugênio Kazimirowski, 1934."></picture>
+          <div class="veu"></div>
+          <button type="button" class="ponto" data-alvo="tunica" style="left:58%;top:70%" aria-label="Mostrar: a túnica branca"></button>
+          <button type="button" class="ponto" data-alvo="mao" style="left:36%;top:27.4%" aria-label="Mostrar: a mão direita erguida"></button>
+          <button type="button" class="ponto" data-alvo="raios" style="left:54.4%;top:31.5%" aria-label="Mostrar: os dois raios"></button>
+        </div>
+        <figcaption class="painel-inscricao" data-alvo="inscricao">Jesus, eu confio em Vós.</figcaption>
+      </figure>
+
+      <div class="elementos">
+        <article class="elemento" id="el-tunica" data-alvo="tunica" data-x="52%" data-y="68%" data-rx="34%" data-ry="26%">
+          <details class="topico" open>
+            <summary><h3 class="h3">A túnica branca</h3><span class="sinal" aria-hidden="true"></span></summary>
+            <div class="el-corpo">
           <p>Mostra o Cristo ressuscitado, que saiu do sepulcro com vida nova. O branco é sinal de pureza e do amor de Deus, que se dá por inteiro.</p>
-        </div>
-      </details>
-      <details class="acc acc-leitura">
-        <summary><h3 class="acc-t">A mão direita erguida</h3><svg class="chev" width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-        <div class="acc-corpo">
+            </div>
+          </details>
+        </article>
+
+        <article class="elemento" id="el-mao" data-alvo="mao" data-x="36%" data-y="27%" data-rx="17%" data-ry="10%">
+          <details class="topico" open>
+            <summary><h3 class="h3">A mão direita erguida</h3><span class="sinal" aria-hidden="true"></span></summary>
+            <div class="el-corpo">
           <p>É um gesto de bênção sobre quem contempla a Imagem e, por meio dela, sobre toda a humanidade.</p>
-        </div>
-      </details>
-      <details class="acc acc-leitura">
-        <summary><h3 class="acc-t">Os dois raios</h3><svg class="chev" width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-        <div class="acc-corpo">
+            </div>
+          </details>
+        </article>
+
+        <article class="elemento" id="el-raios" data-alvo="raios" data-x="51%" data-y="52%" data-rx="40%" data-ry="34%">
+          <details class="topico" open>
+            <summary><h3 class="h3">Os dois raios</h3><span class="sinal" aria-hidden="true"></span></summary>
+            <div class="el-corpo">
           <p>Jesus explicou o seu sentido a Santa Faustina:</p>
           <figure class="cit">
             <blockquote>“O raio pálido significa a Água que justifica as almas; o raio vermelho significa o Sangue que é a vida das almas. Ambos os raios jorraram das entranhas da Minha Misericórdia, quando na Cruz o Meu Coração agonizante foi aberto pela lança. Estes raios defendem as almas da ira do Meu Pai. Feliz aquele que viver à sua sombra, porque não será atingido pelo braço da justiça de Deus.”</blockquote>
             <figcaption><em>Diário</em>, 299</figcaption>
           </figure>
-          <dl class="defs">
-            <div class="def">
-              <svg width="48" height="64" viewBox="0 0 48 64" aria-hidden="true"><path class="mk-r" d="M24 4L8 58M24 4L19 60M24 4L30 60M24 4L42 56"/></svg>
+          <dl class="dois-raios">
+            <div>
+              <svg width="36" height="52" viewBox="0 0 36 52" aria-hidden="true"><path class="raio-v" d="M18 3L5 49M18 3L14 50M18 3L23 50M18 3L31 48"/></svg>
               <dt>Raio vermelho</dt>
               <dd>O Sangue de Cristo: a vida, a redenção, o preço da nossa salvação.</dd>
             </div>
-            <div class="def">
-              <svg width="48" height="64" viewBox="0 0 48 64" aria-hidden="true"><path class="mk-p" d="M24 4L6 56M24 4L18 60M24 4L29 60M24 4L40 58"/></svg>
+            <div>
+              <svg width="36" height="52" viewBox="0 0 36 52" aria-hidden="true"><path class="raio-p" d="M18 3L5 48M18 3L13 50M18 3L22 50M18 3L31 49"/></svg>
               <dt>Raio pálido</dt>
               <dd>A Água: a purificação, o batismo, a graça que justifica o pecador diante de Deus.</dd>
             </div>
           </dl>
-          <p>Os dois remetem à cena do Calvário narrada por São João: “Um dos soldados abriu-Lhe o lado com uma lança, e logo saiu sangue e água” (Jo 19,34).</p>
-        </div>
-      </details>
-      <details class="acc acc-leitura">
-        <summary><h3 class="acc-t">A inscrição: “Jesus, eu confio em Vós”</h3><svg class="chev" width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-        <div class="acc-corpo">
+          <p>Os dois remetem à cena do Calvário narrada por São João: “Um dos soldados abriu-Lhe o lado com uma lança, e logo saiu sangue e água” (Jo&nbsp;19,34).</p>
+            </div>
+          </details>
+        </article>
+
+        <article class="elemento" id="el-inscricao" data-alvo="inscricao">
+          <details class="topico" open>
+            <summary><h3 class="h3">A inscrição: “Jesus, eu confio em Vós”</h3><span class="sinal" aria-hidden="true"></span></summary>
+            <div class="el-corpo">
           <p>Jesus pediu que essa frase estivesse na Imagem. Ela é uma oração e resume a devoção à Divina Misericórdia: diante de Deus, o que se pede ao ser humano é confiança.</p>
-        </div>
-      </details>
+            </div>
+          </details>
+        </article>
+      </div>
     </div>
-  </article>
-</div>
+  </div>
+</section>
 
 <nav class="wrap" aria-label="Continuar a leitura">
-  <div class="pn-grid sec-filete">
-    <a href="index.html" class="pn"><span class="pn-l">Anterior</span><span class="pn-t">Início</span></a>
-    <a href="promessas.html" class="pn pn-dir"><span class="pn-l">Próximo</span><span class="pn-t">Promessas</span></a>
+  <div class="seguir">
+    <a href="index.html"><span>Anterior</span><strong>Início</strong></a>
+    <a href="promessas.html"><span>Próximo</span><strong>Promessas</strong></a>
   </div>
 </nav>
 
 </main>
 
 <footer class="rodape">
-  <div class="wrap foot-grid">
-    <a href="index.html" class="brand">
-      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg>
-      <span>Divina Misericórdia</span>
-    </a>
-    <nav aria-label="Rodapé" class="foot-nav">
-      <a href="index.html" class="nl">Início</a>
-      <a href="imagem.html" class="nl" aria-current="page">A Imagem</a>
-      <a href="promessas.html" class="nl">Promessas</a>
-    </nav>
-    <p class="foot-copy">© 2026 Divina Misericórdia</p>
+  <div class="wrap rodape-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <nav aria-label="Rodapé"><a href="index.html">Início</a><a href="imagem.html" aria-current="page">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+    <p>© 2026 Divina Misericórdia</p>
   </div>
 </footer>
 
