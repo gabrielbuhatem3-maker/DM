@@ -816,10 +816,11 @@ details[open]>summary .sinal::after{rotate:0deg}
     /* Abertura em três camadas, como quem se afasta devagar de um altar:
        os raios no chão ficam quase parados (mais longe), a pintura desce
        devagar e a inscrição sobe com a página (mais perto). */
-    .altar{view-timeline:--altar block}
-    .quadro{animation:altar-sai linear both;animation-timeline:--altar;animation-range:exit 0% exit 100%}
-    .raios-caixa{animation:raios-fundo linear both;animation-timeline:--altar;animation-range:exit 0% exit 100%}
-    .inscricao span{animation:inscricao-perto linear both;animation-timeline:--altar;animation-range:exit 0% exit 80%}
+    .quadro{animation:altar-sai linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+    .raios-caixa{animation:raios-fundo linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+    .inscricao span{animation:inscricao-perto linear both;animation-timeline:scroll(root);animation-range:0 75vh}
+    /* O texto dos lados é o mais perto de todos: sobe mais rápido que a inscrição */
+    .altar-lado>*{animation:lado-sai linear both;animation-timeline:scroll(root);animation-range:0 65vh}
 
     /* Retrato de Santa Faustina: a pintura corre de leve dentro da moldura */
     .retrato img{animation:retrato-par linear both;animation-timeline:view();animation-range:cover 0% cover 100%;scale:1.12}
@@ -846,9 +847,21 @@ details[open]>summary .sinal::after{rotate:0deg}
   }
 }
 @keyframes progresso-cresce{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-@keyframes altar-sai{to{translate:0 22%;scale:.94;opacity:.35}}
-@keyframes raios-fundo{to{translate:0 8%}}
-@keyframes inscricao-perto{to{translate:0 -60%;opacity:0}}
+@keyframes altar-sai{to{translate:0 30%;scale:.92;opacity:.3}}
+@keyframes raios-fundo{to{translate:0 12%}}
+@keyframes inscricao-perto{to{translate:0 -90%;opacity:0}}
+@keyframes lado-sai{to{translate:0 -45%;opacity:0}}
+/* Celular: parallax leve só na pintura e na inscrição. Os raios (a camada
+   mais larga) não animam sozinhos e encolhem para a camada ficar leve. */
+@supports (animation-timeline: scroll()){
+  @media (prefers-reduced-motion:no-preference) and (max-width:900px),(prefers-reduced-motion:no-preference) and (pointer:coarse){
+    .raios-caixa{left:-70%;width:240%}
+    .quadro{animation:altar-sai-m linear both;animation-timeline:scroll(root);animation-range:0 100vh}
+    .inscricao span{animation:inscricao-perto-m linear both;animation-timeline:scroll(root);animation-range:0 80vh}
+  }
+}
+@keyframes altar-sai-m{to{translate:0 24%;opacity:.4}}
+@keyframes inscricao-perto-m{to{translate:0 -35%}}
 @keyframes retrato-par{from{translate:0 -5%}to{translate:0 5%}}
 @keyframes acende-linhas{from{background-position:0 100%}to{background-position:0 0}}
 @keyframes balanca{0%{rotate:-7deg}45%{rotate:3deg}75%{rotate:-1.2deg}100%{rotate:0deg}}
