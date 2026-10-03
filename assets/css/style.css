@@ -36,19 +36,11 @@
 
 /* ---------- Tokens · modo claro (principal) ---------- */
 :root{
-  /* Dia: papel de missal antigo, marfim levemente acinzentado */
-  --papel:#EFEBE3;
-  --papel-2:#E6E0D4;          /* seções alternadas: a página seguinte do missal */
-  /* Os outros "brancos", tirados da pintura e da igreja */
-  --tunica:#F2F4F3;           /* o branco azulado da túnica */
-  --agua-clara:#E1ECEE;       /* o raio pálido, diluído */
-  --pedra:#E4DED3;            /* pedra e pergaminho, mais denso */
-  --rosa:#F3E5E1;             /* o raio vermelho, quase só uma lembrança */
-  --luz-r:rgba(214,72,70,.07);--luz-p:rgba(120,170,185,.10);
-  /* Fibra de papel: ruído finíssimo, poucos bytes */
-  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .26 0 0 0 0 .18 0 0 0 .11 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --linha:#D6CEBF;
-  --linha-forte:#A39886;
+  /* Dia: papel frio, como a túnica branca da pintura */
+  --papel:#F5F6F3;
+  --papel-2:#E7ECEC;          /* o raio pálido, como superfície */
+  --linha:#D2D9D9;
+  --linha-forte:#9FACAE;
   --tinta:#172024;
   --tinta-2:#3D494E;
   --tinta-3:#5B676C;
@@ -86,12 +78,6 @@
 html.escuro{
   --papel:#0E1315;
   --papel-2:#151D20;
-  --tunica:#111A1D;
-  --agua-clara:#0F1E22;
-  --pedra:#161A1B;
-  --rosa:#1C1416;
-  --luz-r:rgba(229,97,95,.06);--luz-p:rgba(147,195,208,.06);
-  --grao:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --linha:#243034;
   --linha-forte:#3D4C50;
   --tinta:#E9EBE6;
@@ -116,7 +102,7 @@ html.escuro{
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 body{
-  margin:0;background:var(--grao) var(--papel);color:var(--tinta);
+  margin:0;background:var(--papel);color:var(--tinta);
   font-family:var(--serif);font-size:var(--t-m);line-height:1.65;font-weight:400;
   font-variant-numeric:oldstyle-nums proportional-nums;font-kerning:normal;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
@@ -597,9 +583,6 @@ details[open]>summary .sinal::after{rotate:0deg}
 }
 
 .fecho{background:var(--papel-2);padding:clamp(88px,11vw,168px) 0}
-/* Seções alternadas: o fundo muda de tom como as páginas de um missal */
-.sec.tom,.sec:not(.rezar)+.sec.tom,.sec.tom+.sec:not(.rezar){padding-top:clamp(88px,11vw,168px)}
-.promessas-sec{padding-bottom:clamp(56px,7vw,104px)}
 .fecho-in{max-width:44em;margin:0 auto;text-align:center}
 .fecho .rubrica{font-size:var(--t-s)}
 .fecho blockquote{margin:22px 0 0;font-size:clamp(30px,2.8vw + 14px,56px);line-height:1.2;letter-spacing:-.016em;text-wrap:balance}
@@ -949,61 +932,3 @@ section.leitura{padding-bottom:clamp(88px,10vw,152px)}
 .nao-achou .opcao-acoes{margin-top:clamp(28px,3vw,40px)}
 
 html.escuro .rezar,html.escuro .anotada{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
-
-
-/* =========================================================
-   Superfícies: cada parte da página tem o seu "branco"
-   Papel (leitura) · túnica e raio pálido (o Terço, escurecendo
-   até a oração) · rosa (a citação) · pedra (o fecho)
-   ========================================================= */
-/* Faixa que ocupa a largura toda, mesmo dentro de uma coluna */
-
-/* Santa Faustina: papel, com a luz dos raios ainda tocando os cantos */
-#faustina{background:
-  radial-gradient(60% 40% at 0 0,var(--luz-r),transparent 70%),
-  radial-gradient(50% 40% at 100% 0,var(--luz-p),transparent 70%),
-  var(--grao) var(--papel)}
-
-/* Como rezar: o branco da túnica, com luz no alto, que desce pelo raio
-   pálido e vai escurecendo até a noite do "Rezar agora" */
-#terco{background:
-  radial-gradient(70% 520px at 50% 0,rgba(255,255,255,.55),transparent 70%),
-  linear-gradient(to bottom,var(--tunica) 0,var(--tunica) 30%,var(--agua-clara) 88%,color-mix(in srgb,var(--agua-clara) 70%,var(--noite)) 100%)}
-.escuro #terco{background:linear-gradient(to bottom,var(--tunica) 0,var(--agua-clara) 85%,var(--noite) 100%)}
-#terco .etapa{border-top-color:color-mix(in srgb,var(--linha-forte) 45%,transparent)}
-
-/* Sobre o site: pedra; a citação vira uma faixa rosa de ponta a ponta */
-#sobre{background:var(--grao) var(--pedra)}
-.sobre .cit-grande{background:var(--rosa);box-shadow:0 0 0 100vmax var(--rosa);clip-path:inset(0 -100vmax);padding-block:clamp(48px,6vw,88px);margin-bottom:0}
-#sobre .sobre{padding-bottom:0}
-#sobre{padding-bottom:0}
-main:has(#sobre)+.rodape{background:var(--grao) var(--pedra);border-top:0}
-
-/* Faixa da pintura entre a vida de Santa Faustina e o Terço */
-.faixa{position:relative;margin:0;height:clamp(240px,44svh,480px);overflow:hidden;background:var(--noite);color:var(--marfim);display:grid;place-items:center;isolation:isolate}
-.faixa img{position:absolute;inset:-12% 0;width:100%;height:124%;object-fit:cover;object-position:50% 30%;filter:brightness(.42) saturate(.85) blur(1.5px);z-index:-1}
-.faixa::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom,var(--noite),transparent 30%,transparent 70%,var(--noite))}
-.faixa figcaption{max-width:20em;padding-inline:var(--gut);text-align:center;font-size:clamp(26px,2.4vw + 12px,44px);line-height:1.25;letter-spacing:-.01em;font-style:italic;text-wrap:balance}
-.faixa figcaption small{display:block;margin-top:14px;font-style:normal;font-size:var(--t-xs);letter-spacing:.02em;color:var(--sangue-noite)}
-@supports (animation-timeline: view()){
-  @media (prefers-reduced-motion:no-preference) and (min-width:901px) and (hover:hover) and (pointer:fine){
-    .faixa img{animation:faixa-par linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
-    .faixa figcaption{animation:faixa-txt linear both;animation-timeline:view();animation-range:entry 20% cover 50%}
-  }
-}
-@keyframes faixa-par{from{translate:0 -9%}to{translate:0 9%}}
-@keyframes faixa-txt{from{opacity:0;translate:0 24px}to{opacity:1;translate:0 0}}
-
-/* Promessas: alternam entre papel e túnica; a frase final na faixa rosa */
-.promessas-sec .promessa{border-top:0}
-.promessas-sec .promessa:nth-child(even){background:var(--tunica);box-shadow:0 0 0 100vmax var(--tunica);clip-path:inset(0 -100vmax)}
-.promessas-sec+.fecho{background:var(--rosa)}
-
-/* Lembrete: as formas de lembrete sobre pedra */
-.opcoes{position:relative;background:var(--pedra);box-shadow:0 0 0 100vmax var(--pedra);clip-path:inset(0 -100vmax)}
-.opcoes+nav{margin-top:0}
-
-/* A Imagem: a leitura no papel ganha a mesma luz dos raios no alto */
-main:has(.anotada){background:radial-gradient(60% 30% at 100% 0,var(--luz-p),transparent 70%),radial-gradient(50% 30% at 0 0,var(--luz-r),transparent 70%)}
-
-@media print{body,#faustina,#terco,#sobre,.promessa,.fecho,.opcoes{background:#fff!important;box-shadow:none!important}.faixa{display:none}}
