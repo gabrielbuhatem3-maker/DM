@@ -11,8 +11,8 @@
      Visitas seguintes: tudo já está no aparelho; a tela só aparece se
      algo demorar mais de 0,4 s.
      VERSAO e LISTA são atualizadas por tools/versao.py. */
-  var VERSAO = /*VERSAO*/'dm-12752ad07c'/*FIM*/;
-  var LISTA = /*LISTA*/[["assets/css/style.css?v=dm-12752ad07c",58355],["assets/js/main.js?v=dm-12752ad07c",58524],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",29225],["imagem.html",15673],["promessas.html",17185],["lembrete.html",11463],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656],["assets/img/icone-192.png",17144],["site.webmanifest",1026]]/*FIM*/;
+  var VERSAO = /*VERSAO*/'dm-2755f42467'/*FIM*/;
+  var LISTA = /*LISTA*/[["assets/css/style.css?v=dm-2755f42467",63441],["assets/js/main.js?v=dm-2755f42467",58524],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",29623],["imagem.html",15673],["promessas.html",17185],["lembrete.html",11463],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656],["assets/img/icone-192.png",17144],["site.webmanifest",1026]]/*FIM*/;
   var cg = document.querySelector('.carregador');
 
   // O resto do site espera a página aparecer para animar (senão anima escondido)
