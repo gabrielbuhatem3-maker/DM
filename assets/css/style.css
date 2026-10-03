@@ -238,7 +238,7 @@ html.menu-aberto{overflow:hidden}
 }
 .quadro{
   grid-column:2;grid-row:1;position:relative;z-index:1;margin:0;
-  height:clamp(440px,calc(100svh - var(--topo) - 8.2vw),1000px);
+  height:clamp(470px,calc(100svh - var(--topo) - 4.6vw),1080px);
   aspect-ratio:726/1414;
 }
 .quadro img{
@@ -308,7 +308,7 @@ html.menu-aberto{overflow:hidden}
 @media (max-width:1099px){
   .altar-grade{grid-template-columns:1fr;justify-items:center;text-align:center}
   .altar-lead{text-shadow:0 0 1em rgba(0,0,0,.7)}
-  .quadro{grid-column:1;height:min(66svh,148vw);min-height:380px}
+  .quadro{grid-column:1;height:min(71svh,158vw);min-height:410px}
   .inscricao{grid-column:1;font-size:clamp(40px,11.5vw,72px);margin-top:-.42em}
   .altar-lado{grid-column:1;justify-self:center;text-align:center;padding-bottom:0;max-width:30em}
   .altar-dir{grid-row:3;margin-top:28px}
