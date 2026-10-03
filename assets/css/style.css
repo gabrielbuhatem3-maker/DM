@@ -549,6 +549,7 @@ details[open]>summary .sinal::after{rotate:0deg}
 .dois-raios{display:grid;grid-template-columns:1fr 1fr;gap:20px 32px;margin:clamp(28px,3vw,40px) 0}
 .dois-raios div{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:start}
 .dois-raios svg{grid-row:1/span 2}
+.el-detalhe,.painel-dica{display:none}
 .dois-raios dt{font-size:var(--t-l);line-height:1.2}
 .dois-raios dd{margin:0;font-size:var(--t-s);line-height:1.5;color:#CBD0CD}
 .raio-v{stroke:var(--sangue-noite);stroke-width:1.5;stroke-linecap:round;fill:none}
@@ -557,13 +558,22 @@ details[open]>summary .sinal::after{rotate:0deg}
 @media (max-width:900px){
   .anotada-cab{grid-template-columns:1fr}
   .anotada-grade{grid-template-columns:1fr;gap:8px}
-  .painel{top:0;z-index:2;background:var(--noite);padding:12px 0 10px;margin:0 calc(-1 * var(--gut));box-shadow:0 18px 24px -12px var(--noite)}
-  .topo-visivel .painel{top:var(--topo-fixo)}
-  .painel-quadro{height:50svh;min-height:0}
+  /* No celular a pintura não fica presa na tela (cobria metade da leitura):
+     ela aparece inteira, com os pontos numerados, e cada item da lista
+     traz o recorte do seu detalhe. */
+  .painel,.topo-visivel .painel{position:relative;top:auto}
+  .painel-quadro{height:min(64svh,128vw);min-height:360px}
   .painel-inscricao{font-size:22px;margin-top:-.9em}
-  .ponto{width:24px;height:24px;margin:-12px 0 0 -12px}
-  .ponto::after{inset:8px}
-  .elementos{padding-top:24px;padding-bottom:8svh}
+  .ponto{width:34px;height:34px;margin:-17px 0 0 -17px;background:rgba(7,8,8,.55);border-color:rgba(238,236,229,.85);display:grid;place-items:center}
+  .ponto::after{content:attr(data-n);position:static;inset:auto;background:none;color:var(--marfim);font-size:15px;line-height:1;font-variant-numeric:lining-nums}
+  .ponto.ativo::after{background:none;color:var(--marfim)}
+  .ponto.ativo{background:var(--sangue-noite);border-color:var(--sangue-noite)}
+  .painel-dica{display:block;margin-top:14px;text-align:center;font-size:var(--t-xs);font-style:italic;color:var(--marfim-2)}
+  .elementos{padding-top:20px;padding-bottom:4svh}
+  .elemento{scroll-margin-top:calc(var(--topo-fixo) + 12px)}
+  .elemento[data-n]::before{content:attr(data-n);display:grid;place-items:center;background:none;color:var(--marfim);font-size:13px;line-height:1;font-variant-numeric:lining-nums}
+  .elemento.ativo[data-n]::before{background:var(--sangue-noite);border-color:var(--sangue-noite)}
+  .el-detalhe{display:block;height:clamp(150px,46vw,240px);margin:0 0 18px;background-color:var(--noite-2);background-repeat:no-repeat;border-radius:2px;box-shadow:inset 0 0 0 1px var(--noite-linha)}
   .dois-raios{grid-template-columns:1fr}
 }
 

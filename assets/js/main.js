@@ -11,8 +11,8 @@
      Visitas seguintes: tudo já está no aparelho; a tela só aparece se
      algo demorar mais de 0,4 s.
      VERSAO e LISTA são atualizadas por tools/versao.py. */
-  var VERSAO = /*VERSAO*/'dm-a3884023c3'/*FIM*/;
-  var LISTA = /*LISTA*/[["assets/css/style.css?v=dm-a3884023c3",57923],["assets/js/main.js?v=dm-a3884023c3",58524],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",29221],["imagem.html",15673],["promessas.html",17150],["lembrete.html",11463],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656],["assets/img/icone-192.png",17144],["site.webmanifest",1026]]/*FIM*/;
+  var VERSAO = /*VERSAO*/'dm-d03058e0e2'/*FIM*/;
+  var LISTA = /*LISTA*/[["assets/css/style.css?v=dm-d03058e0e2",59071],["assets/js/main.js?v=dm-d03058e0e2",61979],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",29221],["imagem.html",15777],["promessas.html",17150],["lembrete.html",11463],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656],["assets/img/icone-192.png",17144],["site.webmanifest",1026]]/*FIM*/;
   var cg = document.querySelector('.carregador');
 
   // O resto do site espera a página aparecer para animar (senão anima escondido)
@@ -525,13 +525,88 @@
       pontos.forEach(function (p) { p.classList.toggle('ativo', p.dataset.alvo === alvo); });
     };
 
+    var mqCelular = window.matchMedia('(max-width: 900px)');
     var irPara = function (alvo) {
       var el = document.getElementById('el-' + alvo);
       var d = el && el.querySelector('details');
+      if (!el) return;
+      if (mqCelular.matches) fecharOutros(el, false);
       if (d) d.open = true;
       focar(alvo);
-      if (el) el.scrollIntoView({ behavior: podeMover ? 'smooth' : 'auto', block: 'center' });
+      // No celular a pintura não fica presa: o item sobe até o alto da tela
+      requestAnimationFrame(function () {
+        el.scrollIntoView({ behavior: podeMover ? 'smooth' : 'auto', block: mqCelular.matches ? 'start' : 'center' });
+      });
     };
+    // Um item aberto por vez no celular. Os outros fecham na hora (sem
+    // animação) e a página compensa a altura que sumiu acima, para o item
+    // tocado não fugir da tela.
+    var fecharOutros = function (el, manterNoLugar) {
+      var ancora = el.querySelector('summary');
+      var antes = ancora.getBoundingClientRect().top;
+      raiz.classList.add('sem-transicao');
+      elementos.forEach(function (outro) {
+        var od = outro.querySelector('details');
+        if (outro !== el && od && od.open) od.open = false;
+      });
+      var depois = ancora.getBoundingClientRect().top;
+      if (manterNoLugar && Math.abs(depois - antes) > 1) window.scrollBy(0, depois - antes);
+      raiz.classList.remove('sem-transicao');
+    };
+
+    // Números: o mesmo número no ponto da pintura e no item da lista
+    elementos.forEach(function (el, k) {
+      el.setAttribute('data-n', String(k + 1));
+      pontos.forEach(function (p) {
+        if (p.dataset.alvo === el.dataset.alvo) {
+          p.setAttribute('data-n', String(k + 1));
+          p.setAttribute('aria-label', (k + 1) + '. ' + (p.getAttribute('aria-label') || '').replace(/^Mostrar: /, 'Ler sobre: '));
+        }
+      });
+    });
+
+    // Celular: cada item mostra o recorte do seu detalhe da pintura
+    var foto = painel.querySelector('img');
+    var detalhes = [];
+    elementos.forEach(function (el) {
+      if (!el.dataset.x) return;
+      var corpo = el.querySelector('.el-corpo');
+      if (!corpo) return;
+      var dv = document.createElement('div');
+      dv.className = 'el-detalhe';
+      dv.setAttribute('aria-hidden', 'true');
+      corpo.insertBefore(dv, corpo.firstChild);
+      detalhes.push({ dv: dv, x: parseFloat(el.dataset.x) / 100, y: parseFloat(el.dataset.y) / 100, r: parseFloat(el.dataset.rx) / 100 });
+    });
+    var enquadrar = function () {
+      if (!mqCelular.matches) return;
+      var src = foto && (foto.currentSrc || foto.src);
+      detalhes.forEach(function (d) {
+        var w = d.dv.clientWidth, h = d.dv.clientHeight;
+        if (!w || !h) return;
+        // Quanto menor o detalhe, mais perto: a mão aproxima mais que a túnica
+        var iw = w * Math.max(1.3, Math.min(3, 0.55 / d.r));
+        var ih = iw * 1414 / 726;
+        var bx = Math.min(0, Math.max(w - iw, w / 2 - d.x * iw));
+        var by = Math.min(0, Math.max(h - ih, h / 2 - d.y * ih));
+        if (src) d.dv.style.backgroundImage = 'url("' + src + '")';
+        d.dv.style.backgroundSize = iw.toFixed(0) + 'px ' + ih.toFixed(0) + 'px';
+        d.dv.style.backgroundPosition = bx.toFixed(0) + 'px ' + by.toFixed(0) + 'px';
+      });
+    };
+    elementos.forEach(function (el) {
+      var d = el.querySelector('details');
+      if (!d) return;
+      d.addEventListener('toggle', function () {
+        if (!d.open || !mqCelular.matches) return;
+        enquadrar();
+        fecharOutros(el, true);
+        focar(el.dataset.alvo);
+      });
+    });
+    if (foto) { if (foto.complete) enquadrar(); else foto.addEventListener('load', enquadrar); }
+    window.addEventListener('resize', enquadrar);
+    if (mqCelular.addEventListener) mqCelular.addEventListener('change', enquadrar);
 
     pontos.forEach(function (p) {
       p.addEventListener('click', function () { irPara(p.dataset.alvo); });
