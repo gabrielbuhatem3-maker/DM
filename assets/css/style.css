@@ -36,11 +36,11 @@
 
 /* ---------- Tokens · modo claro (principal) ---------- */
 :root{
-  /* Dia: papel frio, como a túnica branca da pintura */
-  --papel:#F5F6F3;
-  --papel-2:#E7ECEC;          /* o raio pálido, como superfície */
-  --linha:#D2D9D9;
-  --linha-forte:#9FACAE;
+  /* Dia: papel de missal antigo, marfim levemente acinzentado */
+  --papel:#EFEBE3;
+  --papel-2:#E6E0D4;          /* seções alternadas: a página seguinte do missal */
+  --linha:#D6CEBF;
+  --linha-forte:#A39886;
   --tinta:#172024;
   --tinta-2:#3D494E;
   --tinta-3:#5B676C;
@@ -583,6 +583,12 @@ details[open]>summary .sinal::after{rotate:0deg}
 }
 
 .fecho{background:var(--papel-2);padding:clamp(88px,11vw,168px) 0}
+/* Seções alternadas: o fundo muda de tom como as páginas de um missal */
+.sec.tom{background:var(--papel-2)}
+.sec.tom,.sec:not(.rezar)+.sec.tom,.sec.tom+.sec:not(.rezar){padding-top:clamp(88px,11vw,168px)}
+.promessas-sec{background:var(--papel-2);padding-block:clamp(24px,3vw,40px) clamp(56px,7vw,104px)}
+.promessas-sec .promessa:first-child{border-top:0}
+.promessas-sec+.fecho{background:var(--papel)}
 .fecho-in{max-width:44em;margin:0 auto;text-align:center}
 .fecho .rubrica{font-size:var(--t-s)}
 .fecho blockquote{margin:22px 0 0;font-size:clamp(30px,2.8vw + 14px,56px);line-height:1.2;letter-spacing:-.016em;text-wrap:balance}
