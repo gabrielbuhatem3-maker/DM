@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="claro">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Promessas · Divina Misericórdia</title>
 <meta name="description" content="As promessas de Jesus a Santa Faustina, registradas no Diário, para quem confia na Sua Misericórdia.">
 <link rel="canonical" href="https://gabrielbuhatem3-maker.github.io/DM/promessas.html">
@@ -19,19 +19,36 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F5F6F3">
 <link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/icone-180.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=dm-d5caa75dd4">
 <script>
-  // Antes da primeira pintura: aplica o tema salvo.
+  // Antes da primeira pintura, para a página já nascer do jeito certo.
   (function (h) {
     h.classList.add('js');
-    try { if (localStorage.getItem('tema') === 'escuro') h.classList.replace('claro', 'escuro'); } catch (e) {}
-    // Primeira visita: baixa e guarda o site inteiro (tela com progresso real).
-    // Depois: a tela só aparece se algo demorar mais de 0,4 s.
-    h.classList.add('carregando'); setTimeout(function () { h.classList.remove('carregando'); }, 26000);
-    try { var c = navigator.connection; if (localStorage.getItem('site-guardado') !== 'dm-347979b59c' && !(c && c.saveData)) h.classList.add('baixando-site'); } catch (e) {}
+    // Tema: o que a pessoa escolheu no botão; se nunca escolheu, o do aparelho.
+    var t = null;
+    try { t = localStorage.getItem('tema'); } catch (e) {}
+    var escuro = t ? t === 'escuro' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (escuro) {
+      h.classList.replace('claro', 'escuro');
+      var cor = document.querySelector('meta[name="theme-color"]');
+      if (cor && cor.content !== '#070808') cor.content = '#0E1315';
+    }
+    // A abertura do Início anima por inteiro só na primeira vez da visita.
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('ja-abriu'); } catch (e) {}
+    // Primeira visita: guarda o site no aparelho, com o progresso na tela (uma vez só).
+    // Depois: a tela de carregamento só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando');
+    try {
+      var c = navigator.connection;
+      if (!localStorage.getItem('site-guardado') && !sessionStorage.getItem('preparo') && !(c && c.saveData)) h.classList.add('baixando-site');
+    } catch (e) {}
+    // Se o script principal não chegar, nada fica preso atrás da tela.
+    setTimeout(function () { h.classList.remove('carregando', 'baixando-site'); }, h.classList.contains('baixando-site') ? 26000 : 8000);
   })(document.documentElement);
 </script>
 </head>
@@ -73,6 +90,7 @@
             <button type="button" class="menu-fecha">Fechar</button>
           </div>
           <nav class="wrap menu-links" aria-label="Menu"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html" aria-current="page">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+          <p class="wrap menu-prece" aria-hidden="true">Jesus, eu confio em Vós.</p>
         </div>
       </details>
     </div>
@@ -222,6 +240,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=dm-d5caa75dd4" defer></script>
 </body>
 </html>

@@ -9,12 +9,37 @@
      fontes e fotos) e guarda no aparelho, mostrando o progresso real.
      Depois disso a navegação é instantânea e funciona até sem internet.
      Visitas seguintes: tudo já está no aparelho; a tela só aparece se
-     algo demorar mais de 0,4 s. */
-  var VERSAO = /*VERSAO*/'dm-347979b59c'/*FIM*/;
-  var LISTA = /*LISTA*/[["assets/css/style.css",49887],["assets/js/main.js",49262],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",27978],["imagem.html",14633],["promessas.html",16137],["lembrete.html",10437],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656]]/*FIM*/;
+     algo demorar mais de 0,4 s.
+     VERSAO e LISTA são atualizadas por tools/versao.py. */
+  var VERSAO = /*VERSAO*/'dm-d5caa75dd4'/*FIM*/;
+  var LISTA = /*LISTA*/[["assets/css/style.css?v=dm-d5caa75dd4",57923],["assets/js/main.js?v=dm-d5caa75dd4",58524],["assets/fonts/brygada-1918-latin.woff2",22716],["assets/fonts/brygada-1918-italic-latin.woff2",23856],["assets/fonts/brygada-1918-polones.woff2",3492],["assets/fonts/brygada-1918-italic-polones.woff2",3816],["assets/img/jesus-misericordioso.webp",30938],["index.html",29221],["imagem.html",15673],["promessas.html",17150],["lembrete.html",11463],["assets/img/santa-faustina.webp",15842],["assets/img/terco-devocionario.avif",69065],["assets/img/marca.svg",656],["assets/img/icone-192.png",17144],["site.webmanifest",1026]]/*FIM*/;
   var cg = document.querySelector('.carregador');
 
+  // O resto do site espera a página aparecer para animar (senão anima escondido)
+  var avisarPronto;
+  var pronto = new Promise(function (r) { avisarPronto = r; });
+  var liberar = function () {
+    raiz.classList.remove('carregando', 'baixando-site');
+    avisarPronto();
+  };
+
+  // Site guardado no aparelho (service worker). Só em https (ou no computador
+  // de quem desenvolve), e sem disputar a conexão com o que está na tela.
+  var registrarSW = function () {
+    if (!('serviceWorker' in navigator)) return;
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  };
+
+  // Página aberta de antemão pelo navegador (ao passar o mouse num link):
+  // a tela de download não faz sentido ali.
+  if (document.prerendering) raiz.classList.remove('baixando-site');
+
   if (cg && raiz.classList.contains('baixando-site')) {
+    try { sessionStorage.setItem('preparo', '1'); } catch (e) {}
+    // A tela agora é de verdade: o botão "Entrar agora" precisa ser alcançável
+    cg.removeAttribute('aria-hidden');
+    cg.setAttribute('role', 'status');
     var raiosB = cg.querySelectorAll('.cg-raio');
     var pct = cg.querySelector('.cg-pct');
     var entrar = cg.querySelector('.cg-entrar');
@@ -30,7 +55,7 @@
       if (fechou) return;
       fechou = true;
       cg.classList.add('sai');
-      raiz.classList.remove('carregando', 'baixando-site');
+      liberar();
       setTimeout(function () { cg.remove(); }, 800);
     };
     var total = LISTA.reduce(function (s, x) { return s + x[1]; }, 0) || 1;
@@ -40,7 +65,7 @@
     // Baixa um arquivo contando os bytes que chegam e guarda no aparelho
     var baixar = function (cache, item) {
       var url = item[0], tamanho = item[1], contado = 0;
-      return fetch(url).then(function (r) {
+      return fetch(url, { cache: 'no-cache' }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
         if (!r.body || !r.body.getReader) {
           return r.clone().arrayBuffer().then(function () { somar(tamanho); contado = tamanho; return r; });
@@ -75,74 +100,77 @@
       for (var n = 0; n < 4; n++) ativos.push(proximo());
       return Promise.all(ativos);
     }).then(function () {
-      var fontes = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-      return fontes;
+      return document.fonts && document.fonts.ready ? document.fonts.ready : null;
     }).then(function () {
       try { localStorage.setItem('site-guardado', VERSAO); } catch (e) {}
       desenhar(1);
-      setTimeout(fechar, 350);
+      // Em conexão rápida a tela não pisca: fica o tempo de o logo se desenhar
+      var desde = window.performance && performance.now ? performance.now() : 0;
+      setTimeout(fechar, Math.max(350, 1900 - desde));
+      // Com tudo já guardado, o service worker não baixa nada de novo
+      registrarSW();
     });
 
     // Quem não quiser esperar entra antes; o download continua por trás
     setTimeout(function () { if (entrar && !fechou) entrar.hidden = false; }, 2500);
     if (entrar) entrar.addEventListener('click', fechar);
     setTimeout(fechar, 25000);
-  } else if (cg && raiz.classList.contains('carregando')) {
-    var cgRaios = cg.querySelectorAll('.cg-raio');
-    var progresso = function (v) {
-      Array.prototype.forEach.call(cgRaios, function (p, k) {
-        var atraso = Math.abs(k - 2.5) * 0.04;
-        p.style.strokeDashoffset = String(Math.max(0, 1 - Math.min(1, v - atraso + 0.1)));
-      });
-    };
-    var saiu = false, inicio = Date.now();
-    var sair = function (ja) {
-      if (saiu) return;
-      saiu = true;
-      var visivel = parseFloat(getComputedStyle(cg).opacity) > 0.05;
-      if (visivel) progresso(1.2);
-      var tirar = function () {
-        cg.classList.add('sai');
-        raiz.classList.remove('carregando');
-        setTimeout(function () { cg.remove(); }, 800);
+  } else {
+    window.addEventListener('load', registrarSW);
+    if (cg && raiz.classList.contains('carregando')) {
+      var cgRaios = cg.querySelectorAll('.cg-raio');
+      var progresso = function (v) {
+        Array.prototype.forEach.call(cgRaios, function (p, k) {
+          var atraso = Math.abs(k - 2.5) * 0.04;
+          p.style.strokeDashoffset = String(Math.max(0, 1 - Math.min(1, v - atraso + 0.1)));
+        });
       };
-      // Se a tela chegou a aparecer, os raios completam antes de sair (0,3 s)
-      if (ja || !visivel) tirar(); else setTimeout(tirar, 300);
-    };
-    requestAnimationFrame(function () { progresso(0.15); });
+      var saiu = false;
+      var sair = function (ja) {
+        if (saiu) return;
+        saiu = true;
+        var visivel = parseFloat(getComputedStyle(cg).opacity) > 0.05;
+        if (visivel) progresso(1.2);
+        var tirar = function () {
+          cg.classList.add('sai');
+          liberar();
+          setTimeout(function () { cg.remove(); }, 800);
+        };
+        // Se a tela chegou a aparecer, os raios completam antes de sair (0,3 s)
+        if (ja || !visivel) tirar(); else setTimeout(tirar, 300);
+      };
+      requestAnimationFrame(function () { progresso(0.15); });
 
-    var tarefas = [];
-    if (document.fonts && document.fonts.load) {
-      tarefas.push(document.fonts.load('400 1em "Brygada 1918"'));
-      tarefas.push(document.fonts.load('italic 400 1em "Brygada 1918"'));
-    }
-    // Imagens que aparecem na primeira tela
-    Array.prototype.forEach.call(document.querySelectorAll('main img'), function (img) {
-      var r = img.getBoundingClientRect();
-      if (r.top < window.innerHeight && r.bottom > 0 && img.decode) tarefas.push(img.decode());
-    });
-    var feitas = 0;
-    tarefas.forEach(function (tf) {
-      tf.then(null, function () {}).then(function () {
-        feitas += 1;
-        progresso(0.15 + 0.75 * feitas / tarefas.length);
+      var tarefas = [];
+      if (document.fonts && document.fonts.load) {
+        tarefas.push(document.fonts.load('400 1em "Brygada 1918"'));
+        tarefas.push(document.fonts.load('italic 400 1em "Brygada 1918"'));
+      }
+      // Imagens que aparecem na primeira tela
+      Array.prototype.forEach.call(document.querySelectorAll('main img'), function (img) {
+        var r = img.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0 && img.decode) tarefas.push(img.decode());
       });
-    });
-    Promise.all(tarefas.map(function (tf) { return tf.then(null, function () {}); })).then(function () { sair(false); });
-    setTimeout(function () { sair(true); }, 6000);
-    cg.addEventListener('click', function () { sair(true); });
-    document.addEventListener('keydown', function () { sair(true); }, { once: true });
-  } else if (cg) {
-    cg.remove();
+      var feitas = 0;
+      tarefas.forEach(function (tf) {
+        tf.then(null, function () {}).then(function () {
+          feitas += 1;
+          progresso(0.15 + 0.75 * feitas / tarefas.length);
+        });
+      });
+      Promise.all(tarefas.map(function (tf) { return tf.then(null, function () {}); })).then(function () { sair(false); });
+      setTimeout(function () { sair(true); }, 6000);
+      cg.addEventListener('click', function () { sair(true); });
+      document.addEventListener('keydown', function () { sair(true); }, { once: true });
+    } else {
+      if (cg) cg.remove();
+      liberar();
+    }
   }
 
-  /* ---------- Site guardado no aparelho (service worker) ----------
-     Registrado depois que a página termina de carregar, para não
-     disputar a conexão com o que está na tela. */
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function () {});
-    });
+  // Voltando ao Início nesta visita, a abertura não faz esperar de novo
+  if (document.querySelector('.altar')) {
+    pronto.then(function () { try { sessionStorage.setItem('abertura', '1'); } catch (e) {} });
   }
 
   /* ---------- Tópicos: no celular os textos abrem ao toque ---------- */
@@ -248,30 +276,58 @@
   aplicarRecolher();
   if (mqRecolher.addEventListener) mqRecolher.addEventListener('change', aplicarRecolher);
 
-  /* ---------- Modo claro / escuro ---------- */
+  /* ---------- Modo claro / escuro ----------
+     Quem nunca tocou no botão segue o modo do aparelho, inclusive quando
+     ele muda sozinho à noite. Depois de escolher, vale a escolha. */
   var tg = document.getElementById('tema-tg');
   var tgLabel = tg && tg.querySelector('.sr');
   var themeMeta = document.querySelector('meta[name="theme-color"]');
-  var corClaro = themeMeta ? themeMeta.getAttribute('content') : '#F5F6F3';
+  var topo = document.querySelector('.topo');
+  var mqEscuro = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var temaEscolhido = function () { try { return localStorage.getItem('tema'); } catch (e) { return null; } };
+
+  // A barra do navegador no celular acompanha o que está no alto da tela
+  function corDoNavegador() {
+    if (!themeMeta) return;
+    var sobreNoite = topo && topo.classList.contains('topo-noite') && !topo.classList.contains('fixo');
+    themeMeta.setAttribute('content', sobreNoite ? '#070808' : (raiz.classList.contains('escuro') ? '#0E1315' : '#F5F6F3'));
+  }
 
   function aplicarTema(escuro) {
     raiz.classList.toggle('escuro', escuro);
     raiz.classList.toggle('claro', !escuro);
+    corDoNavegador();
     if (!tg) return;
     tg.setAttribute('aria-pressed', String(escuro));
     // O botão diz para qual modo leva.
     var nome = escuro ? 'Modo claro' : 'Modo escuro';
     tg.title = nome;
     if (tgLabel) tgLabel.textContent = nome;
-    if (themeMeta && corClaro !== '#080A0A') themeMeta.setAttribute('content', escuro ? '#0E1315' : corClaro);
+  }
+  // A troca de modo é um esmaecer curto da página inteira, onde o navegador permite
+  function trocarTema(escuro) {
+    if (podeMover && document.startViewTransition && !document.hidden) {
+      try {
+        raiz.classList.add('vt-tema');
+        var fim = function () { raiz.classList.remove('vt-tema'); };
+        document.startViewTransition(function () { aplicarTema(escuro); }).finished.then(fim, fim);
+        return;
+      } catch (e) { raiz.classList.remove('vt-tema'); }
+    }
+    aplicarTema(escuro);
   }
   aplicarTema(raiz.classList.contains('escuro'));
   if (tg) {
     tg.addEventListener('click', function () {
       var escuro = !raiz.classList.contains('escuro');
-      aplicarTema(escuro);
+      trocarTema(escuro);
       try { localStorage.setItem('tema', escuro ? 'escuro' : 'claro'); } catch (e) {}
     });
+  }
+  if (mqEscuro) {
+    var seguirAparelho = function (e) { if (!temaEscolhido()) trocarTema(e.matches); };
+    if (mqEscuro.addEventListener) mqEscuro.addEventListener('change', seguirAparelho);
+    else if (mqEscuro.addListener) mqEscuro.addListener(seguirAparelho);
   }
 
   /* ---------- Menu do celular, em tela cheia ---------- */
@@ -291,8 +347,63 @@
       if (e.target.closest('.menu-links a')) menu.removeAttribute('open');
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && menu.open) fechaMenu();
+      if (!menu.open) return;
+      if (e.key === 'Escape') { fechaMenu(); return; }
+      // Com o menu aberto, o Tab circula só dentro dele
+      if (e.key === 'Tab') {
+        var focaveis = menu.querySelectorAll('.menu-painel a, .menu-painel button');
+        var prim = focaveis[0], ult = focaveis[focaveis.length - 1];
+        if (e.shiftKey && document.activeElement === prim) { e.preventDefault(); ult.focus(); }
+        else if (!e.shiftKey && document.activeElement === ult) { e.preventDefault(); prim.focus(); }
+      }
     });
+    // Ao girar o celular para uma tela larga, o menu some: a página não pode ficar travada
+    var mqMenu = window.matchMedia('(max-width: 900px)');
+    var fecharSeLargo = function () { if (!mqMenu.matches && menu.open) menu.removeAttribute('open'); };
+    if (mqMenu.addEventListener) mqMenu.addEventListener('change', fecharSeLargo);
+    // Voltando a esta página pelo botão "voltar", o menu não reaparece aberto
+    window.addEventListener('pageshow', function () { if (menu.open) menu.removeAttribute('open'); });
+  }
+
+  /* ---------- Cabeçalho que some ao descer e volta ao subir ----------
+     Descendo, a leitura ganha a tela inteira; um pequeno gesto para cima
+     traz as páginas de volta. No Início, sobre a noite da pintura, ele
+     fica sem fundo; depois dela ganha o papel. */
+  if (topo) {
+    var altar = document.querySelector('.altar');
+    var limiteFixo = 0, ultimoY = Math.max(0, window.scrollY || 0), pedido = false;
+    var medir = function () {
+      limiteFixo = altar ? Math.max(0, altar.offsetHeight - topo.offsetHeight) : 2;
+    };
+    var mostrarTopo = function (sim) {
+      topo.classList.toggle('some', !sim);
+      raiz.classList.toggle('topo-visivel', sim && topo.classList.contains('fixo'));
+    };
+    var estadoTopo = function () {
+      pedido = false;
+      var y = Math.max(0, window.scrollY || window.pageYOffset || 0);
+      var dif = y - ultimoY;
+      var alto = topo.offsetHeight;  // lido antes de mudar classes: sem recálculo forçado
+      topo.classList.toggle('fixo', y > limiteFixo);
+      if (y <= alto) { mostrarTopo(true); ultimoY = y; }
+      else if (Math.abs(dif) > 6) {
+        // Descendo some (a não ser com o menu aberto ou o foco nele); subindo volta
+        if (dif > 0) mostrarTopo(raiz.classList.contains('menu-aberto') || topo.contains(document.activeElement));
+        else mostrarTopo(true);
+        ultimoY = y;
+      } else {
+        raiz.classList.toggle('topo-visivel', !topo.classList.contains('some') && topo.classList.contains('fixo'));
+      }
+      corDoNavegador();
+    };
+    var pedirEstado = function () { if (!pedido) { pedido = true; requestAnimationFrame(estadoTopo); } };
+    medir();
+    estadoTopo();
+    window.addEventListener('scroll', pedirEstado, { passive: true });
+    window.addEventListener('resize', function () { medir(); pedirEstado(); });
+    window.addEventListener('load', function () { medir(); pedirEstado(); });
+    // Quem navega pelo teclado sempre vê onde está o foco
+    topo.addEventListener('focusin', function () { mostrarTopo(true); });
   }
 
   /* ---------- Conteúdo que surge ao descer a página ---------- */
@@ -342,13 +453,20 @@
       rootMargin: celular ? '0px 0px 20% 0px' : '0px 0px -8% 0px',
       threshold: 0
     });
-    Array.prototype.forEach.call(alvos, function (el) { revelar.observe(el); });
+    // Só começa quando a página aparece: antes disso, surgiria escondido
+    pronto.then(function () {
+      Array.prototype.forEach.call(alvos, function (el) { revelar.observe(el); });
+    });
 
     // Ao imprimir, tudo aparece.
     window.addEventListener('beforeprint', function () {
       Array.prototype.forEach.call(alvos, function (el) { el.classList.add('in'); });
     });
   }
+  // Ao imprimir, os textos recolhidos do celular saem abertos
+  window.addEventListener('beforeprint', function () {
+    Array.prototype.forEach.call(document.querySelectorAll('details'), function (d) { d.open = true; });
+  });
 
   /* ---------- Hora da Misericórdia, no horário de quem lê ---------- */
   var hora = document.getElementById('hora');
@@ -418,7 +536,11 @@
     pontos.forEach(function (p) {
       p.addEventListener('click', function () { irPara(p.dataset.alvo); });
     });
-    painel.querySelector('.painel-inscricao').addEventListener('click', function () { irPara('inscricao'); });
+    var inscr = painel.querySelector('.painel-inscricao');
+    inscr.addEventListener('click', function () { irPara('inscricao'); });
+    inscr.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); irPara('inscricao'); }
+    });
 
     elementos.forEach(function (el) {
       el.addEventListener('mouseenter', function () { focar(el.dataset.alvo); });
@@ -440,30 +562,41 @@
     }
   }
 
-  /* ---------- Promessas: copiar para enviar a alguém ---------- */
+  /* ---------- Promessas: enviar a alguém ----------
+     No celular abre o "Compartilhar" do aparelho (WhatsApp, mensagens…);
+     no computador copia a frase com a referência do Diário. */
+  var compartilhar = !!navigator.share && window.matchMedia('(pointer: coarse)').matches;
   Array.prototype.forEach.call(document.querySelectorAll('.pr-copiar'), function (bt) {
     var item = bt.closest('.promessa');
     var cit = item.querySelector('.pr-cit');
     var ref = item.querySelector('.pr-ref span:last-child').textContent;
+    if (compartilhar) bt.textContent = 'Enviar a promessa';
     var rotulo = bt.textContent;
     var espera;
-    bt.addEventListener('click', function () {
-      var texto = cit.textContent.trim() + ' (Diário, ' + ref + ')';
-      var pronto = function () {
-        bt.textContent = 'Promessa copiada';
-        bt.classList.add('feito');
-        clearTimeout(espera);
-        espera = setTimeout(function () { bt.textContent = rotulo; bt.classList.remove('feito'); }, 2400);
-      };
-      var selecionar = function () {
-        // Sem acesso à área de transferência: deixa o texto selecionado para copiar à mão.
-        var r = document.createRange(); r.selectNodeContents(cit);
-        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
-        bt.textContent = 'Texto selecionado para copiar';
-      };
+    var avisar = function (txt, feito) {
+      bt.textContent = txt;
+      bt.classList.toggle('feito', !!feito);
+      clearTimeout(espera);
+      espera = setTimeout(function () { bt.textContent = rotulo; bt.classList.remove('feito'); }, 2400);
+    };
+    var selecionar = function () {
+      // Sem acesso à área de transferência: deixa o texto selecionado para copiar à mão.
+      var r = document.createRange(); r.selectNodeContents(cit);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      avisar('Texto selecionado para copiar');
+    };
+    var copiar = function (texto) {
       try {
-        navigator.clipboard.writeText(texto).then(pronto, selecionar);
+        navigator.clipboard.writeText(texto).then(function () { avisar('Promessa copiada', true); }, selecionar);
       } catch (e) { selecionar(); }
+    };
+    bt.addEventListener('click', function () {
+      var texto = cit.textContent.trim() + ' (Diário, ' + ref.replace(/\s+/g, ' ') + ')';
+      if (compartilhar) {
+        navigator.share({ text: texto, url: location.href.split('#')[0] }).catch(function (e) {
+          if (!e || e.name !== 'AbortError') copiar(texto);
+        });
+      } else copiar(texto);
     });
   });
 
@@ -550,7 +683,7 @@
       var d = new Date(), dia = d.getFullYear() + dois(d.getMonth() + 1) + dois(d.getDate());
       lbGoogle.href = 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
         '&text=' + encodeURIComponent('Hora da Misericórdia') +
-        '&details=' + encodeURIComponent('“Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.” (Diário, § 1320)\nRezar o Terço: ' + location.href.replace(/lembrete\.html.*$/, 'index.html#rezar')) +
+        '&details=' + encodeURIComponent('“Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.” (Diário, § 1320)\nRezar o Terço: ' + new URL('index.html#rezar', location.href).href) +
         '&dates=' + dia + 'T150000/' + dia + 'T151500' +
         '&ctz=' + encodeURIComponent(fuso) +
         '&recur=' + encodeURIComponent('RRULE:FREQ=DAILY');
@@ -630,6 +763,17 @@
       agendarAviso();
     });
 
+    // Linhas de .ics têm no máximo 75 bytes; as maiores continuam na linha de baixo
+    var dobrar = function (linha) {
+      var saida = '', atual = '', bytes = 0;
+      Array.from(linha).forEach(function (ch) {
+        var n = encodeURIComponent(ch).replace(/%[0-9A-F]{2}/g, 'x').length;
+        if (bytes + n > 74) { saida += atual + '\r\n '; atual = ''; bytes = 1; }
+        atual += ch; bytes += n;
+      });
+      return saida + atual;
+    };
+
     // Arquivo de calendário (.ics) que se repete todo dia às 15h
     document.getElementById('lb-ics').addEventListener('click', function () {
       var fuso = lbFuso.value, antes = +lbAntes.value;
@@ -647,7 +791,7 @@
         'DESCRIPTION:“Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.” (Diário\\, § 1320)',
         'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Hora da Misericórdia', 'TRIGGER:-PT' + antes + 'M', 'END:VALARM',
         'END:VEVENT', 'END:VCALENDAR'
-      ].join('\r\n');
+      ].map(dobrar).join('\r\n') + '\r\n';
       var url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
       var a = document.createElement('a');
       a.href = url; a.download = 'hora-da-misericordia.ics';
@@ -655,7 +799,18 @@
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     });
 
-    // Aviso do navegador: funciona enquanto o site estiver aberto
+    // Aviso do navegador: funciona enquanto o site estiver aberto.
+    // No Android o aviso só sai pelo service worker; nos outros, direto.
+    var avisar = function (titulo, corpo) {
+      var opcoes = { body: corpo, icon: 'assets/img/icone-192.png', badge: 'assets/img/icone-192.png', tag: 'hora-da-misericordia', lang: 'pt-BR' };
+      var direto = function () { try { new Notification(titulo, opcoes); } catch (e) {} };
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistration) {
+        navigator.serviceWorker.getRegistration().then(function (reg) {
+          if (reg && reg.showNotification) reg.showNotification(titulo, opcoes).catch(direto);
+          else direto();
+        }, direto);
+      } else direto();
+    };
     var lbNotif = document.getElementById('lb-notif');
     var lbEstado = document.getElementById('lb-notif-estado');
     var espera = null;
@@ -669,12 +824,7 @@
       if (falta === 0) falta = 24 * 60;
       var ms = falta * 60000 - agora.getSeconds() * 1000 - agora.getMilliseconds();
       espera = setTimeout(function () {
-        try {
-          new Notification('Hora da Misericórdia', {
-            body: antes ? 'Faltam ' + antes + ' minutos para as 15h.' : 'São 15h. “Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.”',
-            icon: 'assets/img/marca.svg', tag: 'hora-da-misericordia'
-          });
-        } catch (e) {}
+        avisar('Hora da Misericórdia', antes ? 'Faltam ' + antes + ' minutos para as 15h.' : 'São 15h. “Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.”');
         agendarAviso();
       }, ms);
       var alvo = 15 * 60 - antes;
@@ -696,7 +846,11 @@
       try { pedido = Notification.requestPermission(); } catch (e) { pedido = null; }
       Promise.resolve(pedido).then(function (r) {
         r = r || Notification.permission;
-        if (r === 'granted') agendarAviso();
+        if (r === 'granted') {
+          agendarAviso();
+          // Um primeiro aviso na hora, para a pessoa ver como ele chega
+          avisar('Aviso ativado', 'Às 15h você recebe aqui o lembrete da Hora da Misericórdia.');
+        }
         else lbEstado.textContent = 'O navegador não permitiu os avisos. Use o lembrete no calendário.';
       }, function () {
         lbEstado.textContent = 'O navegador não permitiu os avisos. Use o lembrete no calendário.';
@@ -870,11 +1024,12 @@
       passos.push({ f: 'Dezena ' + d + ' de 5', c: 'Conta pequena, ' + c + ' de 10', t: T.paixao, b: ['d' + d + '-' + c] });
     }
   }
+  // O encerramento se reza na medalha, depois das cinco dezenas
   passos.push(
-    { f: 'Encerramento', c: 'Deus Santo, 1 de 3', t: T.santo, b: [] },
-    { f: 'Encerramento', c: 'Deus Santo, 2 de 3', t: T.santo, b: [] },
-    { f: 'Encerramento', c: 'Deus Santo, 3 de 3', t: T.santo, b: [] },
-    { f: 'Encerramento', c: 'Oração final', t: T.final, b: [] },
+    { f: 'Encerramento', c: 'Deus Santo, 1 de 3', t: T.santo, b: ['medalha'] },
+    { f: 'Encerramento', c: 'Deus Santo, 2 de 3', t: T.santo, b: ['medalha'] },
+    { f: 'Encerramento', c: 'Deus Santo, 3 de 3', t: T.santo, b: ['medalha'] },
+    { f: 'Encerramento', c: 'Oração final', t: T.final, b: ['medalha'] },
     { f: 'Terço concluído', c: '', t: 'Jesus, eu confio em Vós.', b: [], ultimo: true }
   );
 
@@ -889,7 +1044,12 @@
   var oracao = document.getElementById('rz-oracao');
   var prox = document.getElementById('rz-prox');
   var volta = document.getElementById('rz-volta');
+  var recomeca = document.getElementById('rz-recomeca');
+  var barra = rezador.querySelector('.rz-barra span');
+  // Onde a pessoa parou nesta visita (recarregar a página não perde a conta)
   var i = 0;
+  try { i = Math.max(0, Math.min(passos.length - 1, parseInt(sessionStorage.getItem('terco'), 10) || 0)); } catch (e) {}
+  if (passos[i].ultimo) i = 0;
 
   function mostrar(animar) {
     var p = passos[i];
@@ -906,14 +1066,21 @@
 
     var primeira = p.b.length ? Math.min.apply(null, p.b.map(function (id) { return indice[id]; })) : ordem.length;
 
-    // Terço concluído: as contas se acendem uma a uma, do crucifixo à medalha
+    // Terço concluído: as contas se apagam e se acendem uma a uma, do crucifixo à medalha
+    var onda = p.ultimo && animar && podeMover;
+    if (onda) {
+      svg.classList.add('sem-luz');
+      ordem.forEach(function (id) { contas[id].classList.remove('feita', 'agora'); });
+      void svg.getBoundingClientRect();
+      svg.classList.remove('sem-luz');
+    }
     ordem.forEach(function (id, k) {
-      contas[id].style.transitionDelay = p.ultimo && animar ? (k * 16) + 'ms' : '';
+      contas[id].style.transitionDelay = onda ? (k * 18) + 'ms' : '';
     });
 
     ordem.forEach(function (id) {
       var n = contas[id];
-      var agora = p.b.indexOf(id) !== -1;
+      var agora = p.ultimo || p.b.indexOf(id) !== -1;
       n.classList.toggle('agora', agora);
       n.classList.toggle('feita', !agora && indice[id] < primeira);
     });
@@ -930,6 +1097,9 @@
     svg.setAttribute('aria-label', 'Terço. ' + p.f + (p.c ? ', ' + p.c : '') + '.');
     volta.disabled = i === 0;
     prox.textContent = p.ultimo ? 'Rezar de novo' : 'Próxima conta';
+    if (barra) barra.style.setProperty('--feito', String(i / (passos.length - 1)));
+    if (recomeca) recomeca.hidden = i < 2 || !!p.ultimo;
+    try { sessionStorage.setItem('terco', String(i)); } catch (e) {}
   }
 
   // Mantém a tela do celular acesa enquanto se reza
@@ -955,6 +1125,12 @@
     mostrar(true);
   }
   function voltar() { if (i > 0) { i -= 1; mostrar(true); } }
+  function irParaPasso(k) {
+    i = k;
+    manterTela(k > 0 && !passos[k].ultimo);
+    mostrar(true);
+  }
+  if (recomeca) recomeca.addEventListener('click', function () { irParaPasso(0); prox.focus(); });
 
   prox.addEventListener('click', avancar);
   volta.addEventListener('click', voltar);
@@ -965,7 +1141,7 @@
   svg.addEventListener('click', function (e) {
     var g = e.target.closest && e.target.closest('[data-conta]');
     var id = g && g.getAttribute('data-conta');
-    if (id && id in passoDaConta) { i = passoDaConta[id]; mostrar(true); }
+    if (id && id in passoDaConta) irParaPasso(passoDaConta[id]);
   });
 
   mostrar(false);

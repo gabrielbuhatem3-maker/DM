@@ -1,20 +1,59 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="pt-BR" class="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Divina Misericórdia</title>
+<meta name="description" content="A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.">
+<link rel="canonical" href="https://gabrielbuhatem3-maker.github.io/DM/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Divina Misericórdia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Divina Misericórdia">
+<meta property="og:description" content="A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.">
+<meta property="og:url" content="https://gabrielbuhatem3-maker.github.io/DM/">
+<meta property="og:image" content="https://gabrielbuhatem3-maker.github.io/DM/assets/img/compartilhar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="“Jesus, eu confio em Vós.” ao lado da pintura de Jesus Misericordioso.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#070808">
+<link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/icone-180.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preload" href="assets/img/jesus-misericordioso.webp" as="image" type="image/webp" fetchpriority="high">
 <link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+<link rel="stylesheet" href="assets/css/style.css?v=dm-d5caa75dd4">
 <script>
-  // Antes da primeira pintura: aplica o tema salvo.
+  // Antes da primeira pintura, para a página já nascer do jeito certo.
   (function (h) {
-    h.classList.add('js', 'claro');
-    try { if (localStorage.getItem('tema') === 'escuro') h.classList.replace('claro', 'escuro'); } catch (e) {}
-    // Primeira visita: baixa e guarda o site inteiro (tela com progresso real).
-    // Depois: a tela só aparece se algo demorar mais de 0,4 s.
-    h.classList.add('carregando'); setTimeout(function () { h.classList.remove('carregando'); }, 26000);
-    try { var c = navigator.connection; if (localStorage.getItem('site-guardado') !== 'dm-347979b59c' && !(c && c.saveData)) h.classList.add('baixando-site'); } catch (e) {}
+    h.classList.add('js');
+    // Tema: o que a pessoa escolheu no botão; se nunca escolheu, o do aparelho.
+    var t = null;
+    try { t = localStorage.getItem('tema'); } catch (e) {}
+    var escuro = t ? t === 'escuro' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (escuro) {
+      h.classList.replace('claro', 'escuro');
+      var cor = document.querySelector('meta[name="theme-color"]');
+      if (cor && cor.content !== '#070808') cor.content = '#0E1315';
+    }
+    // A abertura do Início anima por inteiro só na primeira vez da visita.
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('ja-abriu'); } catch (e) {}
+    // Primeira visita: guarda o site no aparelho, com o progresso na tela (uma vez só).
+    // Depois: a tela de carregamento só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando');
+    try {
+      var c = navigator.connection;
+      if (!localStorage.getItem('site-guardado') && !sessionStorage.getItem('preparo') && !(c && c.saveData)) h.classList.add('baixando-site');
+    } catch (e) {}
+    // Se o script principal não chegar, nada fica preso atrás da tela.
+    setTimeout(function () { h.classList.remove('carregando', 'baixando-site'); }, h.classList.contains('baixando-site') ? 26000 : 8000);
   })(document.documentElement);
 </script>
+</head>
+<body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 <div class="progresso" aria-hidden="true"></div>
 <div class="carregador" aria-hidden="true">
@@ -52,6 +91,7 @@
             <button type="button" class="menu-fecha">Fechar</button>
           </div>
           <nav class="wrap menu-links" aria-label="Menu"><a href="index.html" aria-current="page">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+          <p class="wrap menu-prece" aria-hidden="true">Jesus, eu confio em Vós.</p>
         </div>
       </details>
     </div>
@@ -250,7 +290,7 @@
       </figure>
     </div>
 
-    <div class="passos" aria-labelledby="h-passos">
+    <section class="passos" aria-labelledby="h-passos">
       <h3 id="h-passos" class="h2">Passo a passo</h3>
 
       <section class="etapa" aria-labelledby="h-e1">
@@ -318,7 +358,7 @@
           </div>
         </div>
       </section>
-    </div>
+    </section>
   </div>
 </section>
 
@@ -340,6 +380,10 @@
         <div class="rz-acoes">
           <button type="button" class="btn btn-noite" id="rz-prox">Próxima conta</button>
           <button type="button" class="lnk" id="rz-volta">Voltar uma conta</button>
+        </div>
+        <div class="rz-progresso">
+          <div class="rz-barra" aria-hidden="true"><span></span></div>
+          <button type="button" class="lnk rz-recomeca" id="rz-recomeca" hidden>Recomeçar</button>
         </div>
         <p class="rz-dica">Também dá para usar as setas do teclado.</p>
       </div>
@@ -375,6 +419,7 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=dm-d5caa75dd4" defer></script>
 
-</body></html>
+</body>
+</html>

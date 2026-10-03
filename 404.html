@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR" class="claro">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<script>
+  // Esta página aparece em qualquer endereço que não existe (ex.: /DM/a/b/c).
+  // Os arquivos do site são buscados a partir da raiz dele: /DM/ no GitHub Pages.
+  (function () {
+    var m = location.pathname.match(/^\/[^\/]+\//);
+    var b = document.createElement('base');
+    b.href = /github\.io$/.test(location.hostname) && m ? m[0] : '/';
+    document.head.appendChild(b);
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Página não encontrada · Divina Misericórdia</title>
+<meta name="theme-color" content="#F5F6F3">
+<link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/icone-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css?v=dm-d5caa75dd4">
+<script>
+  // Antes da primeira pintura, para a página já nascer do jeito certo.
+  (function (h) {
+    h.classList.add('js');
+    // Tema: o que a pessoa escolheu no botão; se nunca escolheu, o do aparelho.
+    var t = null;
+    try { t = localStorage.getItem('tema'); } catch (e) {}
+    var escuro = t ? t === 'escuro' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (escuro) {
+      h.classList.replace('claro', 'escuro');
+      var cor = document.querySelector('meta[name="theme-color"]');
+      if (cor && cor.content !== '#070808') cor.content = '#0E1315';
+    }
+    // A abertura do Início anima por inteiro só na primeira vez da visita.
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('ja-abriu'); } catch (e) {}
+    // Primeira visita: guarda o site no aparelho, com o progresso na tela (uma vez só).
+    // Depois: a tela de carregamento só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando');
+    try {
+      var c = navigator.connection;
+      if (!localStorage.getItem('site-guardado') && !sessionStorage.getItem('preparo') && !(c && c.saveData)) h.classList.add('baixando-site');
+    } catch (e) {}
+    // Se o script principal não chegar, nada fica preso atrás da tela.
+    setTimeout(function () { h.classList.remove('carregando', 'baixando-site'); }, h.classList.contains('baixando-site') ? 26000 : 8000);
+  })(document.documentElement);
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"></div>
+
+<header class="topo">
+  <div class="wrap topo-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <div class="topo-acoes">
+      <nav class="nav" aria-label="Principal"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+      <button type="button" class="tema" id="tema-tg" aria-pressed="false" title="Modo escuro">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
+        <span class="sr">Modo escuro</span>
+      </button>
+      <details class="menu-m">
+        <summary>Menu</summary>
+        <div class="menu-painel">
+          <div class="wrap topo-in">
+            <span class="marca" aria-hidden="true"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></span>
+            <button type="button" class="menu-fecha">Fechar</button>
+          </div>
+          <nav class="wrap menu-links" aria-label="Menu"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+          <p class="wrap menu-prece" aria-hidden="true">Jesus, eu confio em Vós.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<main id="conteudo">
+
+<section class="wrap titulo nao-achou" aria-labelledby="h-404">
+  <p class="rubrica">Página não encontrada</p>
+  <h1 id="h-404" class="h1">Este caminho não leva a lugar nenhum.</h1>
+  <p class="lead">Talvez o endereço tenha mudado ou esteja incompleto. Recomece pelo Início, ou vá direto rezar o Terço.</p>
+  <div class="opcao-acoes">
+    <a class="btn" href="index.html#rezar">Rezar o Terço da Misericórdia</a>
+    <a class="lnk" href="index.html">Voltar ao Início</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="rodape">
+  <div class="wrap rodape-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <nav aria-label="Rodapé"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+    <p>© 2026 Divina Misericórdia</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js?v=dm-d5caa75dd4" defer></script>
+</body>
+</html>

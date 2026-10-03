@@ -120,6 +120,16 @@ a{color:inherit}
 .pular{position:absolute;left:16px;top:-80px;z-index:50;padding:10px 18px;background:var(--papel);color:var(--tinta);border:1px solid var(--linha-forte);font-size:var(--t-s);text-decoration:none}
 .pular:focus{top:16px}
 .wrap{max-width:calc(var(--max) + 2 * var(--gut));margin:0 auto;padding-left:var(--gut);padding-right:var(--gut)}
+/* Celular deitado com entalhe: o texto não fica embaixo dele */
+@supports (padding:max(1px,env(safe-area-inset-left))){
+  .wrap{padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right))}
+}
+
+/* Enquanto a página carrega (fontes e fotos da primeira tela), ela espera
+   escondida: assim nada pisca nem troca de letra na frente de quem lê.
+   O script tira a espera; se ele falhar, ela sai sozinha em alguns segundos. */
+.js.carregando :is(.topo,main,.rodape){opacity:0}
+.js :is(main,.rodape){transition:opacity .5s var(--ease)}
 
 /* Links de texto: sublinhado discreto que ganha a cor da rubrica */
 .lnk{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em;text-decoration-color:var(--linha-forte);transition:text-decoration-color .2s var(--ease),color .2s var(--ease)}
@@ -138,9 +148,18 @@ button.lnk{background:none;border:0;padding:0;font:inherit;cursor:pointer}
 .btn:active{scale:.97}
 .btn:disabled{opacity:.4;cursor:default}
 
-/* ---------- Cabeçalho ---------- */
-.topo{position:relative;z-index:20}
-.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px}
+/* ---------- Cabeçalho ----------
+   Preso no alto da tela: some ao descer a página, para não roubar espaço
+   da leitura, e volta ao subir. No Início flutua sem fundo sobre a noite
+   da pintura e só ganha o papel depois dela. */
+:root{--topo:84px;--topo-fixo:64px}
+.topo{position:fixed;inset:0 0 auto 0;z-index:30;
+  transition:translate .5s var(--ease),background-color .35s var(--ease),box-shadow .35s var(--ease),opacity .5s var(--ease)}
+.topo:not(.topo-noite)~main{padding-top:var(--topo)}
+.topo-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--topo);transition:min-height .35s var(--ease)}
+.topo.fixo{background:var(--papel);box-shadow:0 1px 0 var(--linha)}
+.topo.fixo>.topo-in{min-height:var(--topo-fixo)}
+.topo.some{translate:0 -100%;box-shadow:none}
 .marca{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:inherit;font-size:19px;font-weight:500;letter-spacing:-.005em}
 .marca svg{flex:none}
 .mk-r{stroke:#B3242A;stroke-width:1.3;stroke-linecap:round;fill:none}
@@ -148,32 +167,54 @@ button.lnk{background:none;border:0;padding:0;font:inherit;cursor:pointer}
 .marca-svg{margin-top:-4px}
 .topo-acoes{display:flex;align-items:center;gap:clamp(16px,2.4vw,36px)}
 .nav{display:flex;gap:clamp(16px,2.2vw,32px)}
-.nav a{font-size:var(--t-s);text-decoration:none;color:var(--tinta-2);padding:6px 0;transition:color .2s}
+.nav a{position:relative;font-size:var(--t-s);text-decoration:none;color:var(--tinta-2);padding:6px 0;transition:color .2s}
+/* Filete vermelho sob a página atual; ao passar o mouse, ele se desenha */
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:1px;height:1px;background:var(--sangue);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease)}
 .nav a:hover{color:var(--tinta)}
-.nav a[aria-current="page"]{color:var(--tinta);text-decoration:underline;text-decoration-color:var(--sangue);text-decoration-thickness:1px;text-underline-offset:.45em}
-.tema{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:-8px;border:0;background:none;color:inherit;cursor:pointer;border-radius:50%}
+.nav a:hover::after,.nav a[aria-current="page"]::after{transform:scaleX(1)}
+.nav a[aria-current="page"]{color:var(--tinta)}
+.tema{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:-8px;border:0;background:none;color:inherit;cursor:pointer;border-radius:50%;transition:background-color .2s}
 .tema:hover{background:color-mix(in srgb,currentColor 8%,transparent)}
+.tema svg{transition:rotate .5s var(--ease)}
+.escuro .tema svg{rotate:180deg}
 
 /* No início, o cabeçalho flutua sobre a noite da pintura */
-.topo-noite{position:absolute;inset:0 0 auto 0;color:var(--marfim)}
-.topo-noite .nav a{color:var(--marfim-2)}
-.topo-noite .nav a:hover,.topo-noite .nav a[aria-current="page"]{color:var(--marfim)}
-.topo-noite .mk-p{stroke:var(--palido-noite)}
-.topo-noite :focus-visible{outline-color:var(--marfim)}
+.topo-noite:not(.fixo){color:var(--marfim)}
+.topo-noite:not(.fixo) .nav a{color:var(--marfim-2)}
+.topo-noite:not(.fixo) .nav a:hover,.topo-noite:not(.fixo) .nav a[aria-current="page"]{color:var(--marfim)}
+.topo-noite:not(.fixo) .nav a::after{background:var(--sangue-noite)}
+.topo-noite:not(.fixo)>.topo-in>.marca .mk-p{stroke:var(--palido-noite)}
+.topo-noite:not(.fixo) :focus-visible{outline-color:var(--marfim)}
 
-/* Menu do celular */
+/* Menu do celular: tela cheia, com as páginas em letra grande */
 .menu-m{display:none}
 .menu-m>summary{list-style:none;cursor:pointer;font-size:var(--t-s);padding:8px 0}
 .menu-m>summary::-webkit-details-marker{display:none}
-.menu-painel{position:fixed;inset:0;z-index:40;background:var(--papel);color:var(--tinta);display:flex;flex-direction:column;overflow:auto}
-.menu-painel .topo-in{width:100%}
+.menu-painel{position:fixed;inset:0;z-index:40;background:var(--papel);color:var(--tinta);display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom,0px)}
+.menu-painel :focus-visible{outline-color:var(--agua)}
+.menu-painel .topo-in{width:100%;min-height:var(--topo)}
 .menu-fecha{background:none;border:0;color:inherit;font:inherit;font-size:var(--t-s);cursor:pointer;padding:8px 0}
-.menu-links{width:100%;display:flex;flex-direction:column;gap:6px;padding-top:24px;padding-bottom:48px}
-.menu-links a{font-size:clamp(32px,9vw,44px);line-height:1.25;text-decoration:none;color:var(--tinta)}
+.menu-links{width:100%;display:flex;flex-direction:column;padding-top:clamp(8px,4svh,40px)}
+.menu-links a{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:clamp(64px,10svh,84px);border-bottom:1px solid var(--linha);font-size:clamp(30px,9vw,42px);line-height:1.15;letter-spacing:-.01em;text-decoration:none;color:var(--tinta)}
+.menu-links a:first-child{border-top:1px solid var(--linha)}
+.menu-links a::after{content:"";flex:none;width:9px;height:9px;border-top:1.5px solid var(--linha-forte);border-right:1.5px solid var(--linha-forte);rotate:45deg;margin-right:6px}
 .menu-links a[aria-current="page"]{color:var(--sangue)}
+.menu-links a[aria-current="page"]::after{border-color:var(--sangue)}
+.menu-prece{width:100%;margin-top:auto;padding-top:40px;padding-bottom:max(32px,env(safe-area-inset-bottom,0px));font-style:italic;font-size:var(--t-s);color:var(--tinta-3)}
 html.menu-aberto{overflow:hidden}
+@media (prefers-reduced-motion:no-preference){
+  .menu-m[open] .menu-painel{animation:menu-entra .35s var(--ease)}
+  .menu-m[open] .menu-links a{animation:menu-sobe .6s cubic-bezier(.16,1,.3,1) both}
+  .menu-m[open] .menu-links a:nth-child(2){animation-delay:.05s}
+  .menu-m[open] .menu-links a:nth-child(3){animation-delay:.1s}
+  .menu-m[open] .menu-links a:nth-child(4){animation-delay:.15s}
+  .menu-m[open] .menu-prece{animation:surge .8s var(--ease) .25s both}
+}
+@keyframes menu-entra{from{opacity:0}}
+@keyframes menu-sobe{from{opacity:0;translate:0 14px}}
 
 @media (max-width:900px){
+  :root{--topo:72px;--topo-fixo:58px}
   .nav{display:none}
   .menu-m{display:block}
 }
@@ -184,7 +225,10 @@ html.menu-aberto{overflow:hidden}
 .altar{
   position:relative;isolation:isolate;overflow:hidden;
   background:var(--noite);color:var(--marfim);
-  padding:84px var(--gut) clamp(56px,7vw,104px);
+  padding:var(--topo) var(--gut) clamp(56px,7vw,104px);
+}
+@supports (padding:max(1px,env(safe-area-inset-left))){
+  .altar{padding-left:max(var(--gut),env(safe-area-inset-left));padding-right:max(var(--gut),env(safe-area-inset-right))}
 }
 .altar :focus-visible{outline-color:var(--marfim)}
 .altar-grade{
@@ -194,7 +238,7 @@ html.menu-aberto{overflow:hidden}
 }
 .quadro{
   grid-column:2;grid-row:1;position:relative;z-index:1;margin:0;
-  height:clamp(440px,calc(100svh - 84px - 8.2vw),1000px);
+  height:clamp(440px,calc(100svh - var(--topo) - 8.2vw),1000px);
   aspect-ratio:726/1414;
 }
 .quadro img{
@@ -238,21 +282,32 @@ html.menu-aberto{overflow:hidden}
   color:var(--marfim);text-shadow:0 0 .4em rgba(0,0,0,.45);
 }
 
-/* Entrada: a única sequência animada do site */
+/* Entrada: a pintura surge da noite, depois os raios, a inscrição e o texto.
+   Enquanto a página carrega, tudo espera escondido (sem piscar). Voltando ao
+   Início na mesma visita, a sequência é curta: ninguém fica esperando. */
 @media (prefers-reduced-motion:no-preference){
-  .js:not(.carregando) .quadro img{animation:surge 2.2s var(--ease) both}
-  .js:not(.carregando) .raios-entra{animation:surge 2.4s var(--ease) .9s both}
-  .js:not(.carregando) .raios{animation:respira 9s ease-in-out 3.3s infinite}
-  .js:not(.carregando) .inscricao{animation:surge 1.6s var(--ease) 1.5s both}
-  .js:not(.carregando) .altar-lado{animation:surge 1.4s var(--ease) 2s both}
+  .js.carregando :is(.quadro img,.raios-entra,.inscricao,.altar-lado){opacity:0}
+  .js:not(.carregando) .quadro img{animation:surge 1.9s var(--ease) both}
+  .js:not(.carregando) .raios-entra{animation:surge 2.2s var(--ease) .7s both}
+  .js:not(.carregando) .raios{animation:respira 9s ease-in-out 2.9s infinite}
+  .js:not(.carregando) .inscricao{animation:inscricao-entra 1.5s cubic-bezier(.16,1,.3,1) 1.05s both}
+  .js:not(.carregando) .altar-lado{animation:lado-entra 1.2s cubic-bezier(.16,1,.3,1) 1.45s both}
+  .js:not(.carregando) .altar-esq{animation-delay:1.6s}
+  .ja-abriu:not(.carregando) .quadro img{animation-duration:.7s}
+  .ja-abriu:not(.carregando) .raios-entra{animation-duration:.9s;animation-delay:.1s}
+  .ja-abriu:not(.carregando) .raios{animation-delay:1s}
+  .ja-abriu:not(.carregando) :is(.inscricao,.altar-lado,.altar-esq){animation-duration:.8s;animation-delay:.15s}
 }
 @keyframes surge{from{opacity:0}to{opacity:1}}
+@keyframes inscricao-entra{from{opacity:0;translate:0 .14em}to{opacity:1;translate:0 0}}
+@keyframes lado-entra{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
 @keyframes entra-oracao{from{opacity:0;translate:0 8px;filter:blur(3px)}to{opacity:1;translate:0 0;filter:none}}
 @keyframes respira{0%,100%{opacity:1}50%{opacity:.55}}
 
-@media (max-width:900px){
-  .altar{padding-top:72px}
+/* Até 1100px as três colunas espremiam o texto: a abertura empilha */
+@media (max-width:1099px){
   .altar-grade{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .altar-lead{text-shadow:0 0 1em rgba(0,0,0,.7)}
   .quadro{grid-column:1;height:min(66svh,148vw);min-height:380px}
   .inscricao{grid-column:1;font-size:clamp(40px,11.5vw,72px);margin-top:-.42em}
   .altar-lado{grid-column:1;justify-self:center;text-align:center;padding-bottom:0;max-width:30em}
@@ -270,6 +325,9 @@ html.menu-aberto{overflow:hidden}
 .h3{font-size:var(--t-xl);line-height:1.22;letter-spacing:-.008em;font-weight:500}
 .lead{font-size:var(--t-l);line-height:1.55;color:var(--tinta-2);text-wrap:pretty;max-width:30em}
 .texto>p+p{margin-top:1em}
+/* O botão "Continuar a leitura" (só no celular) fica entre dois parágrafos:
+   no computador ele some e o parágrafo seguinte precisa do mesmo respiro */
+@media (min-width:901px){.texto>.continuar+p{margin-top:1em}.sobre .texto>.continuar+p{margin-top:.9em}}
 .texto p{max-width:34em;text-wrap:pretty;hyphens:manual}
 .rubrica{color:var(--sangue);font-style:italic}
 
@@ -278,9 +336,16 @@ figure{margin:0}
 
 /* ---------- Santa Faustina: a vida em anos ---------- */
 .vida{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7.4fr);gap:clamp(40px,6vw,104px)}
-.vida-lado{position:sticky;top:40px;align-self:start}
+.vida-lado{position:sticky;top:40px;align-self:start;transition:top .5s var(--ease)}
+.topo-visivel .vida-lado{top:calc(var(--topo-fixo) + 32px)}
 .vida-lado .h2{margin-bottom:clamp(28px,3vw,40px)}
 .retrato img{width:100%;max-width:360px;aspect-ratio:452/600;object-fit:cover;filter:saturate(.9)}
+/* Em tela baixa o retrato encolhe, para título, retrato e datas caberem
+   inteiros enquanto a coluna fica parada ao lado do texto */
+@media (min-width:901px){
+  .retrato{width:fit-content;max-width:100%}
+  .retrato img{width:auto;height:clamp(240px,calc(100svh - 440px),478px)}
+}
 .dados{margin:28px 0 0;display:grid;gap:14px;max-width:360px}
 .dados div{display:grid;grid-template-columns:8.5em 1fr;gap:12px;font-size:var(--t-s);line-height:1.45}
 .dados dt{color:var(--tinta-3);font-style:italic}
@@ -288,7 +353,8 @@ figure{margin:0}
 
 .anos{display:grid;gap:clamp(48px,5vw,72px);padding-top:clamp(8px,1vw,14px)}
 .ano{display:grid;grid-template-columns:5.4em minmax(0,1fr);column-gap:clamp(16px,2.4vw,36px)}
-.ano-n{grid-row:1/span 2;align-self:start;position:sticky;top:36px;font-size:var(--t-xl);line-height:1.22;color:var(--sangue);font-variant-numeric:oldstyle-nums;letter-spacing:.01em;padding-top:.02em}
+.ano-n{grid-row:1/span 2;align-self:start;position:sticky;top:36px;transition:top .5s var(--ease);font-size:var(--t-xl);line-height:1.22;color:var(--sangue);font-variant-numeric:oldstyle-nums;letter-spacing:.01em;padding-top:.02em}
+.topo-visivel .ano-n{top:calc(var(--topo-fixo) + 28px)}
 .ano .h3{margin-bottom:.6em}
 .ano .texto{grid-column:2}
 
@@ -296,6 +362,14 @@ figure{margin:0}
   .vida{grid-template-columns:1fr}
   .vida-lado{position:static}
   .retrato img{max-width:300px}
+}
+/* Tablet em pé: retrato e datas lado a lado, sem um vazio à direita */
+@media (min-width:600px) and (max-width:900px){
+  .vida-lado{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);column-gap:clamp(28px,5vw,48px);align-items:end}
+  .vida-lado .h2{grid-column:1/-1}
+  .vida-lado .dados{margin-top:0}
+}
+@media (max-width:900px){
   .ano{grid-template-columns:1fr}
   .ano-n{grid-row:auto;position:static;font-size:var(--t-l);margin-bottom:.15em}
   .ano .texto{grid-column:1}
@@ -341,7 +415,7 @@ details[open]>summary .sinal::after{rotate:0deg}
 .rezar-cab{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px 32px;margin-bottom:clamp(40px,5vw,72px)}
 .rezar-cab p{color:var(--marfim-2);font-size:var(--t-s);max-width:26em}
 .rezador{display:grid;grid-template-columns:minmax(260px,380px) minmax(0,1fr);gap:clamp(40px,7vw,120px);align-items:stretch;outline:none}
-.rz-col{display:grid;grid-template-rows:1fr auto auto}
+.rz-col{display:grid;grid-template-rows:1fr auto auto auto}
 .terco-svg{width:100%;height:auto;overflow:visible;user-select:none}
 .elo{fill:none;stroke:#7f888a;stroke-width:1.7;stroke-dasharray:2.4 1.5;stroke-linecap:round}
 .elo-brilho{fill:none;stroke:#e1e5e5;stroke-width:.55;stroke-dasharray:2.4 1.5;stroke-linecap:round;opacity:.7}
@@ -364,6 +438,15 @@ details[open]>summary .sinal::after{rotate:0deg}
 .rz-acoes .lnk{text-decoration-color:color-mix(in srgb,var(--marfim) 40%,transparent)}
 .rz-acoes .lnk:disabled{opacity:.35;cursor:default;text-decoration:none}
 .rz-dica{margin-top:20px;font-size:var(--t-xs);color:var(--marfim-2);font-style:italic}
+/* Quanto do Terço já foi rezado: um fio que se enche do crucifixo à medalha */
+.rz-progresso{display:flex;align-items:center;gap:20px;margin-top:26px;max-width:32em;min-height:24px}
+.rz-barra{position:relative;flex:1;height:1px;background:var(--noite-linha)}
+.rz-recomeca{font-size:var(--t-xs);font-style:italic;color:var(--marfim-2)}
+.rz-recomeca:hover{color:var(--marfim)}
+.rezar .lnk.rz-recomeca{text-decoration-color:color-mix(in srgb,var(--marfim) 30%,transparent)}
+/* Fim do Terço: todas as contas se acendem de novo, uma a uma */
+.sem-luz .luz,.sem-luz .borda-luz{transition:none!important}
+.rz-barra span{position:absolute;inset:0;background:var(--sangue-noite);transform-origin:0 50%;transform:scaleX(var(--feito,0));transition:transform .6s cubic-bezier(.16,1,.3,1)}
 @media (prefers-reduced-motion:no-preference){
   .rz-oracao.entra{animation:entra-oracao .6s cubic-bezier(.16,1,.3,1) both}
 }
@@ -376,6 +459,7 @@ details[open]>summary .sinal::after{rotate:0deg}
   /* No celular os botões ficam acima da oração: não mudam de lugar entre uma conta e outra */
   .rz-col{display:flex;flex-direction:column}
   .rz-acoes{order:1;margin:4px 0 18px;gap:12px 24px}
+  .rz-progresso{order:1;margin:0 0 20px}
   .rz-texto{order:2;min-height:0}
   .rz-dica{display:none}
 }
@@ -401,6 +485,15 @@ details[open]>summary .sinal::after{rotate:0deg}
 .rodape nav{display:flex;flex-wrap:wrap;gap:8px 28px}
 .rodape nav a{text-decoration:none;color:var(--tinta-2)}
 .rodape nav a:hover{color:var(--tinta);text-decoration:underline;text-decoration-color:var(--sangue);text-underline-offset:.22em}
+.rodape nav a[aria-current="page"]{color:var(--tinta)}
+@supports (padding:max(1px,env(safe-area-inset-bottom))){.rodape{padding-bottom:max(48px,calc(env(safe-area-inset-bottom) + 24px))}}
+/* Celular: marca, as páginas em duas colunas e o ano embaixo */
+@media (max-width:640px){
+  .rodape{padding-top:32px}
+  .rodape-in{display:grid;gap:18px}
+  .rodape nav{display:grid;grid-template-columns:repeat(2,max-content);gap:2px 40px}
+  .rodape-in p{margin-left:0;font-size:var(--t-xs)}
+}
 
 /* =========================================================
    Páginas internas
@@ -425,9 +518,10 @@ details[open]>summary .sinal::after{rotate:0deg}
 .anotada-cab{margin-bottom:clamp(40px,5vw,72px);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr);gap:clamp(24px,6vw,104px)}
 .anotada-cab p{color:var(--marfim-2);font-size:var(--t-l);line-height:1.5;max-width:28em;text-wrap:pretty}
 .anotada-grade{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,7vw,120px);align-items:start}
-.painel{position:sticky;top:16px;display:grid;justify-items:center}
+.painel{position:sticky;top:16px;display:grid;justify-items:center;transition:top .5s var(--ease)}
+.topo-visivel .painel{top:calc(var(--topo-fixo) + 12px)}
 /* A pintura ocupa a altura da tela; a inscrição pousa no chão escuro do quadro */
-.painel-quadro{position:relative;height:clamp(480px,calc(100svh - 64px),1020px);aspect-ratio:726/1414;max-width:100%}
+.painel-quadro{position:relative;height:clamp(460px,calc(100svh - 132px),1020px);aspect-ratio:726/1414;max-width:100%}
 .painel-quadro img{width:100%;height:100%;object-fit:cover;
   -webkit-mask-image:linear-gradient(to bottom,#000 88%,transparent);mask-image:linear-gradient(to bottom,#000 88%,transparent)}
 /* Véu que escurece tudo, menos o detalhe em foco */
@@ -464,6 +558,7 @@ details[open]>summary .sinal::after{rotate:0deg}
   .anotada-cab{grid-template-columns:1fr}
   .anotada-grade{grid-template-columns:1fr;gap:8px}
   .painel{top:0;z-index:2;background:var(--noite);padding:12px 0 10px;margin:0 calc(-1 * var(--gut));box-shadow:0 18px 24px -12px var(--noite)}
+  .topo-visivel .painel{top:var(--topo-fixo)}
   .painel-quadro{height:50svh;min-height:0}
   .painel-inscricao{font-size:22px;margin-top:-.9em}
   .ponto{width:24px;height:24px;margin:-12px 0 0 -12px}
@@ -542,11 +637,11 @@ details[open]>summary .sinal::after{rotate:0deg}
 .opcao-nota:empty{display:none}
 .btn-sec{background:transparent;color:var(--tinta);box-shadow:inset 0 0 0 1px var(--linha-forte)}
 .btn-sec:hover{background:var(--papel-2)}
-@media (max-width:900px){
+@media (max-width:640px){
   .relogio-in{grid-template-columns:1fr}
   .mostrador{max-width:240px;justify-self:center}
-  .opcoes{grid-template-columns:1fr}
 }
+@media (max-width:720px){.opcoes{grid-template-columns:1fr}}
 
 /* ---------- Seguir lendo ---------- */
 .seguir{display:grid;grid-template-columns:1fr 1fr;gap:24px}
@@ -555,6 +650,10 @@ details[open]>summary .sinal::after{rotate:0deg}
 .seguir span{font-size:var(--t-s);color:var(--tinta-3);font-style:italic}
 .seguir strong{font-weight:400;font-size:var(--t-xl);line-height:1.2;transition:color .2s}
 .seguir a:hover strong{color:var(--sangue)}
+.seguir span,.seguir strong{transition:color .2s,translate .35s var(--ease)}
+.seguir a:first-child:hover strong{translate:-4px 0}
+.seguir a+a:hover strong{translate:4px 0}
+@media (max-width:640px){.seguir{gap:16px}.seguir strong{font-size:var(--t-l)}}
 
 /* ---------- Movimento que responde ao leitor ---------- */
 @property --x{syntax:'<percentage>';inherits:false;initial-value:50%}
@@ -569,6 +668,11 @@ details[open]>summary .sinal::after{rotate:0deg}
   ::view-transition-new(root){animation:.5s var(--ease) .08s both surge}
 }
 @keyframes sai-pagina{to{opacity:0}}
+/* Troca de modo claro/escuro: o novo modo cobre o antigo, sem passar pelo vazio */
+@media (prefers-reduced-motion:no-preference){
+  html.vt-tema::view-transition-old(root){animation:none}
+  html.vt-tema::view-transition-new(root){animation:surge .45s var(--ease) both}
+}
 
 /* Orações comuns abrem deslizando */
 :root{interpolate-size:allow-keywords}
@@ -692,7 +796,7 @@ details[open]>summary .sinal::after{rotate:0deg}
 @supports (animation-timeline: scroll()){
   @media (prefers-reduced-motion:no-preference){
     /* Fio vermelho no topo: quanto da página já foi lido */
-    .progresso{display:block;position:fixed;inset:0 0 auto 0;height:2px;z-index:60;background:var(--sangue);transform-origin:0 50%;
+    .progresso{display:block;position:fixed;inset:0 0 auto 0;height:2px;z-index:60;background:var(--sangue);transform-origin:0 50%;transform:scaleX(0);
       animation:progresso-cresce linear both;animation-timeline:scroll(root)}
   }
   /* Os efeitos presos à rolagem ficam só em computador (mouse e tela larga).
@@ -717,7 +821,7 @@ details[open]>summary .sinal::after{rotate:0deg}
       color:transparent;-webkit-background-clip:text;background-clip:text;
       background-image:linear-gradient(to bottom,var(--tinta) 0 46%,color-mix(in srgb,var(--tinta) 22%,transparent) 54% 100%);
       background-size:100% 220%;background-repeat:no-repeat;
-      animation:acende-linhas linear both;animation-timeline:view();animation-range:entry 60% cover 52%}
+      animation:acende-linhas linear both;animation-timeline:view();animation-range:entry 40% contain 20%}
     /* As aspas penduradas ficam fora da caixa; o recuo as traz para dentro do recorte */
     .cit-grande blockquote{padding-left:.45em;margin-left:-.45em}
 
@@ -764,6 +868,12 @@ details[open]>summary .sinal::after{rotate:0deg}
   .topo .marca{font-size:16px;gap:10px;white-space:nowrap}
   .topo-acoes{gap:14px}
 }
+/* Celulares bem estreitos (320px): marca, tema e Menu cabem dentro da margem */
+@media (max-width:360px){
+  .topo-in{gap:12px}
+  .topo .marca{font-size:15px;gap:8px}
+  .topo-acoes{gap:6px}
+}
 @media (pointer:coarse){
   .topico>summary{padding-block:8px}
   .altar-acoes .lnk,.hora a,.pr-acoes .lnk,.opcao-acoes .lnk,.rz-acoes .lnk,.rodape nav a{display:inline-block;padding-block:10px}
@@ -806,11 +916,19 @@ details[open]>summary .sinal::after{rotate:0deg}
 
 /* ---------- Impressão: as orações em papel ---------- */
 @media print{
-  .topo,.altar,.rezar,.rodape,.seguir,.pular{display:none!important}
+  .topo,.altar,.rezar,.rodape,.seguir,.pular,.carregador,.progresso,.continuar,.recolhe-cab>.sinal,.topico .sinal{display:none!important}
+  .topo:not(.topo-noite)~main{padding-top:0}
+  .recolhido{display:block!important}
+  .js.carregando :is(main,.rodape){opacity:1}
   body{background:#fff;color:#000;font-size:12pt}
   .comum{break-inside:avoid}
 }
 
 section.leitura{padding-bottom:clamp(88px,10vw,152px)}
+
+/* ---------- Página não encontrada ---------- */
+.nao-achou{min-height:calc(100svh - var(--topo) - 160px);display:flex;flex-direction:column;justify-content:center}
+.nao-achou .rubrica{font-size:var(--t-s);margin-bottom:18px}
+.nao-achou .opcao-acoes{margin-top:clamp(28px,3vw,40px)}
 
 html.escuro .rezar,html.escuro .anotada{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
