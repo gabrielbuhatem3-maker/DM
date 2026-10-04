@@ -2,343 +2,405 @@
 <html lang="pt-BR" class="claro">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Divina Misericórdia</title>
-<meta name="description" content="Um lugar para conhecer a vida de Santa Faustina e rezar o Terço da Misericórdia, conta por conta.">
-<meta name="theme-color" content="#FAFAF8">
+<meta name="description" content="A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.">
+<link rel="canonical" href="https://gabrielbuhatem3-maker.github.io/DM/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Divina Misericórdia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Divina Misericórdia">
+<meta property="og:description" content="A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.">
+<meta property="og:url" content="https://gabrielbuhatem3-maker.github.io/DM/">
+<meta property="og:image" content="https://gabrielbuhatem3-maker.github.io/DM/assets/img/compartilhar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="“Jesus, eu confio em Vós.” ao lado da pintura de Jesus Misericordioso.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#070808">
 <link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
-<link rel="preload" href="assets/fonts/lora.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="apple-touch-icon" href="assets/img/icone-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/img/jesus-misericordioso.webp" as="image" type="image/webp" fetchpriority="high">
+<link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+<link rel="stylesheet" href="assets/css/style.css?v=dm-7ed503e1a8">
 <script>
-  // Aplica o tema salvo antes da primeira pintura, para não piscar.
-  try { if (localStorage.getItem('tema') === 'escuro') document.documentElement.className = 'escuro'; } catch (e) {}
+  // Antes da primeira pintura, para a página já nascer do jeito certo.
+  (function (h) {
+    h.classList.add('js');
+    // Tema: o que a pessoa escolheu no botão; se nunca escolheu, o do aparelho.
+    var t = null;
+    try { t = localStorage.getItem('tema'); } catch (e) {}
+    var escuro = t ? t === 'escuro' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (escuro) {
+      h.classList.replace('claro', 'escuro');
+      var cor = document.querySelector('meta[name="theme-color"]');
+      if (cor && cor.content !== '#070808') cor.content = '#0E1315';
+    }
+    // A abertura do Início anima por inteiro só na primeira vez da visita.
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('ja-abriu'); } catch (e) {}
+    // Primeira visita: guarda o site no aparelho, com o progresso na tela (uma vez só).
+    // Depois: a tela de carregamento só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando');
+    try {
+      var c = navigator.connection;
+      if (!localStorage.getItem('site-guardado') && !sessionStorage.getItem('preparo') && !(c && c.saveData)) h.classList.add('baixando-site');
+    } catch (e) {}
+    // Se o script principal não chegar, nada fica preso atrás da tela.
+    setTimeout(function () { h.classList.remove('carregando', 'baixando-site'); }, h.classList.contains('baixando-site') ? 26000 : 8000);
+  })(document.documentElement);
 </script>
 </head>
 <body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"></div>
+<div class="carregador" aria-hidden="true">
+  <div class="cg-in">
+    <svg class="cg-marca" width="84" height="105" viewBox="0 0 32 40">
+      <g fill="none" stroke-linecap="round">
+        <circle class="cg-argola" cx="16" cy="2.2" r="1.7" stroke-width="1.1"/>
+        <ellipse class="cg-aro" pathLength="1" cx="16" cy="21" rx="12.6" ry="16.6" stroke-width="1.1"/>
+        <path class="cg-raio cg-r" pathLength="1" d="M16 14.5L5.6 29.2"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L9.2 33.8"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L13.2 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L18.8 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L22.8 33.8"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L26.4 29.2"/>
+        <circle class="cg-ponto" cx="16" cy="14.5" r="1.15"/>
+      </g>
+    </svg>
+    <p class="cg-nome">Divina Misericórdia</p>
+    <p class="cg-estado">Preparando o site: <span class="cg-pct">0%</span></p>
+    <p class="cg-nota">Só na primeira visita. Depois ele abre na hora, até sem internet.</p>
+    <button type="button" class="cg-entrar" hidden>Entrar agora</button>
+    <p class="cg-oracao">Ó Sangue e Água, que jorraste do Coração de Jesus como Fonte de Misericórdia para nós, eu confio em Vós.</p>
+  </div>
+</div>
 
-<header class="topo vidro-fino">
+<header class="topo topo-noite">
   <div class="wrap topo-in">
-    <a href="#inicio" class="brand">
-      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg>
-      <span>Divina Misericórdia</span>
-    </a>
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
     <div class="topo-acoes">
-      <nav class="nav-d" aria-label="Principal">
-        <a href="#faustina" class="nl">Santa Faustina</a>
-        <a href="#terco" class="nl">Como rezar</a>
-        <a href="#sobre" class="nl">Sobre</a>
-      </nav>
-      <button type="button" class="tg" id="tema-tg" aria-pressed="false">
-        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
-        <span class="tg-l">Modo escuro</span>
+      <nav class="nav" aria-label="Principal"><a href="index.html" aria-current="page">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+      <button type="button" class="tema" id="tema-tg" aria-pressed="false" title="Modo escuro">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
+        <span class="sr">Modo escuro</span>
       </button>
       <details class="menu-m">
-        <summary class="tg">Menu</summary>
-        <div class="menu-panel">
-          <a href="#faustina">Santa Faustina</a>
-          <a href="#terco">Como rezar o Terço</a>
-          <a href="#sobre">Sobre o site</a>
+        <summary>Menu</summary>
+        <div class="menu-painel">
+          <div class="wrap topo-in">
+            <span class="marca" aria-hidden="true"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></span>
+            <button type="button" class="menu-fecha">Fechar</button>
+          </div>
+          <nav class="wrap menu-links" aria-label="Menu"><a href="index.html" aria-current="page">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+          <p class="wrap menu-prece" aria-hidden="true">Jesus, eu confio em Vós.</p>
         </div>
       </details>
     </div>
   </div>
 </header>
 
+
 <main id="conteudo">
 
-<!-- ============ Abertura ============ -->
-<div class="palco abertura" id="inicio">
-  <div class="brilho"></div>
+<!-- ============ O altar: a pintura e a inscrição ============ -->
+<section class="altar" aria-labelledby="h-inicio">
+  <div class="altar-grade">
+    <h1 id="h-inicio" class="inscricao"><span>Jesus, eu confio em Vós.</span></h1>
+    <figure class="quadro">
+      <div class="raios-caixa" aria-hidden="true"><div class="raios-entra">
+      <svg class="raios" viewBox="0 0 500 321.4" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="g-sangue" gradientUnits="userSpaceOnUse" x1="0" y1="61" x2="0" y2="321">
+            <stop offset="0" stop-color="#E2474B" stop-opacity="0"/>
+            <stop offset=".36" stop-color="#E2474B" stop-opacity="0"/>
+            <stop offset=".52" stop-color="#E2474B" stop-opacity=".34"/>
+            <stop offset="1" stop-color="#E2474B" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="g-agua" gradientUnits="userSpaceOnUse" x1="0" y1="61" x2="0" y2="321">
+            <stop offset="0" stop-color="#D6E7EC" stop-opacity="0"/>
+            <stop offset=".36" stop-color="#D6E7EC" stop-opacity="0"/>
+            <stop offset=".52" stop-color="#D6E7EC" stop-opacity=".26"/>
+            <stop offset="1" stop-color="#D6E7EC" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="f-luz" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="2.4"/></filter>
+        </defs>
+        <g filter="url(#f-luz)">
+          <polygon class="r-sangue" points="254.4,61.4 166,321.4 250,321.4" fill="url(#g-sangue)"/>
+          <polygon class="r-agua" points="254.4,61.4 250,321.4 330,321.4" fill="url(#g-agua)"/>
+        </g>
+      </svg>
+      </div></div>
+      <picture><source srcset="assets/img/jesus-misericordioso.webp" type="image/webp"><img src="assets/img/jesus-misericordioso.jpg" width="726" height="1414" fetchpriority="high" alt="Pintura de Jesus vestido de branco sobre fundo escuro, com a mão direita erguida em bênção e a esquerda sobre o peito, de onde saem um raio vermelho e um raio pálido."></picture>
+    </figure>
 
-  <svg class="rosacea" aria-hidden="true" viewBox="0 0 1000 1000">
-    <g class="vidro-anima">
-      <circle class="rose-fr" cx="500" cy="500" r="440"/>
-      <circle class="tr" cx="500" cy="500" r="424"/>
-      <path class="pt r" d="M500.0 238.0Q424.0 170.7 500.0 86.0Q576.0 170.7 500.0 238.0Z"/>
-      <path class="pt p" d="M631.0 273.1Q598.8 176.8 707.0 141.5Q730.5 252.8 631.0 273.1Z"/>
-      <path class="pt r" d="M726.9 369.0Q747.2 269.5 858.5 293.0Q823.2 401.2 726.9 369.0Z"/>
-      <path class="pt p" d="M762.0 500.0Q829.3 424.0 914.0 500.0Q829.3 576.0 762.0 500.0Z"/>
-      <path class="pt r" d="M726.9 631.0Q823.2 598.8 858.5 707.0Q747.2 730.5 726.9 631.0Z"/>
-      <path class="pt p" d="M631.0 726.9Q730.5 747.2 707.0 858.5Q598.8 823.2 631.0 726.9Z"/>
-      <path class="pt r" d="M500.0 762.0Q576.0 829.3 500.0 914.0Q424.0 829.3 500.0 762.0Z"/>
-      <path class="pt p" d="M369.0 726.9Q401.2 823.2 293.0 858.5Q269.5 747.2 369.0 726.9Z"/>
-      <path class="pt r" d="M273.1 631.0Q252.8 730.5 141.5 707.0Q176.8 598.8 273.1 631.0Z"/>
-      <path class="pt p" d="M238.0 500.0Q170.7 576.0 86.0 500.0Q170.7 424.0 238.0 500.0Z"/>
-      <path class="pt r" d="M273.1 369.0Q176.8 401.2 141.5 293.0Q252.8 269.5 273.1 369.0Z"/>
-      <path class="pt p" d="M369.0 273.1Q269.5 252.8 293.0 141.5Q401.2 176.8 369.0 273.1Z"/>
-      <path class="tr" d="M561.1 272.0L607.2 100.1M666.9 333.1L792.7 207.3M728.0 438.9L899.9 392.8M728.0 561.1L899.9 607.2M666.9 666.9L792.7 792.7M561.1 728.0L607.2 899.9M438.9 728.0L392.8 899.9M333.1 666.9L207.3 792.7M272.0 561.1L100.1 607.2M272.0 438.9L100.1 392.8M333.1 333.1L207.3 207.3M438.9 272.0L392.8 100.1"/>
-      <circle class="tr" cx="500" cy="500" r="248"/>
-      <circle class="qf" cx="561.6" cy="270.1" r="15"/><circle class="qf" cx="668.3" cy="331.7" r="15"/><circle class="qf" cx="729.9" cy="438.4" r="15"/><circle class="qf" cx="729.9" cy="561.6" r="15"/><circle class="qf" cx="668.3" cy="668.3" r="15"/><circle class="qf" cx="561.6" cy="729.9" r="15"/><circle class="qf" cx="438.4" cy="729.9" r="15"/><circle class="qf" cx="331.7" cy="668.3" r="15"/><circle class="qf" cx="270.1" cy="561.6" r="15"/><circle class="qf" cx="270.1" cy="438.4" r="15"/><circle class="qf" cx="331.7" cy="331.7" r="15"/><circle class="qf" cx="438.4" cy="270.1" r="15"/>
-      <path class="pi r" d="M500.0 372.0Q446.8 326.0 500.0 264.0Q553.2 326.0 500.0 372.0Z"/>
-      <path class="pi p" d="M610.9 436.0Q624.1 366.9 704.4 382.0Q677.3 459.1 610.9 436.0Z"/>
-      <path class="pi r" d="M610.9 564.0Q677.3 540.9 704.4 618.0Q624.1 633.1 610.9 564.0Z"/>
-      <path class="pi p" d="M500.0 628.0Q553.2 674.0 500.0 736.0Q446.8 674.0 500.0 628.0Z"/>
-      <path class="pi r" d="M389.1 564.0Q375.9 633.1 295.6 618.0Q322.7 540.9 389.1 564.0Z"/>
-      <path class="pi p" d="M389.1 436.0Q322.7 459.1 295.6 382.0Q375.9 366.9 389.1 436.0Z"/>
-      <circle class="tr" cx="500" cy="500" r="130"/>
-      <path class="tr" d="M548.0 416.9L564.0 389.1M596.0 500.0L628.0 500.0M548.0 583.1L564.0 610.9M452.0 583.1L436.0 610.9M404.0 500.0L372.0 500.0M452.0 416.9L436.0 389.1"/>
-      <circle class="tr" cx="500" cy="500" r="96"/>
-      <path class="oc r" d="M500.0 500.0Q479.8 458.7 500.0 408.0Q520.2 458.7 500.0 500.0Z"/>
-      <path class="oc p" d="M500.0 500.0Q525.7 461.9 579.7 454.0Q545.9 496.8 500.0 500.0Z"/>
-      <path class="oc r" d="M500.0 500.0Q545.9 503.2 579.7 546.0Q525.7 538.1 500.0 500.0Z"/>
-      <path class="oc p" d="M500.0 500.0Q520.2 541.3 500.0 592.0Q479.8 541.3 500.0 500.0Z"/>
-      <path class="oc r" d="M500.0 500.0Q474.3 538.1 420.3 546.0Q454.1 503.2 500.0 500.0Z"/>
-      <path class="oc p" d="M500.0 500.0Q454.1 496.8 420.3 454.0Q474.3 461.9 500.0 500.0Z"/>
-    </g>
-  </svg>
-
-  <svg class="raios" aria-hidden="true" viewBox="0 0 1440 900" preserveAspectRatio="xMaxYMin slice">
-    <path class="ray ray-r ra" d="M1120 -30L1026 865M1120 -30L965 767M1120 -30L829 728"/>
-    <path class="ray ray-r rb" d="M1120 -30L1023 622M1120 -30L915 684M1120 -30L822 580M1120 -30L745 595"/>
-    <path class="ray ray-r rc" d="M1120 -30L994 496M1120 -30L930 538M1120 -30L926 415M1120 -30L854 459M1120 -30L855 371M1120 -30L757 470"/>
-    <path class="ray ray-p ra" d="M1120 -30L1245 861M1120 -30L1307 760M1120 -30L1450 712"/>
-    <path class="ray ray-p rb" d="M1120 -30L1242 618M1120 -30L1358 674M1120 -30L1453 562M1120 -30L1535 570"/>
-    <path class="ray ray-p rc" d="M1120 -30L1269 490M1120 -30L1338 527M1120 -30L1338 404M1120 -30L1415 442M1120 -30L1411 352M1120 -30L1517 443"/>
-  </svg>
-
-  <section class="wrap heroi" aria-labelledby="h-inicio">
-    <h1 id="h-inicio" class="h-display">
-      <span class="linha l1"><span>Jesus,</span></span>
-      <span class="linha l2"><span>eu confio</span></span>
-      <span class="linha l3"><span>em Vós.</span></span>
-    </h1>
-    <p class="lead surge s1">Um lugar para conhecer a vida de Santa Faustina e rezar o Terço da Misericórdia, conta por conta.</p>
-    <div class="surge s2 heroi-acoes">
-      <a href="#rezar" class="btn">Rezar o Terço da Misericórdia</a>
-      <a href="#faustina" class="lnk">Ler a história de Santa Faustina</a>
+    <div class="altar-lado altar-esq">
+      <p class="ficha"><em>Jesus Misericordioso</em>, 1934<br>Eugênio Kazimirowski<br>Santuário da Divina Misericórdia, Vilnius</p>
+      <p class="hora" id="hora" hidden></p>
     </div>
-  </section>
-</div>
 
-<!-- ============ Santa Faustina ============ -->
-<section id="faustina" class="sec" aria-labelledby="h-faustina">
-  <div class="wrap split">
-    <div class="lateral">
-      <div class="lateral-fixa">
-        <h2 id="h-faustina" class="h2">Santa Faustina</h2>
-        <figure class="retrato">
-          <img src="assets/img/santa-faustina.jpg" width="452" height="600" alt="Retrato pintado de Santa Faustina com o hábito preto e o véu branco das Irmãs de Nossa Senhora da Misericórdia, com um crucifixo no peito." loading="lazy">
-          <figcaption>
-            <span>Santa Faustina Kowalska</span>
-            <span>Fonte e licença: [INFORMAR]</span>
-          </figcaption>
-        </figure>
-        <dl class="dados">
-          <div><dt>Nascimento</dt><dd>25 de agosto de 1905, Glogowiec, Polônia</dd></div>
-          <div><dt>Morte</dt><dd>5 de outubro de 1938, Cracóvia</dd></div>
-          <div><dt>Canonização</dt><dd>30 de abril de 2000</dd></div>
-          <div><dt>Festa litúrgica</dt><dd>5 de outubro</dd></div>
-        </dl>
+    <div class="altar-lado altar-dir">
+      <p class="altar-lead">A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.</p>
+      <div class="altar-acoes">
+        <a href="#rezar" class="btn btn-noite">Rezar o Terço da Misericórdia</a>
+        <a href="#faustina" class="lnk">Ler a história de Santa Faustina</a>
       </div>
     </div>
 
-    <article class="prose">
-      <h3 class="h3 h3-primeiro">Uma menina chamada Helena</h3>
-      <p class="cap">Em 25 de agosto de 1905, numa pequena aldeia polonesa chamada Glogowiec, nasceu a terceira filha do casal Estanislau e Mariana Kowalska. Foi batizada com o nome de Helena. A família era pobre, camponesa, com dez filhos — e profundamente cristã.</p>
-      <p>Desde cedo, algo em Helena era diferente. Ela mesma escreveria anos mais tarde em seu <em>Diário</em>: “Quando eu tinha sete anos, ouvi pela primeira vez a voz de Deus na minha alma.” Não sabia ainda o que fazer com isso. Mas a voz não parou.</p>
-      <p>Aos 16 anos, precisou sair de casa para trabalhar como doméstica e ajudar no sustento da família. Pediu aos pais permissão para entrar no convento — em 1920, e de novo em 1922. Nas duas vezes, a resposta foi não.</p>
+  </div>
+</section>
 
-      <h3 class="h3">O baile e a virada</h3>
-      <p>Por algum tempo, Helena tentou calar o chamado interior. Viveu como qualquer jovem da época: trabalhou, ajudou a família, participou da vida social. Mas Deus não desiste de quem escolhe.</p>
-      <p>Num baile, ao lado de uma de suas irmãs, Helena teve uma visão que mudou tudo. Viu Jesus sofredor, coberto de chagas, que lhe disse: “Até quando hei de ter paciência contigo e até quando tu Me desiludirás?” (<em>Diário</em>, 9).</p>
-      <p>Ela saiu do baile sem dizer nada, foi até a catedral mais próxima e se ajoelhou. Ali, ouviu a resposta para toda a sua inquietação: “Vai imediatamente a Varsóvia e lá entrarás no convento.”</p>
-      <p>Partiu com a roupa do corpo.</p>
+<!-- ============ Santa Faustina ============ -->
+<section id="faustina" class="sec" aria-labelledby="h-faustina">
+  <div class="wrap vida">
+    <div class="vida-lado">
+      <h2 id="h-faustina" class="h2">Santa Faustina</h2>
+      <figure class="retrato">
+        <picture><source srcset="assets/img/santa-faustina.webp" type="image/webp"><img src="assets/img/santa-faustina.jpg" width="452" height="600" loading="lazy" alt="Retrato pintado de Santa Faustina com o hábito preto e o véu branco das Irmãs de Nossa Senhora da Misericórdia, com um crucifixo no peito."></picture>
+      </figure>
+      <dl class="dados">
+        <div><dt>Nascimento</dt><dd>25 de agosto de 1905, Głogowiec, Polônia</dd></div>
+        <div><dt>Morte</dt><dd>5 de outubro de 1938, Cracóvia</dd></div>
+        <div><dt>Canonização</dt><dd>30 de abril de 2000</dd></div>
+        <div><dt>Festa litúrgica</dt><dd>5 de outubro</dd></div>
+      </dl>
+    </div>
 
-      <h3 class="h3">As portas fechadas — e uma aberta</h3>
-      <p>Em Varsóvia, bateu em diversas portas. Foi recusada em vários conventos. Trabalhou, economizou, e não desistiu.</p>
-      <p>Em 1º de agosto de 1925, foi aceita na Congregação das Irmãs de Nossa Senhora da Misericórdia. A Madre Superiora, antes de aceitá-la, pediu que fosse à capela e perguntasse a Jesus se aquele era o lugar certo. Jesus respondeu a Helena: “Eu te aceito, tu estás no Meu Coração.” (<em>Diário</em>, 14). A Madre completou: “Se o Senhor te aceitou, eu também te aceitarei.”</p>
-      <p>Dentro da Congregação, Helena recebeu o hábito e um novo nome: Irmã Maria Faustina do Santíssimo Sacramento. Em 1928, professou seus primeiros votos religiosos.</p>
-      <p>Nos treze anos que passou no convento, desempenhou tarefas simples — cozinheira, jardineira, porteira. Ninguém ao redor sabia o que acontecia em seu interior.</p>
+    <div class="anos">
+      <article class="ano">
+        <p class="ano-n">1905</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1905" class="h3">Uma menina chamada Helena</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Helena Kowalska nasceu em 25 de agosto de 1905, em Głogowiec, uma pequena aldeia da Polônia. Era a terceira dos dez filhos de Estanislau e Mariana Kowalska, uma família de camponeses pobres e de muita fé.</p>
+          <p>Anos mais tarde, ela escreveria no <em>Diário</em>: “Quando eu tinha sete anos, ouvi pela primeira vez a voz de Deus na minha alma.”</p>
+          <p>Aos 16 anos, saiu de casa para trabalhar como doméstica e ajudar no sustento da família. Pediu aos pais permissão para entrar no convento em 1920 e de novo em 1922, e nas duas vezes eles recusaram.</p>
+          </div>
+        </details>
+      </article>
 
-      <h3 class="h3">A missão revelada</h3>
-      <p>Em 22 de fevereiro de 1931, em sua cela em Łódź, Faustina teve uma visão que marcaria a história da Igreja. Jesus apareceu vestido de branco, com a mão direita erguida em bênção. Do Seu Coração saíam dois raios — um vermelho, um pálido — representando o Sangue e a Água que brotaram da lança na cruz.</p>
-      <p>Jesus pediu que aquela imagem fosse pintada com a inscrição: “Jesus, eu confio em Vós.”</p>
-      <p>E acrescentou: “Desejo que esta imagem seja venerada em todo o mundo e prometo que a alma que a venerar não perecerá.”</p>
-      <p>Nos anos seguintes, Jesus revelou a Faustina a Coroinha da Divina Misericórdia, a Hora da Misericórdia às 15h, e pediu a instituição de uma Festa da Divina Misericórdia. Tudo isso ela registrou por obediência ao seu confessor, o Padre Miguel Sopoćko — num caderno simples que se tornaria o <em>Diário — A Misericórdia Divina na Minha Alma</em>.</p>
-      <p>Faustina não tinha instrução teológica. Mal havia frequentado a escola. Mas escreveu centenas de páginas com uma clareza que deixaria estudiosos e teólogos de joelhos.</p>
+      <article class="ano">
+        <p class="ano-n">1924</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1924" class="h3">O baile e a virada</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Por algum tempo, Helena tentou calar esse chamado e viveu como as outras moças da época: trabalhava, ajudava a família e participava da vida social.</p>
+          <p>Num baile com uma de suas irmãs, viu Jesus sofredor, coberto de chagas, que lhe disse: “Até quando hei de ter paciência contigo e até quando tu Me desiludirás?” (<em>Diário</em>, 9).</p>
+          <p>Saiu do baile sem dizer nada e foi rezar na catedral mais próxima. Ali ouviu: “Vai imediatamente a Varsóvia e lá entrarás no convento.” Partiu levando apenas a roupa do corpo.</p>
+          </div>
+        </details>
+      </article>
 
-      <h3 class="h3">O sofrimento e a morte</h3>
-      <p>Enquanto recebia as revelações, Faustina carregava um peso físico crescente. A tuberculose foi destruindo seus pulmões, intestinos e esôfago. Passou longos períodos hospitalizada. Nos últimos meses, mal conseguia beber água.</p>
-      <p>Mesmo assim, não reclamou. Nos últimos momentos, pediu que cantassem um cântico piedoso. Quando não encontrou quem o fizesse, ela mesma cantarolou baixinho.</p>
-      <p>Em 5 de outubro de 1938, em Cracóvia, Faustina morreu. Tinha 33 anos — a mesma idade de Cristo na crucificação. Treze anos de vida religiosa. Uma vida escondida, simples, sofrida. E extraordinária.</p>
+      <article class="ano">
+        <p class="ano-n">1925</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1925" class="h3">A entrada no convento</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Em Varsóvia, foi recusada por vários conventos e continuou trabalhando e economizando.</p>
+          <p>Antes de aceitá-la na Congregação das Irmãs de Nossa Senhora da Misericórdia, a Madre Superiora pediu que ela fosse à capela perguntar a Jesus se aquele era o lugar certo. Jesus respondeu: “Eu te aceito, tu estás no Meu Coração” (<em>Diário</em>, 14). A Madre disse então: “Se o Senhor te aceitou, eu também te aceitarei.” Helena entrou na Congregação em 1º de agosto de 1925.</p>
+          <p>Ali recebeu o hábito e um novo nome, Irmã Maria Faustina do Santíssimo Sacramento, e em 1928 fez os primeiros votos.</p>
+          <p>Nos treze anos de vida religiosa, trabalhou como cozinheira, jardineira e porteira. Quase ninguém ao seu redor sabia o que se passava em sua vida interior.</p>
+          </div>
+        </details>
+      </article>
 
-      <h3 class="h3">O silêncio forçado</h3>
-      <p>Após sua morte, a mensagem de Faustina enfrentou um período sombrio. Em 1959, o Vaticano proibiu a divulgação da devoção. O motivo: erros graves numa tradução italiana do <em>Diário</em> faziam parecer que Faustina afirmava de si mesma ser o próprio Amor e a Misericórdia — o que soaria como heresia.</p>
-      <p>Foi um silêncio doloroso. Mas não definitivo.</p>
-      <p>O então Cardeal de Cracóvia, Karol Wojtyła, tomou para si a tarefa de investigar a autenticidade das revelações. Em 1978, ele se tornaria o Papa João Paulo II — e carregaria consigo o que havia descoberto.</p>
+      <article class="ano">
+        <p class="ano-n">1931</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1931" class="h3">A visão de Płock</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Em 22 de fevereiro de 1931, em sua cela no convento de Płock, Faustina viu Jesus vestido de branco, com a mão direita erguida em bênção. Do Seu Coração saíam dois raios, um vermelho e outro pálido, que representam o Sangue e a Água que jorraram do lado de Cristo, aberto pela lança.</p>
+          <p>Jesus pediu que essa imagem fosse pintada com a inscrição “Jesus, eu confio em Vós” e acrescentou: “Desejo que esta imagem seja venerada em todo o mundo e prometo que a alma que a venerar não perecerá.”</p>
+          <p>Nos anos seguintes, Jesus ensinou a Faustina a Coroinha da Divina Misericórdia, falou da Hora da Misericórdia, às 15h, e pediu que fosse instituída a Festa da Divina Misericórdia. Por obediência ao seu confessor, o padre Miguel Sopoćko, ela registrou tudo em cadernos, que formam o <em>Diário</em>, publicado como <em>A Misericórdia Divina na Minha Alma</em>.</p>
+          <p>Faustina mal havia frequentado a escola e não tinha formação teológica. Mesmo assim, escreveu centenas de páginas que até hoje impressionam pela clareza.</p>
+          </div>
+        </details>
+      </article>
 
-      <h3 class="h3">A reabilitação e a canonização</h3>
-      <p>Em 1978, o Vaticano revogou a proibição. Em 1993, João Paulo II beatificou Faustina em Roma.</p>
-      <p>E em 30 de abril de 2000 — no segundo Domingo da Páscoa, a Festa da Divina Misericórdia —, João Paulo II a canonizou diante de uma multidão na Praça de São Pedro. Faustina tornou-se a primeira santa canonizada do terceiro milênio.</p>
-      <p>Na mesma ocasião, o Papa instituiu oficialmente para toda a Igreja Católica o Domingo da Divina Misericórdia — atendendo ao pedido que Jesus havia feito àquela religiosa polonesa sem instrução, seis décadas antes.</p>
-      <p>Não foi coincidência que João Paulo II, o Papa que resgatou e proclamou ao mundo a mensagem de Faustina, veio a falecer na véspera dessa mesma festa, em 2 de abril de 2005. E que sua própria canonização, em 2014, também aconteceu num Domingo da Divina Misericórdia.</p>
+      <article class="ano">
+        <p class="ano-n">1938</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1938" class="h3">O sofrimento e a morte</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Nesses mesmos anos, Faustina adoeceu de tuberculose, que atingiu os pulmões, os intestinos e o esôfago. Passou longos períodos internada e, nos últimos meses, mal conseguia beber água.</p>
+          <p>Suportou a doença sem se queixar. Perto do fim, pediu que cantassem um cântico e, como ninguém o fez, ela mesma cantarolou, baixinho.</p>
+          <p>Morreu em Cracóvia, em 5 de outubro de 1938, aos 33 anos, depois de treze anos de vida religiosa.</p>
+          </div>
+        </details>
+      </article>
 
-      <h3 class="h3">O que resta</h3>
-      <p>Hoje, a Coroinha da Divina Misericórdia é rezada por milhões de fiéis em todo o mundo, diariamente, às três horas da tarde. A Imagem de Jesus Misericordioso está presente em casas, igrejas e hospitais nos cinco continentes. O <em>Diário</em> de Santa Faustina foi traduzido para dezenas de idiomas.</p>
-      <p>Tudo isso começou com uma menina pobre de uma aldeia polonesa que ouviu a voz de Deus aos sete anos e não conseguiu mais calar.</p>
-      <p>Jesus disse a Faustina que, por meio dela, enviaria Sua Misericórdia ao mundo inteiro — e que essa mensagem era “uma tábua de salvação para os últimos tempos”.</p>
-      <p>A mensagem chegou. E continua chegando.</p>
-      <p class="nota">A festa litúrgica de Santa Faustina Kowalska é celebrada em 5 de outubro.</p>
-    </article>
+      <article class="ano">
+        <p class="ano-n">1959</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1959" class="h3">A proibição</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Em 1959, o Vaticano proibiu a divulgação da devoção nas formas propostas por Faustina. Erros graves numa tradução italiana do <em>Diário</em> faziam parecer que ela dizia ser o próprio Amor e a Misericórdia, o que soaria como heresia.</p>
+          <p>O então cardeal de Cracóvia, Karol Wojtyła, tomou para si a tarefa de examinar as revelações.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="ano">
+        <p class="ano-n">1978</p>
+        <details class="topico" open>
+          <summary><h3 id="a-1978" class="h3">A reabilitação e a canonização</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>Em 1978, o Vaticano revogou a proibição. No mesmo ano, Wojtyła foi eleito papa, com o nome de João Paulo II, e em 1993 beatificou Faustina em Roma.</p>
+          <p>Em 30 de abril de 2000, segundo Domingo da Páscoa, ele a canonizou na Praça de São Pedro. Faustina foi a primeira santa canonizada do terceiro milênio.</p>
+          <p>Na mesma celebração, o papa estabeleceu que o segundo Domingo da Páscoa passaria a ser, em toda a Igreja, o Domingo da Divina Misericórdia, como Jesus havia pedido a Faustina.</p>
+          <p>João Paulo II morreu em 2 de abril de 2005, véspera desse domingo. Sua canonização, em 2014, também foi celebrada num Domingo da Divina Misericórdia.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="ano">
+        <p class="ano-n">Hoje</p>
+        <details class="topico" open>
+          <summary><h3 id="a-hoje" class="h3">A mensagem no mundo</h3><span class="sinal" aria-hidden="true"></span></summary>
+          <div class="texto">
+          <p>A Coroinha da Divina Misericórdia é rezada todos os dias por fiéis do mundo inteiro, muitos deles às três da tarde. A Imagem de Jesus Misericordioso está em casas, igrejas e hospitais de todos os continentes, e o <em>Diário</em> foi traduzido para dezenas de línguas.</p>
+          <p>Jesus disse a Faustina que, por meio dela, enviaria a Sua Misericórdia ao mundo inteiro, e que essa mensagem era “uma tábua de salvação para os últimos tempos”.</p>
+          </div>
+        </details>
+      </article>
+    </div>
   </div>
 </section>
 
 <!-- ============ Como rezar o Terço ============ -->
-<section id="terco" class="sec sec-filete" aria-labelledby="h-terco">
-  <div class="wrap split">
-    <div><h2 id="h-terco" class="h2">Como rezar o Terço</h2></div>
-    <div class="coluna">
-      <p class="lead">O Terço da Misericórdia foi ensinado pelo próprio Jesus a Santa Faustina Kowalska em 1935, durante uma visão. Ele pediu que essa oração fosse rezada especialmente pelas almas dos pecadores e prometeu graças particulares a quem a rezasse com confiança — especialmente na hora da morte.</p>
-      <p class="texto-2">Para rezá-lo, usa-se um terço comum, o mesmo do terço mariano. A oração dura cerca de sete minutos.</p>
-    </div>
-  </div>
-</section>
-
-<section id="hora" class="palco sec faixa" aria-labelledby="h-hora">
-  <div class="brilho brilho-hora"></div>
-  <div class="wrap hora">
-    <div class="hora-texto">
-      <h3 id="h-hora" class="h2">Antes de começar</h3>
-      <p class="texto-2">Jesus pediu que o Terço da Misericórdia fosse rezado preferencialmente às 15h — a Hora da Misericórdia, o momento em que Ele morreu na cruz.</p>
-      <p class="texto-2">Mas pode ser rezado a qualquer hora do dia. É uma oração especialmente indicada para momentos de aflição, para interceder por quem está morrendo, e como oração diária de confiança na Misericórdia de Deus.</p>
-    </div>
-    <div class="hora-lado">
-      <div class="hora-num" aria-hidden="true">15<span>h</span></div>
-      <div class="vidro painel">
-        <p class="painel-l">Conta pequena</p>
-        <p class="painel-t">Pela Sua dolorosa Paixão, tende misericórdia de nós e do mundo inteiro.</p>
+<section id="terco" class="sec" aria-labelledby="h-terco">
+  <div class="wrap">
+    <div class="terco-intro">
+      <div>
+        <h2 id="h-terco" class="h2">Como rezar o Terço da Misericórdia</h2>
+        <p class="lead">Jesus ensinou o Terço da Misericórdia a Santa Faustina em 1935, numa visão. Pediu que fosse rezado sobretudo pelos pecadores e prometeu graças especiais a quem o rezasse com confiança, principalmente na hora da morte.</p>
+        <div class="texto">
+          <p>Para rezá-lo, usa-se um terço comum, o mesmo do terço mariano. A oração dura cerca de sete minutos.</p>
+        </div>
+        <h3 class="h3" data-recolhe>Antes de começar</h3>
+        <div class="texto">
+          <p>O Terço pode ser rezado a qualquer hora do dia. Muitos o rezam às 15h, a Hora da Misericórdia, em que Jesus morreu na cruz.</p>
+          <p>É uma oração indicada nos momentos de aflição, para pedir por quem está morrendo e como oração diária de confiança na Misericórdia de Deus.</p>
+        </div>
       </div>
+      <figure class="foto-terco">
+        <picture><source srcset="assets/img/terco-devocionario.avif" type="image/avif"><source srcset="assets/img/terco-devocionario.webp" type="image/webp"><img src="assets/img/terco-devocionario.jpg" width="736" height="1177" loading="lazy" alt="Mão segurando um devocionário à Divina Misericórdia, com a Imagem de Jesus Misericordioso na capa, e sobre ele um terço de contas vermelhas com crucifixo e medalhas."></picture>
+        <figcaption class="legenda">Devocionário à Divina Misericórdia e um terço comum.</figcaption>
+      </figure>
     </div>
-  </div>
-</section>
 
-<section id="passo-a-passo" class="sec" aria-labelledby="h-passos">
-  <div class="wrap split">
-    <div><h3 id="h-passos" class="h2">Passo a passo</h3></div>
-    <div class="etapas">
+    <section class="passos" aria-labelledby="h-passos">
+      <h3 id="h-passos" class="h2">Passo a passo</h3>
 
       <section class="etapa" aria-labelledby="h-e1">
-        <h4 id="h-e1" class="h3">Início</h4>
-        <div class="passo">
-          <p class="instr">Faça o sinal da cruz</p>
-          <p class="oracao">Em nome do Pai, do Filho e do Espírito Santo. Amém.</p>
-        </div>
-        <div class="passo">
-          <p class="instr">Em seguida, reze uma oração de abertura</p>
-          <p class="oracao">“Tu expiraste, Jesus, mas a Fonte de Vida jorrou para as almas e o oceano de Misericórdia abriu-se para o mundo inteiro. Ó Fonte de Vida, insondável Misericórdia Divina, envolve o mundo inteiro e derrama-Te sobre nós.”</p>
-        </div>
-        <div class="passo">
-          <p class="instr">Repita três vezes</p>
-          <p class="oracao">“Ó Sangue e Água, que jorraste do Coração de Jesus como Fonte de Misericórdia para nós, eu confio em Vós.”</p>
+        <div class="etapa-cab"><h4 id="h-e1" class="h3">Início</h4><p class="rubrica">No crucifixo.</p></div>
+        <div class="etapa-corpo">
+          <div>
+            <p class="instr rubrica">Faça o sinal da cruz:</p>
+            <p class="oracao">Em nome do Pai, do Filho e do Espírito Santo. Amém.</p>
+          </div>
+          <div>
+            <p class="instr rubrica">Em seguida, reze a oração de abertura:</p>
+            <p class="oracao aspas">“Tu expiraste, Jesus, mas a Fonte de Vida jorrou para as almas e o oceano de Misericórdia abriu-se para o mundo inteiro. Ó Fonte de Vida, insondável Misericórdia Divina, envolve o mundo inteiro e derrama-Te sobre nós.”</p>
+          </div>
+          <div>
+            <p class="instr rubrica">Repita três vezes:</p>
+            <p class="oracao aspas">“Ó Sangue e Água, que jorraste do Coração de Jesus como Fonte de Misericórdia para nós, eu confio em Vós.”</p>
+          </div>
         </div>
       </section>
 
       <section class="etapa" aria-labelledby="h-e2">
-        <h4 id="h-e2" class="h3">Nas primeiras contas</h4>
-        <p class="etapa-nota">Antes das dezenas.</p>
-        <div class="acc-lista">
-          <details class="acc">
-            <summary>Reze um Pai-Nosso<svg class="chev" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-            <p class="oracao">Pai-Nosso que estais no Céu, santificado seja o Vosso nome, venha a nós o Vosso reino, seja feita a Vossa vontade assim na Terra como no Céu. O pão nosso de cada dia nos dai hoje, perdoai-nos as nossas ofensas assim como nós perdoamos a quem nos tem ofendido, e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.</p>
-          </details>
-          <details class="acc">
-            <summary>Uma Ave-Maria<svg class="chev" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-            <p class="oracao">Ave-Maria, cheia de graça, o Senhor é convosco. Bendita sois vós entre as mulheres e bendito é o fruto do vosso ventre, Jesus. Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.</p>
-          </details>
-          <details class="acc">
-            <summary>E o Creio<svg class="chev" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></summary>
-            <p class="oracao">Creio em Deus Pai Todo-Poderoso, Criador do Céu e da Terra. E em Jesus Cristo, Seu único Filho, Nosso Senhor, que foi concebido pelo poder do Espírito Santo, nasceu da Virgem Maria, padeceu sob Pôncio Pilatos, foi crucificado, morto e sepultado, desceu à mansão dos mortos, ressuscitou ao terceiro dia, subiu aos Céus, está sentado à direita de Deus Pai Todo-Poderoso, de onde há de vir a julgar os vivos e os mortos. Creio no Espírito Santo, na Santa Igreja Católica, na comunhão dos Santos, na remissão dos pecados, na ressurreição da carne e na vida eterna. Amém.</p>
-          </details>
+        <div class="etapa-cab"><h4 id="h-e2" class="h3">Nas três contas pequenas</h4><p class="rubrica">Antes das dezenas, uma oração em cada conta.</p></div>
+        <div class="etapa-corpo">
+          <div class="comuns">
+            <details class="comum">
+              <summary>Reze um Pai-Nosso<span class="sinal" aria-hidden="true"></span></summary>
+              <p class="oracao">Pai-Nosso que estais no Céu, santificado seja o Vosso nome, venha a nós o Vosso reino, seja feita a Vossa vontade assim na Terra como no Céu. O pão nosso de cada dia nos dai hoje, perdoai-nos as nossas ofensas assim como nós perdoamos a quem nos tem ofendido, e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.</p>
+            </details>
+            <details class="comum">
+              <summary>Uma Ave-Maria<span class="sinal" aria-hidden="true"></span></summary>
+              <p class="oracao">Ave-Maria, cheia de graça, o Senhor é convosco. Bendita sois vós entre as mulheres e bendito é o fruto do vosso ventre, Jesus. Santa Maria, Mãe de Deus, rogai por nós pecadores, agora e na hora da nossa morte. Amém.</p>
+            </details>
+            <details class="comum">
+              <summary>E o Creio<span class="sinal" aria-hidden="true"></span></summary>
+              <p class="oracao">Creio em Deus Pai Todo-Poderoso, Criador do Céu e da Terra. E em Jesus Cristo, Seu único Filho, Nosso Senhor, que foi concebido pelo poder do Espírito Santo, nasceu da Virgem Maria, padeceu sob Pôncio Pilatos, foi crucificado, morto e sepultado, desceu à mansão dos mortos, ressuscitou ao terceiro dia, subiu aos Céus, está sentado à direita de Deus Pai Todo-Poderoso, de onde há de vir a julgar os vivos e os mortos. Creio no Espírito Santo, na Santa Igreja Católica, na comunhão dos Santos, na remissão dos pecados, na ressurreição da carne e na vida eterna. Amém.</p>
+            </details>
+          </div>
         </div>
       </section>
 
       <section class="etapa" aria-labelledby="h-e3">
-        <h4 id="h-e3" class="h3">Nas cinco dezenas</h4>
-        <p class="etapa-nota">Repita este ciclo cinco vezes.</p>
-        <div class="passo">
-          <p class="instr">Na conta grande (onde normalmente se reza o Pai-Nosso), diga</p>
-          <p class="oracao">“Eterno Pai, eu Vos ofereço o Corpo e Sangue, Alma e Divindade de Vosso diletíssimo Filho, Nosso Senhor Jesus Cristo, em expiação dos nossos pecados e do mundo inteiro.”</p>
+        <div class="etapa-cab"><h4 id="h-e3" class="h3">Nas cinco dezenas</h4><p class="rubrica">Repita este ciclo cinco vezes.</p></div>
+        <div class="etapa-corpo">
+          <div>
+            <p class="instr rubrica">Na conta grande (onde normalmente se reza o Pai-Nosso), diga:</p>
+            <p class="oracao aspas">“Eterno Pai, eu Vos ofereço o Corpo e Sangue, Alma e Divindade de Vosso diletíssimo Filho, Nosso Senhor Jesus Cristo, em expiação dos nossos pecados e do mundo inteiro.”</p>
+          </div>
+          <div>
+            <p class="instr rubrica">Nas dez contas pequenas (onde normalmente se reza a Ave-Maria), repita dez vezes:</p>
+            <p class="oracao aspas">“Pela Sua dolorosa Paixão, tende misericórdia de nós e do mundo inteiro.”</p>
+          </div>
         </div>
-        <div class="passo">
-          <p class="instr">Nas dez contas pequenas (onde normalmente se reza a Ave-Maria), repita dez vezes</p>
-          <p class="oracao">“Pela Sua dolorosa Paixão, tende misericórdia de nós e do mundo inteiro.”</p>
-        </div>
-        <p class="etapa-nota etapa-fim">Faça isso nas cinco dezenas.</p>
       </section>
 
       <section class="etapa" aria-labelledby="h-e4">
-        <h4 id="h-e4" class="h3">Encerramento</h4>
-        <div class="passo">
-          <p class="instr">Ao terminar as cinco dezenas, repita três vezes</p>
-          <p class="oracao">“Deus Santo, Deus Forte, Deus Imortal, tende piedade de nós e do mundo inteiro.”</p>
-        </div>
-        <div class="passo">
-          <p class="instr">Pode-se encerrar com esta oração final</p>
-          <p class="oracao">“Deus Eterno, em quem a Misericórdia é infinita e o tesouro da compaixão é inesgotável, olhai propício para nós e aumentai em nós a Vossa Misericórdia, para que nos momentos difíceis não nos desesperemos nem desanimemos, mas nos submetamos com grande confiança à Vossa santa vontade, que é o Amor e a própria Misericórdia. Amém.”</p>
+        <div class="etapa-cab"><h4 id="h-e4" class="h3">Encerramento</h4><p class="rubrica">Depois das cinco dezenas.</p></div>
+        <div class="etapa-corpo">
+          <div>
+            <p class="instr rubrica">Ao terminar as cinco dezenas, repita três vezes:</p>
+            <p class="oracao aspas">“Deus Santo, Deus Forte, Deus Imortal, tende piedade de nós e do mundo inteiro.”</p>
+          </div>
+          <div>
+            <p class="instr rubrica">Pode-se encerrar com esta oração final:</p>
+            <p class="oracao aspas">“Deus Eterno, em quem a Misericórdia é infinita e o tesouro da compaixão é inesgotável, olhai propício para nós e aumentai em nós a Vossa Misericórdia, para que nos momentos difíceis não nos desesperemos nem desanimemos, mas nos submetamos com grande confiança à Vossa santa vontade, que é o Amor e a própria Misericórdia. Amém.”</p>
+          </div>
         </div>
       </section>
-
-    </div>
+    </section>
   </div>
 </section>
 
-<section id="rezar" class="palco sec faixa" aria-labelledby="h-rezar">
-  <div class="brilho brilho-rezar"></div>
-  <div class="wrap split">
-    <div class="coluna-curta">
-      <h3 id="h-rezar" class="h2">Rezar agora, conta por conta</h3>
-      <p class="texto-2">Uma conta por vez, com o texto sempre à vista. As setas do teclado também avançam e voltam.</p>
+<!-- ============ Rezar agora ============ -->
+<section id="rezar" class="sec rezar" aria-labelledby="h-rezar">
+  <div class="wrap">
+    <div class="rezar-cab">
+      <h2 id="h-rezar" class="h2">Rezar agora</h2>
+      <p>Siga conta por conta. A conta em que você está se acende no terço.</p>
     </div>
     <div class="rezador" id="rezador" tabindex="-1">
-      <svg class="contas" viewBox="0 0 680 44" role="img" aria-label="Contas da dezena">
-        <line x1="24" y1="22" x2="656" y2="22" class="fio"/>
-        <g id="contas-g"></g>
-      </svg>
-      <div class="rz-texto" aria-live="polite">
-        <p class="rz-label" id="rz-label">Início</p>
-        <p class="rz-oracao" id="rz-oracao">Em nome do Pai, do Filho e do Espírito Santo. Amém.</p>
+      <svg class="terco-svg" id="terco-svg" viewBox="0 0 320 466" role="img" aria-label="Terço"></svg>
+      <div class="rz-col">
+        <div class="rz-texto" aria-live="polite">
+          <p class="rz-fase" id="rz-fase">Início</p>
+          <p class="rz-conta" id="rz-conta">No crucifixo</p>
+          <p class="rz-oracao" id="rz-oracao">Em nome do Pai, do Filho e do Espírito Santo. Amém.</p>
+        </div>
+        <div class="rz-acoes">
+          <button type="button" class="btn btn-noite" id="rz-prox">Próxima conta</button>
+          <button type="button" class="lnk" id="rz-volta">Voltar uma conta</button>
+        </div>
+        <div class="rz-progresso">
+          <div class="rz-barra" aria-hidden="true"><span></span></div>
+          <button type="button" class="lnk rz-recomeca" id="rz-recomeca" hidden>Recomeçar</button>
+        </div>
+        <p class="rz-dica">Também dá para usar as setas do teclado.</p>
       </div>
-      <div class="rz-acoes">
-        <button type="button" class="btn" id="rz-prox">Próxima conta</button>
-        <button type="button" class="lnk lnk-btn" id="rz-volta">Voltar uma conta</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="promessas" class="sec" aria-labelledby="h-promessas">
-  <div class="wrap split">
-    <div><h3 id="h-promessas" class="h2">O que Jesus prometeu a quem rezar o Terço</h3></div>
-    <div class="coluna">
-      <p class="texto-2">No <em>Diário</em> de Santa Faustina, Jesus fez promessas concretas ligadas a essa oração:</p>
-      <ul class="promessas">
-        <li><blockquote>“Às almas que rezem este Terço, apraz-Me dar-lhes o que Me peçam.”</blockquote><cite><em>Diário</em>, § 1541</cite></li>
-        <li><blockquote>“A Minha Misericórdia as envolverá em vida e especialmente na hora da morte.”</blockquote><cite><em>Diário</em>, § 754</cite></li>
-        <li><blockquote>“Quando rezarem esta Coroinha junto dos moribundos, colocar-Me-ei entre o Pai e a alma agonizante, não como Juiz justo, mas como Salvador misericordioso.”</blockquote><cite><em>Diário</em>, § 1541</cite></li>
-        <li><blockquote>“Até o pecador mais endurecido, se rezar esta oração uma só vez, receberá a graça da Minha Misericórdia infinita.”</blockquote><cite><em>Diário</em>, § 687</cite></li>
-      </ul>
     </div>
   </div>
 </section>
 
 <!-- ============ Sobre o site ============ -->
-<section id="sobre" class="sec sec-filete" aria-labelledby="h-sobre">
-  <div class="wrap split">
-    <div><h2 id="h-sobre" class="h2">Sobre o site</h2></div>
-    <div class="coluna">
-      <p class="lead">Este site não nasceu de uma reunião de planejamento, nem de uma estratégia de marketing. Nasceu durante uma oração.</p>
-      <div class="prose">
-        <p>Enquanto rezava o Terço da Misericórdia, veio um pensamento — simples, claro, inesperado: levar a mensagem da Divina Misericórdia por meio da tecnologia.</p>
-        <p>Não foi um projeto elaborado por mentes humanas. Foi um pensamento que chegou no meio de uma oração, e que não foi possível ignorar.</p>
-        <p>A tecnologia, por si só, é apenas uma ferramenta. O que importa é o que se faz com ela. E se ela pode aproximar almas da Misericórdia de Deus — se pode levar a uma pessoa desesperada a promessa de Jesus a Santa Faustina, ou ensinar alguém a rezar o Terço da Misericórdia, ou simplesmente lembrar que Deus não desistiu de ninguém — então vale a pena usá-la para isso.</p>
-        <p>Jesus disse a Santa Faustina que desejava que Sua Misericórdia chegasse a todas as almas. Não especificou como. Cada época tem seus meios. Este site é uma resposta pequena e humilde a esse desejo.</p>
-        <p>Se você chegou até aqui, talvez não tenha sido por acaso.</p>
+<section id="sobre" class="sec" aria-labelledby="h-sobre">
+  <div class="wrap">
+    <div class="sobre">
+      <h2 id="h-sobre" class="h2">Sobre o site</h2>
+      <div class="texto" data-continua="1">
+        <p>Este site nasceu durante uma oração. Enquanto rezava o Terço da Misericórdia, veio a ideia de levar a mensagem da Divina Misericórdia pela internet, e ela não foi mais embora.</p>
+        <p>A tecnologia é só uma ferramenta. Se ela ajudar alguém a conhecer as promessas de Jesus a Santa Faustina, a aprender o Terço da Misericórdia ou a lembrar que Deus não desistiu de ninguém, terá valido a pena.</p>
+        <p>Jesus disse a Santa Faustina que desejava que a Sua Misericórdia chegasse a todas as almas. Este site é uma pequena resposta a esse desejo.</p>
       </div>
-      <figure class="citacao">
-        <div class="citacao-fio"></div>
-        <blockquote class="quote">“A humanidade não encontrará paz enquanto não se voltar para a Fonte da Minha Misericórdia.”</blockquote>
-        <figcaption>Jesus a Santa Faustina, <em>Diário</em>, § 699</figcaption>
+      <figure class="cit cit-grande">
+        <blockquote>“A humanidade não encontrará paz enquanto não se voltar para a Fonte da Minha Misericórdia.”</blockquote>
+        <figcaption>Jesus a Santa Faustina, <em>Diário</em>, §&nbsp;699</figcaption>
       </figure>
     </div>
   </div>
@@ -346,26 +408,15 @@
 
 </main>
 
-<footer class="palco rodape">
-  <div class="brilho brilho-rodape"></div>
-  <div class="wrap foot-grid">
-    <div class="foot-marca">
-      <a href="#inicio" class="brand">
-        <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path class="mk-r" d="M14 3L4 25M14 3L8 26M14 3L12 26"/><path class="mk-p" d="M14 3L16 26M14 3L20 26M14 3L24 25"/></svg>
-        <span>Divina Misericórdia</span>
-      </a>
-      <p class="foot-frase">Jesus, eu confio em Vós.</p>
-    </div>
-    <nav aria-label="Rodapé" class="foot-nav">
-      <a href="#faustina" class="nl">Santa Faustina</a>
-      <a href="#terco" class="nl">Como rezar o Terço</a>
-      <a href="#rezar" class="nl">Rezar agora</a>
-      <a href="#sobre" class="nl">Sobre o site</a>
-    </nav>
-    <p class="foot-copy">© 2026 Divina Misericórdia</p>
+<footer class="rodape">
+  <div class="wrap rodape-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <nav aria-label="Rodapé"><a href="index.html" aria-current="page">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+    <p>© 2026 Divina Misericórdia</p>
   </div>
 </footer>
 
-<script src="assets/js/main.js" defer></script>
+<script src="assets/js/main.js?v=dm-7ed503e1a8" defer></script>
+
 </body>
 </html>

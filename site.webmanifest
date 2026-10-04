@@ -1,0 +1,21 @@
+{
+  "name": "Divina Misericórdia",
+  "short_name": "Misericórdia",
+  "description": "A vida de Santa Faustina, a Imagem de Jesus Misericordioso e o Terço da Misericórdia, com todas as orações.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070808",
+  "theme_color": "#070808",
+  "icons": [
+    { "src": "assets/img/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/img/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/img/icone-mascaravel-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "assets/img/marca.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Rezar o Terço", "url": "./index.html#rezar", "icons": [{ "src": "assets/img/icone-192.png", "sizes": "192x192" }] },
+    { "name": "Lembrete das 15h", "url": "./lembrete.html", "icons": [{ "src": "assets/img/icone-192.png", "sizes": "192x192" }] }
+  ]
+}

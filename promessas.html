@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR" class="claro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Promessas · Divina Misericórdia</title>
+<meta name="description" content="As promessas de Jesus a Santa Faustina, registradas no Diário, para quem confia na Sua Misericórdia.">
+<link rel="canonical" href="https://gabrielbuhatem3-maker.github.io/DM/promessas.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Divina Misericórdia">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="As promessas da Divina Misericórdia">
+<meta property="og:description" content="O que Jesus prometeu a Santa Faustina, nas palavras registradas no Diário.">
+<meta property="og:url" content="https://gabrielbuhatem3-maker.github.io/DM/promessas.html">
+<meta property="og:image" content="https://gabrielbuhatem3-maker.github.io/DM/assets/img/compartilhar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="“Jesus, eu confio em Vós.” ao lado da pintura de Jesus Misericordioso.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F6F3">
+<link rel="icon" href="assets/img/marca.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/icone-180.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="assets/fonts/brygada-1918-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/brygada-1918-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script type="speculationrules">{"prerender":[{"where":{"href_matches":"/*"},"eagerness":"moderate"}]}</script>
+<link rel="stylesheet" href="assets/css/style.css?v=dm-7ed503e1a8">
+<script>
+  // Antes da primeira pintura, para a página já nascer do jeito certo.
+  (function (h) {
+    h.classList.add('js');
+    // Tema: o que a pessoa escolheu no botão; se nunca escolheu, o do aparelho.
+    var t = null;
+    try { t = localStorage.getItem('tema'); } catch (e) {}
+    var escuro = t ? t === 'escuro' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (escuro) {
+      h.classList.replace('claro', 'escuro');
+      var cor = document.querySelector('meta[name="theme-color"]');
+      if (cor && cor.content !== '#070808') cor.content = '#0E1315';
+    }
+    // A abertura do Início anima por inteiro só na primeira vez da visita.
+    try { if (sessionStorage.getItem('abertura')) h.classList.add('ja-abriu'); } catch (e) {}
+    // Primeira visita: guarda o site no aparelho, com o progresso na tela (uma vez só).
+    // Depois: a tela de carregamento só aparece se algo demorar mais de 0,4 s.
+    h.classList.add('carregando');
+    try {
+      var c = navigator.connection;
+      if (!localStorage.getItem('site-guardado') && !sessionStorage.getItem('preparo') && !(c && c.saveData)) h.classList.add('baixando-site');
+    } catch (e) {}
+    // Se o script principal não chegar, nada fica preso atrás da tela.
+    setTimeout(function () { h.classList.remove('carregando', 'baixando-site'); }, h.classList.contains('baixando-site') ? 26000 : 8000);
+  })(document.documentElement);
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="progresso" aria-hidden="true"></div>
+<div class="carregador" aria-hidden="true">
+  <div class="cg-in">
+    <svg class="cg-marca" width="84" height="105" viewBox="0 0 32 40">
+      <g fill="none" stroke-linecap="round">
+        <circle class="cg-argola" cx="16" cy="2.2" r="1.7" stroke-width="1.1"/>
+        <ellipse class="cg-aro" pathLength="1" cx="16" cy="21" rx="12.6" ry="16.6" stroke-width="1.1"/>
+        <path class="cg-raio cg-r" pathLength="1" d="M16 14.5L5.6 29.2"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L9.2 33.8"/><path class="cg-raio cg-r" pathLength="1" d="M16 14.5L13.2 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L18.8 36.3"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L22.8 33.8"/><path class="cg-raio cg-p" pathLength="1" d="M16 14.5L26.4 29.2"/>
+        <circle class="cg-ponto" cx="16" cy="14.5" r="1.15"/>
+      </g>
+    </svg>
+    <p class="cg-nome">Divina Misericórdia</p>
+    <p class="cg-estado">Preparando o site: <span class="cg-pct">0%</span></p>
+    <p class="cg-nota">Só na primeira visita. Depois ele abre na hora, até sem internet.</p>
+    <button type="button" class="cg-entrar" hidden>Entrar agora</button>
+    <p class="cg-oracao">Ó Sangue e Água, que jorraste do Coração de Jesus como Fonte de Misericórdia para nós, eu confio em Vós.</p>
+  </div>
+</div>
+
+<header class="topo">
+  <div class="wrap topo-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <div class="topo-acoes">
+      <nav class="nav" aria-label="Principal"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html" aria-current="page">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+      <button type="button" class="tema" id="tema-tg" aria-pressed="false" title="Modo escuro">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 2.5a7.5 7.5 0 0 0 0 15z" fill="currentColor"/></svg>
+        <span class="sr">Modo escuro</span>
+      </button>
+      <details class="menu-m">
+        <summary>Menu</summary>
+        <div class="menu-painel">
+          <div class="wrap topo-in">
+            <span class="marca" aria-hidden="true"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></span>
+            <button type="button" class="menu-fecha">Fechar</button>
+          </div>
+          <nav class="wrap menu-links" aria-label="Menu"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html" aria-current="page">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+          <p class="wrap menu-prece" aria-hidden="true">Jesus, eu confio em Vós.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<main id="conteudo">
+
+<section class="wrap titulo" aria-labelledby="h-promessas">
+  <h1 id="h-promessas" class="h1">As promessas da Divina Misericórdia</h1>
+  <p class="lead">O que Jesus prometeu a Santa Faustina, nas palavras registradas no <em>Diário</em>.</p>
+</section>
+
+<section class="wrap" aria-label="Promessas">
+<ol class="promessas">
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1578</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Quanto mais a alma confiar, tanto mais receberá.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">No <em>Diário</em>, a confiança é o vaso com que a alma recebe a graça: quanto maior a confiança, mais ela recebe. Jesus não pede que a pessoa seja perfeita para agir nela. A própria fraqueza é o lugar onde a Misericórdia quer agir.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;48</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Prometo que a alma que venerar esta Imagem não perecerá.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">Os raios vermelho e pálido que saem do Coração de Jesus representam o Sangue e a Água que brotaram do Seu lado aberto pela lança. Jesus prometeu proteção especial a quem venerasse a Imagem com fé, sobretudo na hora da morte.</p>
+        <div class="pr-acoes"><a class="lnk pr-ir" href="imagem.html">Conhecer a Imagem</a><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;699</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“A alma que se confessar e comungar alcançará o perdão total das suas culpas e penas.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">Jesus pediu que a Festa da Divina Misericórdia fosse celebrada no segundo Domingo da Páscoa e ligou a ela uma graça especial: quem se confessar e comungar nesse dia recebe o perdão completo das culpas e das penas. Ele chamou esse dia de refúgio para todas as almas, inclusive para os maiores pecadores.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1146</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Não posso castigar o maior pecador se ele suplica a Minha misericórdia.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">É uma resposta a quem acha que foi longe demais e que Deus já não o quer de volta.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1448</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“O milagre da Divina Misericórdia restaura essa alma em toda a sua plenitude.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">Jesus falou da confissão como o lugar dos maiores milagres da Misericórdia. Mesmo uma alma que parece perdida, afastada há anos, pode ser restaurada por inteiro, se se aproximar arrependida e abrir o coração ao confessor.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1320</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Nessa hora nada negarei à alma que Me pedir pela Minha Paixão.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">A promessa é para as três da tarde, a hora em que Jesus morreu na cruz: nessa hora, Ele atende o pedido feito pelos méritos da Sua Paixão. No §&nbsp;1572, Jesus diz que basta um breve momento de recolhimento, onde a pessoa estiver, mesmo sem ir à capela.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;754</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“A Minha Misericórdia as envolverá em vida e especialmente na hora da morte.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">A promessa é para quem reza a Coroinha, a oração breve que Jesus ensinou a Faustina. No §&nbsp;687, Ele acrescenta que até o pecador mais endurecido, se a rezar uma única vez, receberá a graça da Sua Misericórdia infinita.</p>
+        <div class="pr-acoes"><a class="lnk pr-ir" href="index.html#terco">Aprender a rezar o Terço</a><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1541</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Quando rezarem esta Coroinha junto dos moribundos, colocar-Me-ei entre o Pai e a alma agonizante, não como Juiz justo, mas como Salvador misericordioso.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">É uma promessa para quem acompanha alguém que está morrendo. A oração se apoia na Paixão de Cristo, e não nos méritos de quem está morrendo; por isso vale também para quem viveu longe de Deus.</p>
+        <div class="pr-acoes"><a class="lnk pr-ir" href="index.html#rezar">Rezar o Terço agora</a><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1075</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Às almas que divulguem a devoção à Minha Misericórdia, protejo-as durante toda a sua vida como uma mãe carinhosa, e à hora da morte não serei para elas Juiz mas Salvador misericordioso.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">São duas promessas a quem divulga a devoção: proteção durante a vida e misericórdia na hora da morte. Divulgar pode ser tão simples quanto ensinar o Terço a alguém.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+  <li class="promessa">
+    <p class="pr-ref"><span>Diário</span><span>§&nbsp;1224</span></p>
+    <details class="topico" open>
+      <summary><h2 class="pr-cit">“Nenhuma delas irá para o fogo do Inferno. Defenderei cada uma de modo especial na hora da morte.”</h2><span class="sinal" aria-hidden="true"></span></summary>
+      <div class="pr-corpo">
+        <p class="pr-nota">A promessa é para quem vive essa devoção de verdade, como uma relação com Cristo misericordioso, e não só como prática exterior. Jesus garante a essas almas a Sua defesa na hora da morte.</p>
+        <div class="pr-acoes"><button type="button" class="lnk pr-copiar">Copiar a promessa</button></div>
+      </div>
+    </details>
+  </li>
+</ol>
+</section>
+
+<section class="fecho" aria-labelledby="h-conclusao">
+  <div class="wrap">
+    <div class="fecho-in">
+      <h2 id="h-conclusao" class="sr">Conclusão</h2>
+      <p class="rubrica">Jesus disse a Santa Faustina:</p>
+      <figure>
+        <blockquote>“Mais facilmente o Céu e a Terra se tornariam nada do que a Minha Misericórdia deixaria de abraçar uma alma confiante.”</blockquote>
+        <figcaption><em>Diário</em>, §&nbsp;1777</figcaption>
+      </figure>
+      <div class="texto"><p>É o que o <em>Diário</em> inteiro procura mostrar: a Misericórdia de Deus não se esgota diante do pecado. A única condição é que a alma confie e se abra para recebê-la.</p></div>
+    </div>
+  </div>
+</section>
+
+<nav class="wrap" aria-label="Continuar a leitura">
+  <div class="seguir">
+    <a href="imagem.html"><span>Anterior</span><strong>A Imagem</strong></a>
+    <a href="lembrete.html"><span>Próximo</span><strong>Lembrete</strong></a>
+  </div>
+</nav>
+
+</main>
+
+<footer class="rodape">
+  <div class="wrap rodape-in">
+    <a href="index.html" class="marca"><svg class="marca-svg" width="24" height="30" viewBox="0 0 32 40" aria-hidden="true"><g fill="none" stroke-linecap="round"><circle cx="16" cy="2.2" r="1.7" stroke="currentColor" stroke-width="1.2"/><ellipse cx="16" cy="21" rx="12.6" ry="16.6" stroke="currentColor" stroke-width="1.5"/><path class="mk-r" d="M16 14.5L5.6 29.2M16 14.5L9.2 33.8M16 14.5L13.2 36.3"/><path class="mk-p" d="M16 14.5L18.8 36.3M16 14.5L22.8 33.8M16 14.5L26.4 29.2"/><circle cx="16" cy="14.5" r="1.25" fill="#B3242A"/></g></svg><span>Divina Misericórdia</span></a>
+    <nav aria-label="Rodapé"><a href="index.html">Início</a><a href="imagem.html">A Imagem</a><a href="promessas.html" aria-current="page">Promessas</a><a href="lembrete.html">Lembrete</a></nav>
+    <p>© 2026 Divina Misericórdia</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js?v=dm-7ed503e1a8" defer></script>
+</body>
+</html>
