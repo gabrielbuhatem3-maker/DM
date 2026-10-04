@@ -17,6 +17,7 @@ assets/js/main.js     Carregamento, tema, cabeçalho, menu, terço, lembrete
 assets/fonts/         Brygada 1918 (licença OFL, ver OFL-Brygada-1918.txt)
 assets/img/           Pintura, retrato, foto do terço, logos e ícones
 tools/versao.py       Atualiza a versão do site depois de qualquer mudança
+tools/dominio.py      Passa o site para um domínio próprio
 ```
 
 ## Depois de mudar qualquer arquivo
@@ -40,4 +41,11 @@ e abra http://localhost:8000.
 1. Em **Settings → Pages**, em *Build and deployment*, escolha **Deploy from a branch**, a branch `main` e a pasta `/ (root)`.
 2. Em alguns minutos o site fica em https://gabrielbuhatem3-maker.github.io/DM/.
 
-As tags de compartilhamento (`og:url`, `og:image` e `canonical`), o `sitemap.xml` e o `robots.txt` apontam para esse endereço. Se o site for para um domínio próprio, troque-o nesses arquivos.
+## Domínio próprio (ex.: .org.br)
+
+1. Registre o domínio (o `.org.br` é registrado no registro.br e pede o CNPJ de uma entidade sem fins lucrativos).
+2. No DNS do domínio, crie quatro registros **A** para o domínio sem www, apontando para `185.199.108.153`, `185.199.109.153`, `185.199.110.153` e `185.199.111.153`, e um **CNAME** de `www` para `gabrielbuhatem3-maker.github.io`.
+3. Rode `python3 tools/dominio.py seudominio.org.br`, faça commit e envie para a `main`. O script troca o endereço em todas as páginas, no sitemap e no robots e cria o arquivo `CNAME`.
+4. Em **Settings → Pages**, confira o domínio em *Custom domain* e marque **Enforce HTTPS** quando liberar.
+
+Para voltar ao endereço do GitHub: `python3 tools/dominio.py --github`.
